@@ -1,0 +1,7 @@
+[25-Sep-2025 01:26:06 UTC] PHP Fatal error:  Trait "App\Http\Controllers\Illuminate\Support\Facades\Mail" not found in /home/janmithr/public_html/velody/app/Http/Controllers/WarrantyRegistrationController.php on line 12
+[25-Sep-2025 01:30:51 UTC] PHP Fatal error:  Trait "App\Http\Controllers\Illuminate\Support\Facades\Mail" not found in /home/janmithr/public_html/velody/app/Http/Controllers/WarrantyRegistrationController.php on line 12
+[25-Sep-2025 01:37:04 UTC] PHP Fatal error:  Trait "App\Http\Controllers\Illuminate\Support\Facades\Mail" not found in /home/janmithr/public_html/velody/app/Http/Controllers/WarrantyRegistrationController.php on line 12
+[25-Sep-2025 05:25:13 UTC] PHP Fatal error:  Cannot use App\Models\Product as Product because the name is already in use in /home/janmithr/public_html/velody/app/Http/Controllers/WarrantyRegistrationController.php on line 11
+[25-Sep-2025 05:30:46 UTC] PHP Fatal error:  Cannot use App\Models\Product as Product because the name is already in use in /home/janmithr/public_html/velody/app/Http/Controllers/WarrantyRegistrationController.php on line 11
+[31-Oct-2025 07:39:54 UTC] PHP Fatal error:  Cannot use Illuminate\Support\Facades\Hash as Hash because the name is already in use in /home/janmithr/public_html/fig/app/Http/Controllers/Auth/RegisterController.php on line 14
+[11-Nov-2025 07:55:35 UTC] PHP Fatal error:  Cannot use Illuminate\Http\Request as Request because the name is already in use in /home/janmithr/public_html/fig/app/Http/Controllers/ProfileController.php on line 8

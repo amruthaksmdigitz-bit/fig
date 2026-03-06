@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<!-- saved from url=(0027)http://127.0.0.1:8088/about -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  <meta name="author" content="Free-Template.co">
+
+  <!-- Google Fonts -->
+  <link href="./hero_files/css" rel="stylesheet">
+
+  <!-- Fonts -->
+  <link rel="stylesheet" href="./hero_files/style.css">
+  <link rel="stylesheet" href="./hero_files/flaticon.css">
+
+  <!-- CSS Files -->
+  <link rel="stylesheet" href="./hero_files/bootstrap.min.css">
+  <link rel="stylesheet" href="./hero_files/magnific-popup.css">
+  <link rel="stylesheet" href="./hero_files/jquery-ui.css">
+  <link rel="stylesheet" href="./hero_files/owl.carousel.min.css">
+  <link rel="stylesheet" href="./hero_files/owl.theme.default.min.css">
+  <link rel="stylesheet" href="./hero_files/bootstrap-datepicker.css">
+  <link rel="stylesheet" href="./hero_files/aos.css">
+  <link rel="stylesheet" href="./hero_files/rangeslider.css">
+  <link rel="stylesheet" href="./hero_files/style(1).css">
+  <link rel="stylesheet" href="./hero_files/custom.css">
+
+
+    <title>FIG</title>
+
+  <!-- Favicon -->
+  <link rel="shortcut icon" href="http://127.0.0.1:8088/posts/1760013299.png">
+
+  <style>
+  .d-inline-block.d-xl-none .site-menu-toggle {
+    font-size: 1.5rem;
+    padding: 12px;
+}
+
+.d-inline-block.d-xl-none .icon-menu {
+    font-size: 2rem;
+}
+  .d-inline-block.d-xl-none {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.site-navbar .row.align-items-center {
+    position: relative;
+}
+  /* Sticky Header Styles */
+.site-navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    z-index: 9999;
+    background: #fff;
+   /* backdrop-filter: blur(10px);
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);*/
+    transition: all 0.3s ease;
+}
+
+/* Optional: Add background when scrolled */
+.site-navbar.scrolled {
+    background: rgba(255, 255, 255, 0.98);
+    box-shadow: 0 2px 30px rgba(0, 0, 0, 0.15);
+}
+
+
+
+/* Logo adjustment for sticky header */
+.site-navbar .site-logo img {
+    transition: all 0.3s ease;
+    max-height: 85px;
+}
+
+.site-navbar.scrolled .site-logo img {
+    max-height: 40px; /* Smaller logo when scrolled */
+}
+    /* WhatsApp Floating Icon */
+    .whatsapp-float {
+      position: fixed;
+      left: 30px;
+      bottom: 30px;
+      z-index: 9999;
+      background: #25D366;
+      color: #fff;
+      border-radius: 50%;
+      width: 56px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, .10);
+      transition: box-shadow .2s, background .2s;
+    }
+
+    .whatsapp-float:hover {
+      background: #128C7E;
+      box-shadow: 0 8px 28px rgba(0, 0, 0, .16);
+      color: #fff;
+    }
+
+    .whatsapp-float .icon-whatsapp {
+      font-size: 2.3rem;
+    }
+    .text-theme
+    {
+             color: #DDB15A !important;
+    }
+  </style>
+<script charset="utf-8" src="./hero_files/twk-chunk-2d0d2b7c.js.download"></script><script charset="utf-8" src="./hero_files/twk-chunk-2d224aff.js.download"></script><script charset="utf-8" src="./hero_files/twk-chunk-2d0aef27.js.download"></script><script charset="utf-8" src="./hero_files/twk-chunk-3ea2c7ce.js.download"></script><script charset="utf-8" src="./hero_files/twk-chunk-2d0da3af.js.download"></script><script charset="utf-8" src="./hero_files/twk-chunk-4fe9d5dd.js.download"></script><script charset="utf-8" src="./hero_files/twk-chunk-7941cc06.js.download"></script><script charset="utf-8" src="./hero_files/twk-chunk-6289ff8e.js.download"></script><script charset="utf-8" src="./hero_files/twk-chunk-2d0c8092.js.download"></script><style type="text/css">#f03n96of2e4k1764232143897 {outline:none !important;
+visibility:visible !important;
+resize:none !important;
+box-shadow:none !important;
+overflow:visible !important;
+background:none !important;
+opacity:1 !important;
+filter:alpha(opacity=100) !important;
+-ms-filter:progid:DXImageTransform.Microsoft.Alpha(Opacity 1}) !important;
+-mz-opacity:1 !important;
+-khtml-opacity:1 !important;
+top:auto !important;
+right:0px !important;
+bottom:0px !important;
+left:auto !important;
+position:fixed !important;
+border:0 !important;
+min-height:0px  !important;
+min-width:0px  !important;
+max-height:none  !important;
+max-width:none  !important;
+padding:0px !important;
+margin:0px !important;
+-moz-transition-property:none !important;
+-webkit-transition-property:none !important;
+-o-transition-property:none !important;
+transition-property:none !important;
+transform:none !important;
+-webkit-transform:none !important;
+-ms-transform:none !important;
+width:auto !important;
+height:auto  !important;
+display:none !important;
+z-index:2000000000 !important;
+background-color:transparent !important;
+cursor:none !important;
+float:none !important;
+border-radius:unset !important;
+pointer-events:auto !important;
+clip:auto !important;
+color-scheme:light !important;}#f03n96of2e4k1764232143897.widget-hidden {display: none !important;}#f03n96of2e4k1764232143897.widget-visible {display: block !important;}
+@media print{
+ #f03n96of2e4k1764232143897.widget-visible { 
+display: none !important;
+ }
+}</style><style type="text/css">.tawk-button-hover[data-v-2fc2d95d]:focus,.tawk-button-hover[data-v-2fc2d95d]:hover{background-color:hsla(0,0%,100%,.2)!important;border-radius:5px!important}</style><style type="text/css">@keyframes tawkMaxOpen{0%{opacity:0;transform:translate(0, 30px);;}to{opacity:1;transform:translate(0, 0px);}}@-moz-keyframes tawkMaxOpen{0%{opacity:0;transform:translate(0, 30px);;}to{opacity:1;transform:translate(0, 0px);}}@-webkit-keyframes tawkMaxOpen{0%{opacity:0;transform:translate(0, 30px);;}to{opacity:1;transform:translate(0, 0px);}}#k8q36upg8bg1764232143953.open{animation : tawkMaxOpen .25s ease!important;}@keyframes tawkMaxClose{from{opacity: 1;transform:translate(0, 0px);;}to{opacity: 0;transform:translate(0, 30px);;}}@-moz-keyframes tawkMaxClose{from{opacity: 1;transform:translate(0, 0px);;}to{opacity: 0;transform:translate(0, 30px);;}}@-webkit-keyframes tawkMaxClose{from{opacity: 1;transform:translate(0, 0px);;}to{opacity: 0;transform:translate(0, 30px);;}}#k8q36upg8bg1764232143953.closed{animation: tawkMaxClose .25s ease!important}</style></head>
+
+<body data-aos-easing="slide" data-aos-duration="800" data-aos-delay="0">
+  <div class="site-wrap">
+    <div class="site-mobile-menu">
+      <div class="site-mobile-menu-header">
+        <div class="site-mobile-menu-close mt-3">
+          <span class="icon-close2 js-menu-toggle"></span>
+        </div>
+      </div>
+      <div class="site-mobile-menu-body"><ul class="site-nav-wrap">
+            <li class=""><a href="http://127.0.0.1:8088/"><span>Home</span></a></li>
+            <li class="active"><a href="http://127.0.0.1:8088/about"><span>About Us</span></a></li>
+            <li class=""><a href="http://127.0.0.1:8088/directorylisting"><span>Directory Listing</span></a></li>
+            <li class=""><a href="http://127.0.0.1:8088/events"><span>Events</span></a></li>
+            <li class=""><a href="http://127.0.0.1:8088/contact"><span>Contact</span></a></li>
+          </ul></div>
+    </div>
+
+<header class="site-navbar" role="banner">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-10 col-xl-2">
+        <h1 class="mb-0 site-logo"><a href="http://127.0.0.1:8088/" class="text-white h2 mb-0">
+            <img src="./hero_files/176173854070556140.png" alt="">
+          </a></h1>
+      </div>
+      <div class="col-12 col-md-10 d-none d-xl-block">
+        <nav class="site-navigation position-relative text-right" role="navigation">
+          <ul class="site-menu js-clone-nav mr-auto d-none d-lg-block">
+            <li class=""><a href="http://127.0.0.1:8088/"><span>Home</span></a></li>
+            <li class="active"><a href="http://127.0.0.1:8088/about"><span>About Us</span></a></li>
+            <li class=""><a href="http://127.0.0.1:8088/directorylisting"><span>Directory Listing</span></a></li>
+            <li class=""><a href="http://127.0.0.1:8088/events"><span>Events</span></a></li>
+            <li class=""><a href="http://127.0.0.1:8088/contact"><span>Contact</span></a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="col-2 d-xl-none text-right">
+        <a href="http://127.0.0.1:8088/about#" class="site-menu-toggle js-menu-toggle text-theme">
+          <span class="icon-menu h3"></span>
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
+
+    
+<div class="container-fluid page-header mb-5 p-0">
+  <div class="container-fluid page-header-inner ">
+  
+    <div class="container text-center pb-5">
+
+    </div>
+  </div>
+  <section class="main-header" style="background: url(&#39;http://127.0.0.1:8088/posts/1760347975.png&#39;) no-repeat center center; background-size: cover; min-height: 200px; display: flex; align-items: center; justify-content: center;">
+    <header>
+      <h1 class="h2 title" style="color: #fff;">ABOUT US</h1>
+    </header>
+  </section>
+</div>
+
+<section id="about" class="about section">
+  <div class="container aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
+    <div class="row align-items-xl-center gy-5">
+      <div class="col-xl-7 content">
+        <h2>Furniture Group of India</h2>
+        <p>Furniture Group of India is one of the country’s leading names in quality furniture design, manufacturing, and distribution. Founded with a passion for craftsmanship and innovation, we bring together traditional artistry and modern technology to create furniture that enhances every space — from homes and offices to hotels and institutions.<br>
+<br>
+With a commitment to excellence, we take pride in producing furniture that combines elegance, comfort, and durability. Our collections are crafted using premium materials and sustainable practices, reflecting our dedication to both quality and environmental responsibility.<br>
+<br>
+At Furniture Group of India, we believe furniture is more than just décor — it’s a statement of lifestyle and identity. Our expert designers and craftsmen work tirelessly to deliver products that are functional, stylish, and built to last.<br>
+<br>
+Today, we serve customers across India through our extensive network of showrooms, dealers, and online platforms, continuing to redefine the standards of furniture design and manufacturing in the country.</p>
+      </div>
+      <div class="col-xl-5">
+        <div class="row gy-4 icon-boxes">
+          <div class="abt-thumb2">
+            <img src="./hero_files/1760001944.jpg" class="img-fluid rounded" alt="About Us Image">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<br>
+
+
+
+    <footer class="site-footer">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-9">
+            <div class="row">
+              <div class="col-md-6 mb-5 mb-lg-0 col-lg-3">
+                <h2 class="footer-heading mb-4" style="color: white;">Quick Links</h2>
+                <ul class="list-unstyled">
+                  <li><a href="http://127.0.0.1:8088/about">About Us</a></li>
+                  <li><a href="http://127.0.0.1:8088/directorylisting">Directory Listing</a></li>
+                  <li><a href="http://127.0.0.1:8088/events">Events</a></li>
+                  <li><a href="http://127.0.0.1:8088/contact">Contact Us</a></li>
+                </ul>
+              </div>
+              <div class="col-md-6 mb-5 mb-lg-0 col-lg-3">
+                <h2 class="footer-heading mb-4" style="color: white;">Follow Us</h2>
+                                <a href="https://facebook.com/" class="pl-0 pr-3" target="_blank" rel="noopener">
+                  <img src="./hero_files/1757535398.png" alt="social icon" width="30" height="30" style="object-fit: contain;">
+                </a>
+                                <a href="https://instagram.com/" class="pl-0 pr-3" target="_blank" rel="noopener">
+                  <img src="./hero_files/1757535378.png" alt="social icon" width="30" height="30" style="object-fit: contain;">
+                </a>
+                              </div>
+
+            </div>
+          </div>
+          <div class="col-lg-3">
+            <img src="./hero_files/2f21bab8-bb51-4d71-a66d-80a7002e6fb0_removalai_preview.png" width="225px" alt="Logo" style="object-fit: contain; display: inline-block; margin-bottom: 20px;">
+
+          </div>
+        </div>
+        <div class="row pt-5 mt-5">
+          <div class="col-12 text-md-center text-left">
+            <p>
+              <a href="https://mdigitz.com/" target="_blank" style="color: white;">Powered By <strong>MDIGITZ soft solutions</strong></a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- WhatsApp Floating Icon -->
+  <a href="https://wa.me/919999999999" class="whatsapp-float" target="_blank" title="Chat with us on WhatsApp">
+    <span class="icon-whatsapp"></span>
+  </a>
+  <!-- End WhatsApp Floating Icon -->
+
+  <script src="./hero_files/twk-main.js.download" charset="UTF-8" crossorigin="*"></script><script src="./hero_files/twk-vendor.js.download" charset="UTF-8" crossorigin="*"></script><script src="./hero_files/twk-chunk-vendors.js.download" charset="UTF-8" crossorigin="*"></script><script src="./hero_files/twk-chunk-common.js.download" charset="UTF-8" crossorigin="*"></script><script src="./hero_files/twk-runtime.js.download" charset="UTF-8" crossorigin="*"></script><script src="./hero_files/twk-app.js.download" charset="UTF-8" crossorigin="*"></script><script async="" src="./hero_files/1j7v2mjiq" charset="UTF-8" crossorigin="*"></script><script src="./hero_files/jquery-3.3.1.min.js.download"></script>
+  <script src="./hero_files/jquery-migrate-3.0.1.min.js.download"></script>
+  <script src="./hero_files/jquery-ui.js.download"></script>
+  <script src="./hero_files/popper.min.js.download"></script>
+  <script src="./hero_files/bootstrap.min.js.download"></script>
+  <script src="./hero_files/owl.carousel.min.js.download"></script>
+  <script src="./hero_files/jquery.stellar.min.js.download"></script>
+  <script src="./hero_files/jquery.countdown.min.js.download"></script>
+  <script src="./hero_files/jquery.magnific-popup.min.js.download"></script>
+  <script src="./hero_files/bootstrap-datepicker.min.js.download"></script>
+  <script src="./hero_files/aos.js.download"></script>
+  <script src="./hero_files/rangeslider.min.js.download"></script>
+  <script src="./hero_files/typed.js.download"></script>
+
+  <script src="./hero_files/main.js.download"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const menuItems = document.querySelectorAll('.site-menu li');
+      menuItems.forEach(item => {
+        item.addEventListener('click', function() {
+          menuItems.forEach(li => li.classList.remove('active'));
+          this.classList.add('active');
+        });
+      });
+    });
+  </script>
+<!--Start of Tawk.to Script-->
+<script type="text/javascript">
+var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+(function(){
+var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+s1.async=true;
+s1.src='https://embed.tawk.to/68f54a925eca4d194faaba84/1j7v2mjiq';
+s1.charset='UTF-8';
+s1.setAttribute('crossorigin','*');
+s0.parentNode.insertBefore(s1,s0);
+})();
+</script>
+<!--End of Tawk.to Script-->
+
+
+
+<div id="f03n96of2e4k1764232143897" class="widget-visible"><iframe frameborder="0" scrolling="no" width="64px" height="60px" style="outline:none !important; visibility:visible !important; resize:none !important; box-shadow:none !important; overflow:visible !important; background:none !important; opacity:1 !important; filter:alpha(opacity=100) !important; -ms-filter:progid:DXImageTransform.Microsoft.Alpha(Opacity 1}) !important; -mz-opacity:1 !important; -khtml-opacity:1 !important; top:auto !important; right:20px !important; bottom:20px !important; left:auto !important; position:fixed !important; border:0 !important; min-height:60px !important; min-width:64px !important; max-height:60px !important; max-width:64px !important; padding:0 !important; margin:0 !important; -moz-transition-property:none !important; -webkit-transition-property:none !important; -o-transition-property:none !important; transition-property:none !important; transform:none !important; -webkit-transform:none !important; -ms-transform:none !important; width:64px !important; height:60px !important; display:block !important; z-index:1000003 !important; background-color:transparent !important; cursor:none !important; float:none !important; border-radius:unset !important; pointer-events:auto !important; clip:auto !important; color-scheme:light !important;" id="t0buv4be0hcg1764232143917" class="" title="chat widget" referrerpolicy="no-referrer-when-downgrade" src="./hero_files/saved_resource.html"></iframe><iframe frameborder="0" scrolling="no" width="350px" height="463px" style="outline:none !important; visibility:visible !important; resize:none !important; box-shadow:none !important; overflow:visible !important; background:none !important; opacity:1 !important; filter:alpha(opacity=100) !important; -ms-filter:progid:DXImageTransform.Microsoft.Alpha(Opacity 1}) !important; -mz-opacity:1 !important; -khtml-opacity:1 !important; top:auto !important; right:20px !important; bottom:98px !important; left:auto !important; position:fixed !important; border:0 !important; min-height:463px !important; min-width:350px !important; max-height:463px !important; max-width:350px !important; padding:0 !important; margin:0 !important; -moz-transition-property:none !important; -webkit-transition-property:none !important; -o-transition-property:none !important; transition-property:none !important; transform:none !important; -webkit-transform:none !important; -ms-transform:none !important; width:350px !important; height:463px !important; display:none !important; z-index:1000002 !important; background-color:transparent !important; cursor:none !important; float:none !important; border-radius:18px !important; pointer-events:auto !important; clip:auto !important; color-scheme:light !important;" id="k8q36upg8bg1764232143953" class="" title="chat widget" referrerpolicy="no-referrer-when-downgrade" src="./hero_files/saved_resource(1).html"></iframe><iframe frameborder="0" scrolling="no" height="30px" style="outline:none !important; visibility:visible !important; resize:none !important; box-shadow:none !important; overflow:visible !important; background:none !important; opacity:1 !important; filter:alpha(opacity=100) !important; -ms-filter:progid:DXImageTransform.Microsoft.Alpha(Opacity 1}) !important; -mz-opacity:1 !important; -khtml-opacity:1 !important; top:auto !important; right:20px !important; bottom:30px !important; left:auto !important; position:fixed !important; border:0 !important; min-height:45px !important; min-width:350px !important; max-height:45px !important; max-width:350px !important; padding:0 !important; margin:0 !important; -moz-transition-property:none !important; -webkit-transition-property:none !important; -o-transition-property:none !important; transition-property:none !important; transform:none !important; -webkit-transform:none !important; -ms-transform:none !important; width:350px !important; height:45px !important; display:none !important; z-index:1000002 !important; background-color:transparent !important; cursor:none !important; float:none !important; border-radius:unset !important; pointer-events:auto !important; clip:auto !important; color-scheme:light !important;" id="tn1q5mh6btsg1764232143959" class="" title="chat widget" referrerpolicy="no-referrer-when-downgrade" src="./hero_files/saved_resource(2).html"></iframe><iframe frameborder="0" scrolling="no" width="360px" height="45px" style="outline:none !important; visibility:visible !important; resize:none !important; box-shadow:none !important; overflow:visible !important; background:none !important; opacity:1 !important; filter:alpha(opacity=100) !important; -ms-filter:progid:DXImageTransform.Microsoft.Alpha(Opacity 1}) !important; -mz-opacity:1 !important; -khtml-opacity:1 !important; top:auto !important; right:20px !important; bottom:90px; left:auto !important; position:fixed !important; border:0 !important; min-height:45px !important; min-width:360px !important; max-height:45px !important; max-width:360px !important; padding:0 !important; margin:0 !important; -moz-transition-property:none !important; -webkit-transition-property:none !important; -o-transition-property:none !important; transition-property:none !important; transform:none !important; -webkit-transform:none !important; -ms-transform:none !important; width:360px !important; height:45px !important; display:none !important; z-index:auto !important; background-color:transparent !important; cursor:none !important; float:none !important; border-radius:unset !important; pointer-events:auto !important; clip:auto !important; color-scheme:light !important;" id="unn23q4p12bo1764232143933" class="" title="chat widget" referrerpolicy="no-referrer-when-downgrade" src="./hero_files/saved_resource(3).html"></iframe><iframe frameborder="0" scrolling="no" width="124px" height="95px" style="outline:none !important; visibility:visible !important; resize:none !important; box-shadow:none !important; overflow:visible !important; background:none !important; opacity:1 !important; filter:alpha(opacity=100) !important; -ms-filter:progid:DXImageTransform.Microsoft.Alpha(Opacity 1}) !important; -mz-opacity:1 !important; -khtml-opacity:1 !important; top:auto !important; right:0px !important; bottom:30px !important; left:auto !important; position:fixed !important; border:0 !important; min-height:95px !important; min-width:124px !important; max-height:95px !important; max-width:124px !important; padding:0 !important; margin:0px 0 0 0 !important; -moz-transition-property:none !important; -webkit-transition-property:none !important; -o-transition-property:none !important; transition-property:none !important; transform:rotate(0deg) translateZ(0); -webkit-transform:rotate(0deg) translateZ(0); -ms-transform:rotate(0deg) translateZ(0); width:124px !important; height:95px !important; display:block !important; z-index:1000004 !important; background-color:transparent !important; cursor:none !important; float:none !important; border-radius:unset !important; pointer-events:auto !important; clip:auto !important; color-scheme:light !important; -moz-transform:rotate(0deg) translateZ(0); -o-transform:rotate(0deg) translateZ(0); transform-origin:0; -moz-transform-origin:0; -webkit-transform-origin:0; -o-transform-origin:0; -ms-transform-origin:0;" id="tuqm1gf5kbvg1764232143927" class="" title="chat widget" referrerpolicy="no-referrer-when-downgrade" src="./hero_files/saved_resource(4).html"></iframe></div></body></html>
