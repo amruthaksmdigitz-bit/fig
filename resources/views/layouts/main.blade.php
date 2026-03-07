@@ -348,12 +348,18 @@
                                                     <i class="ti-home mr-2"></i>Home
                                                 </a>
                                             </li>
+                                            
                                             <li class="{{ request()->is('about') ? 'active' : '' }}">
                                                 <a href="/about">
                                                     <i class="ti-info-alt mr-2"></i>About
                                                 </a>
                                             </li>
 
+                                            <li class="{{ request()->is('feeds') ? 'active' : '' }}">
+                                                <a href="/feeds">
+                                                    <i class="ti-info-alt mr-2"></i>Feeds
+                                                </a>
+                                            </li>
 
                                             <li class="{{ request()->is('directorylisting') ? 'active' : '' }}">
                                                 <a href="{{ route('home.directorylisting') }}">
