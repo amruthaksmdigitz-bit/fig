@@ -44,6 +44,9 @@ Route::get('/generate-location-slugs', function () {
 
     return "Slugs generated successfully!";
 });
+Route::get('/feeds', function () {
+    return view('feeds');
+});
 Route::get('/captcha-image', [CaptchaController::class, 'generate'])->name('captcha.image');
 
 Route::get('/captcha', [CaptchaController::class, 'generate'])->name('captcha');
@@ -56,7 +59,7 @@ Route::get('/location/{slug}', [LocationController::class, 'show'])
 
 Route::prefix('admin')->name('admin.')->group(function() {
     
-   
+
 });
 
 Route::prefix('admin')->middleware(['auth','route.access'])->name('admin.')->group(function() {
