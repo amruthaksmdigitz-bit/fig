@@ -1,17 +1,7 @@
-* {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            background-color: #f0f2f5;
-            padding: 1rem;
-        }
 
         /* Main Container */
-        .container {
+        .feed-container {
             max-width: 600px;
             margin: 0 auto;
         }
@@ -288,3 +278,17 @@
             text-align: center;
             margin-bottom: 0.75rem;
         }
+
+        .image-preview{
+            display:flex;
+            gap:10px;
+            margin-top:10px;
+            flex-wrap:wrap;
+            }
+            
+            .preview-item img{
+            width:90px;
+            height:90px;
+            object-fit:cover;
+            border-radius:8px;
+            } 
