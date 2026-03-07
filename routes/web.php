@@ -30,6 +30,7 @@ use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\AnalyticsController;
 use App\Http\Controllers\CaptchaController;
 use App\Http\Controllers\LocationController;
+use App\Http\Controllers\FeedController;
 use App\Models\Location;
 use Illuminate\Support\Str;
 
@@ -124,6 +125,16 @@ Route::post('users/{id}/approve-profile-update', [UserController::class, 'approv
      Route::delete('pagedelete/{id}', [PageController::class, 'destroy'])->name('page.destroy');
      Route::post('page/{id}/approve', [PageController::class, 'approve'])->name('page.approve');
 });
+
+
+//feed
+
+
+Route::get('/feeds',[FeedController::class,'index'])->name('feeds');
+
+Route::post('/feeds/store',[FeedController::class,'store'])
+->middleware('auth')
+->name('feeds.store');
 
 // Frontend blog routes
 Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
