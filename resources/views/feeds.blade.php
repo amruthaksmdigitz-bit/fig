@@ -47,62 +47,62 @@
     </div>
 
     <!-- Posts Feed -->
-<div class="feed">
+    <div class="feed">
 
-<div class="sample-post-badge">
-📱 Recent Posts
-</div>
+        <div class="sample-post-badge">
+            📱 Recent Posts
+        </div>
 
-@foreach($feeds as $feed)
+        @foreach($feeds as $feed)
 
-<div class="post-card">
+        <div class="post-card">
 
-<div class="post-header">
+            <div class="post-header">
 
-<div class="post-author-avatar">
-{{ strtoupper(substr($feed->user->name,0,2)) }}
-</div>
+                <div class="post-author-avatar">
+                    {{ strtoupper(substr($feed->user->name,0,2)) }}
+                </div>
 
-<div class="post-author-info">
+                <div class="post-author-info">
 
-<div class="post-author-name">
-{{ $feed->user->name }}
-</div>
+                    <div class="post-author-name">
+                        {{ $feed->user->name }}
+                    </div>
 
-<div class="post-time">
-{{ $feed->created_at->diffForHumans() }}
-</div>
+                    <div class="post-time">
+                        {{ $feed->created_at->diffForHumans() }}
+                    </div>
 
-</div>
-</div>
-
-
-<div class="post-title">
-{{ $feed->title }}
-</div>
+                </div>
+            </div>
 
 
-@if($feed->images->count())
-
-<div class="post-image">
-
-@foreach($feed->images as $image)
-
-<img src="{{ asset('storage/'.$image->image) }}" alt="Post Image">
-
-@endforeach
-
-</div>
-
-@endif
+            <div class="post-title">
+                {{ $feed->title }}
+            </div>
 
 
+            @if($feed->images->count())
 
-</div>
+            <div class="post-image">
 
-@endforeach
+                @foreach($feed->images as $image)
 
-</div>
+                <img src="{{ asset('storage/'.$image->image) }}" alt="Post Image">
+
+                @endforeach
+
+            </div>
+
+            @endif
+
+
+
+        </div>
+
+        @endforeach
+
+    </div>
 </div>
 
 <script>

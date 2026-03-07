@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $user->name }} - Edit Profile</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ Auth::user()->name }} - Edit Profile</title>
 
     <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
@@ -14,6 +13,9 @@
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+    <!-- Select2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
     <style>
         :root {
@@ -266,12 +268,6 @@
             color: var(--primary-color);
         }
 
-        .dropdown-divider {
-            height: 1px;
-            background-color: var(--gray-200);
-            margin: 0.5rem 0;
-        }
-
         /* Content Area */
         .content {
             padding: 2rem;
@@ -287,6 +283,7 @@
             padding: 2rem;
             transition: var(--transition);
             border: 1px solid rgba(208, 160, 79, 0.1);
+            margin-bottom: 1.5rem;
         }
 
         .card:hover {
@@ -324,7 +321,7 @@
             font-size: 0.875rem;
         }
 
-        .form-control {
+        .form-control, .form-select {
             width: 100%;
             padding: 0.75rem 1rem;
             border: 1px solid var(--gray-300);
@@ -334,15 +331,62 @@
             font-family: 'Inter', sans-serif;
         }
 
-        .form-control:focus {
+        .form-control:focus, .form-select:focus {
             outline: none;
             border-color: var(--primary-color);
             box-shadow: 0 0 0 3px rgba(208, 160, 79, 0.1);
         }
 
-        textarea.form-control {
-            resize: vertical;
-            min-height: 100px;
+        /* Select2 Customization */
+        .select2-container--default .select2-selection--single {
+            height: 45px;
+            border: 1px solid var(--gray-300);
+            border-radius: var(--radius);
+            padding: 0.5rem 1rem;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            line-height: 28px;
+            color: var(--gray-800);
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: 43px;
+            right: 10px;
+        }
+
+        .select2-dropdown {
+            border: 1px solid var(--gray-300);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-md);
+        }
+
+        .select2-results__option--highlighted {
+            background-color: var(--primary-color) !important;
+        }
+
+        .invalid-feedback {
+            color: #dc2626;
+            font-size: 0.75rem;
+            margin-top: 0.25rem;
+            display: block;
+        }
+
+        .image-preview {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--gray-50);
+            border-radius: var(--radius);
+        }
+
+        .preview-label {
+            font-size: 0.875rem;
+            color: var(--gray-600);
+            margin-bottom: 0.5rem;
+        }
+
+        .preview-label i {
+            color: var(--primary-color);
         }
 
         .btn {
@@ -356,7 +400,6 @@
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            text-decoration: none;
         }
 
         .btn-primary {
@@ -371,56 +414,15 @@
         }
 
         .btn-secondary {
-            background-color: white;
+            background-color: var(--gray-200);
             color: var(--gray-700);
-            border: 1px solid var(--gray-300);
         }
 
         .btn-secondary:hover {
-            background-color: var(--gray-100);
+            background-color: var(--gray-300);
             transform: translateY(-1px);
-            box-shadow: var(--shadow);
         }
 
-        .invalid-feedback {
-            color: #dc2626;
-            font-size: 0.75rem;
-            margin-top: 0.25rem;
-            display: block;
-        }
-
-        /* Image preview */
-        .image-preview {
-            margin-top: 1rem;
-            padding: 1rem;
-            background-color: var(--gray-100);
-            border-radius: var(--radius);
-            border: 1px dashed var(--gray-300);
-        }
-
-        .preview-label {
-            font-size: 0.75rem;
-            color: var(--gray-500);
-            margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .preview-label i {
-            color: var(--primary-color);
-        }
-
-        img {
-            border-radius: var(--radius);
-            object-fit: cover;
-        }
-
-        img.rounded-circle {
-            border: 3px solid var(--primary-color);
-        }
-
-        /* Alert */
         .alert {
             padding: 1rem;
             border-radius: var(--radius);
@@ -431,6 +433,14 @@
             background-color: rgba(208, 160, 79, 0.1);
             color: var(--primary-dark);
             border: 1px solid rgba(208, 160, 79, 0.2);
+        }
+
+        .d-flex {
+            display: flex;
+        }
+
+        .gap-2 {
+            gap: 0.5rem;
         }
 
         /* Responsive */
@@ -469,14 +479,9 @@
             .user-btn .user-info {
                 display: none;
             }
-
-            .card {
-                padding: 1.5rem;
-            }
         }
     </style>
 </head>
-
 <body>
     <!-- Sidebar -->
     <div class="sidebar">
@@ -489,19 +494,26 @@
 
         <nav class="sidebar-nav">
             <div class="nav-item">
-                <a href="{{ route('profile') }}" class="nav-link">
+                <a href="{{ route('profile') }}" class="nav-link {{ request()->routeIs('profile') ? 'active' : '' }}">
                     <i class="fas fa-home"></i>
                     <span>Dashboard</span>
                 </a>
             </div>
             <div class="nav-item">
-                <a href="{{ route('profile.edit') }}" class="nav-link active">
+                <a href="{{ route('profile.edit') }}" class="nav-link {{ request()->routeIs('profile.edit') ? 'active' : '' }}">
                     <i class="fas fa-user-edit"></i>
                     <span>Edit Profile</span>
                 </a>
             </div>
+            <!-- Gallery Menu Item -->
             <div class="nav-item">
-                <a href="{{ route('profile.settings') }}" class="nav-link">
+                <a href="{{ route('profile.gallery') }}" class="nav-link {{ request()->routeIs('profile.gallery') ? 'active' : '' }}">
+                    <i class="fas fa-images"></i>
+                    <span>Gallery</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="{{ route('profile.settings') }}" class="nav-link {{ request()->routeIs('profile.settings') ? 'active' : '' }}">
                     <i class="fas fa-cog"></i>
                     <span>Settings</span>
                 </a>
@@ -524,42 +536,59 @@
     <!-- Main Content -->
     <div class="main-content">
         <!-- Header -->
-<header class="header">
-    <div class="header-content">
-        <div class="page-title">
-            <h1>Edit Profile</h1>
-            <p>Update your personal information and images</p>
-        </div>
+        <header class="header">
+            <div class="header-content">
+                <div class="page-title">
+                    <h1>Edit Profile</h1>
+                    <p>Update your personal information and images</p>
+                </div>
 
-        <div class="header-actions">
-            <div class="user-menu">
-                
+                <div class="header-actions">
+                    <div class="user-menu">
+                        <div class="user-dropdown">
+                            <button class="user-btn">
+                                <img src="{{ Auth::user()->profile_image ? asset(Auth::user()->profile_image) : 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->name) . '&background=D0A04F&color=fff' }}"
+                                    class="user-avatar"
+                                    alt="{{ Auth::user()->name }}">
 
-                <div class="dropdown-menu">
-                    <a href="{{ url('/') }}" class="dropdown-item">
-                        <i class="fas fa-home"></i> Home
-                    </a>
-                    <a href="{{ route('profile') }}" class="dropdown-item">
-                        <i class="fas fa-user"></i> View Profile
-                    </a>
-                    <a href="{{ route('profile.edit') }}" class="dropdown-item">
-                        <i class="fas fa-edit"></i> Edit Profile
-                    </a>
-                    <a href="{{ route('profile.settings') }}" class="dropdown-item">
-                        <i class="fas fa-cog"></i> Settings
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-                        <button type="submit" class="dropdown-item" style="width: 100%; text-align: left; background: none; border: none;">
-                            <i class="fas fa-sign-out-alt"></i> Logout
-                        </button>
-                    </form>
+                                <div class="user-info">
+                                    <div class="user-name">{{ Auth::user()->name }}</div>
+                                    <div class="user-role">{{ Auth::user()->profession ?? 'User' }}</div>
+                                </div>
+
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+
+                            <div class="dropdown-menu">
+                                <a href="{{ url('/') }}" class="dropdown-item">
+                                    <i class="fas fa-home"></i> Home
+                                </a>
+                                <a href="{{ route('profile') }}" class="dropdown-item">
+                                    <i class="fas fa-user"></i> Dashboard
+                                </a>
+                                <a href="{{ route('profile.edit') }}" class="dropdown-item">
+                                    <i class="fas fa-edit"></i> Edit Profile
+                                </a>
+                                <a href="{{ route('profile.gallery') }}" class="dropdown-item">
+                                    <i class="fas fa-images"></i> Gallery
+                                </a>
+                                <a href="{{ route('profile.settings') }}" class="dropdown-item">
+                                    <i class="fas fa-cog"></i> Settings
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
+                                    <button type="submit" class="dropdown-item" style="width: 100%; text-align: left; background: none; border: none;">
+                                        <i class="fas fa-sign-out-alt"></i> Logout
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-</header>
+        </header>
+
         <!-- Content Area -->
         <main class="content">
             @if(session('success'))
@@ -588,13 +617,15 @@
                         @enderror
                     </div>
 
-                    <!-- Location -->
+                    <!-- Location with Select2 -->
                     <div class="mb-3">
                         <label for="location" class="form-label">Location</label>
-                        <input type="text" id="location" name="location_name"
-                            value="{{ old('location_name', $locationName ?? '') }}"
-                            class="form-control @error('location') is-invalid @enderror" required>
-                        @error('location')
+                        <select id="location" name="location_name" class="form-control @error('location_name') is-invalid @enderror">
+                            @if($locationName)
+                            <option value="{{ $locationName }}" selected>{{ $locationName }}</option>
+                            @endif
+                        </select>
+                        @error('location_name')
                         <span class="invalid-feedback">{{ $message }}</span>
                         @enderror
                     </div>
@@ -656,8 +687,52 @@
         </main>
     </div>
 
+    <!-- Scripts -->
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
+    
+    <!-- Select2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
+    <script>
+        $(document).ready(function() {
+            // Initialize Select2 for location search
+            $('#location').select2({
+                placeholder: "Search for your location",
+                allowClear: true,
+                width: '100%',
+                minimumInputLength: 2,
+                ajax: {
+                    url: "{{ route('locations.search') }}",
+                    dataType: 'json',
+                    delay: 300,
+                    data: function(params) {
+                        return {
+                            search: params.term
+                        };
+                    },
+                    processResults: function(data) {
+                        return {
+                            results: $.map(data, function(item) {
+                                return {
+                                    id: item.name,
+                                    text: item.name
+                                }
+                            })
+                        };
+                    },
+                    cache: true
+                }
+            });
+
+            // If there's an error, log it
+            $('#location').on('select2:error', function(e) {
+                console.log('Select2 error:', e);
+            });
+        });
+    </script>
+</body>
 </html>

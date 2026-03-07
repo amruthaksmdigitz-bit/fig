@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -432,6 +433,7 @@
         }
     </style>
 </head>
+
 <body>
     <!-- Sidebar -->
     <div class="sidebar">
@@ -444,15 +446,22 @@
 
         <nav class="sidebar-nav">
             <div class="nav-item">
-                <a href="{{ route('profile') }}" class="nav-link">
+                <a href="{{ route('profile') }}" class="nav-link {{ request()->routeIs('profile') ? 'active' : '' }}">
                     <i class="fas fa-home"></i>
                     <span>Dashboard</span>
                 </a>
             </div>
             <div class="nav-item">
-                <a href="{{ route('profile.edit') }}" class="nav-link">
+                <a href="{{ route('profile.edit') }}" class="nav-link {{ request()->routeIs('profile.edit') ? 'active' : '' }}">
                     <i class="fas fa-user-edit"></i>
                     <span>Edit Profile</span>
+                </a>
+            </div>
+            <!-- ADD THIS -->
+            <div class="nav-item">
+                <a href="{{ route('profile.gallery') }}" class="nav-link {{ request()->routeIs('profile.gallery') ? 'active' : '' }}">
+                    <i class="fas fa-images"></i>
+                    <span>Gallery</span>
                 </a>
             </div>
             <div class="nav-item">
@@ -488,7 +497,7 @@
 
                 <div class="header-actions">
                     <div class="user-menu">
-                        
+
 
                         <div class="dropdown-menu">
                             <a href="{{ url('/') }}" class="dropdown-item">
@@ -537,19 +546,13 @@
                     <!-- Full Name -->
                     <div class="mb-3">
                         <label class="form-label">Full Name</label>
-                        <input type="text"
-                               class="form-control"
-                               value="{{ $user->name }}"
-                               readonly>
+                        <input type="text" class="form-control" value="{{ $user->name }}" readonly>
                     </div>
 
                     <!-- Location -->
                     <div class="mb-3">
                         <label class="form-label">Location</label>
-                        <input type="text" 
-                               value="{{ old('location_name', $locationName ?? 'Not set') }}"
-                               class="form-control" 
-                               readonly>
+                        <input type="text" value="{{ old('location_name', $locationName ?? 'Not set') }}" class="form-control" readonly>
                     </div>
                 </div>
             </div>
@@ -568,37 +571,25 @@
                     <!-- Current Password -->
                     <div class="mb-3">
                         <label for="current_password" class="form-label">Current Password</label>
-                        <input type="password"
-                               id="current_password"
-                               name="current_password"
-                               class="form-control @error('current_password') is-invalid @enderror"
-                               required>
+                        <input type="password" id="current_password" name="current_password" class="form-control @error('current_password') is-invalid @enderror" required>
                         @error('current_password')
-                            <span class="text-danger">{{ $message }}</span>
+                        <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
 
                     <!-- New Password -->
                     <div class="mb-3">
                         <label for="password" class="form-label">New Password</label>
-                        <input type="password"
-                               id="password"
-                               name="password"
-                               class="form-control @error('password') is-invalid @enderror"
-                               required>
+                        <input type="password" id="password" name="password" class="form-control @error('password') is-invalid @enderror" required>
                         @error('password')
-                            <span class="text-danger">{{ $message }}</span>
+                        <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
 
                     <!-- Confirm Password -->
                     <div class="mb-3">
                         <label for="password_confirmation" class="form-label">Confirm New Password</label>
-                        <input type="password"
-                               id="password_confirmation"
-                               name="password_confirmation"
-                               class="form-control"
-                               required>
+                        <input type="password" id="password_confirmation" name="password_confirmation" class="form-control" required>
                     </div>
 
                     <button type="submit" class="btn btn-primary">
@@ -612,4 +603,5 @@
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>
