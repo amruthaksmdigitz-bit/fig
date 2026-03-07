@@ -64,7 +64,7 @@
                     @foreach ($users->take(6) as $user)
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="single-location mb-30">
-                                <a href="{{ route('userdetails.show', $user->id) }}">
+                                <a href="{{ route('userdetails.show', $user->slug) }}">
                                     <div class="location-img">
                                         <img src="{{ asset($user->profile_image) }}" style="height:300px"
                                             class="img-fluid rounded">
