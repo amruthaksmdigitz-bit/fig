@@ -16,7 +16,7 @@ class FeedController extends Controller
                     ->latest()
                     ->get();
 
-        return view('feeds.index',compact('feeds'));
+        return view('feeds',compact('feeds'));
     }
 
     public function store(Request $request)
