@@ -37,11 +37,15 @@ class FeedsController extends Controller
 
         return view('admin.feeds.show', compact('feed'));
     }
-    
+
     public function destroy($id)
     {
         $feed = Feed::findOrFail($id);
 
+        //delete images first
+        $feed->images()->delete();
+
+        //delete feed
         $feed->delete();
 
         return redirect()->route('admin.feeds.index')
