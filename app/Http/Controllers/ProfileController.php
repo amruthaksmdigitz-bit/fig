@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Models\Feed;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ProfileUpdateMail;
@@ -14,11 +15,16 @@ use Illuminate\Support\Facades\Hash;
 class ProfileController extends Controller
 {
     public function show()
-    {
-        $user = Auth::user();
-        return view('profile', compact('user'));
-    }
+{
+    $user = Auth::user();
 
+    $feeds = Feed::with('images')
+                ->where('user_id',$user->id)
+                ->latest()
+                ->get();
+
+    return view('profile', compact('user','feeds'));
+}
     public function publicProfile($username)
     {
         $user = User::where('username', $username)->firstOrFail();
@@ -113,7 +119,13 @@ public function updatePassword(Request $request)
         ->with('success', 'Password updated successfully');
 }
 
-
+public function gallery()
+{
+    $user = Auth::user();
+    $images = $user->multipleImages()->latest()->get();
+    
+    return view('profile_gallery', compact('user', 'images'));
+}
 
     public function ajaxImageUpdate(Request $request)
     {

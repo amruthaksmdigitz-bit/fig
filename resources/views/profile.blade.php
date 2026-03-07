@@ -432,6 +432,7 @@
             padding: 1.5rem;
             transition: var(--transition);
             border: 1px solid rgba(208, 160, 79, 0.1);
+            margin-bottom: 1.5rem;
         }
 
         .card:hover {
@@ -468,58 +469,70 @@
             padding: 0.5rem 0;
         }
 
-        /* Gallery */
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-            gap: 0.75rem;
+        /* Posts Section */
+        .posts-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
         }
 
-        .gallery-item {
-            position: relative;
+        .post-item {
+            padding: 1rem;
+            background: var(--gray-50);
             border-radius: var(--radius);
-            overflow: hidden;
-            aspect-ratio: 1;
-            cursor: pointer;
-            border: 1px solid rgba(208, 160, 79, 0.1);
-        }
-
-        .gallery-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
             transition: var(--transition);
         }
 
-        .gallery-item:hover img {
-            transform: scale(1.05);
+        .post-item:hover {
+            background: white;
+            box-shadow: var(--shadow-sm);
         }
 
-        .gallery-overlay {
-            position: absolute;
-            inset: 0;
-            background: rgba(208, 160, 79, 0.8);
+        .post-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: 0.5rem;
+        }
+
+        .post-images {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin: 0.75rem 0;
+        }
+
+        .post-thumbnail {
+            width: 60px;
+            height: 60px;
+            border-radius: var(--radius-sm);
+            object-fit: cover;
+            border: 1px solid var(--gray-200);
+        }
+
+        .post-date {
+            font-size: 0.75rem;
+            color: var(--gray-500);
             display: flex;
             align-items: center;
-            justify-content: center;
-            opacity: 0;
-            transition: var(--transition);
+            gap: 0.25rem;
         }
 
-        .gallery-item:hover .gallery-overlay {
-            opacity: 1;
+        .post-date i {
+            color: var(--primary-color);
+            font-size: 0.625rem;
         }
 
-        .empty-gallery {
+        .empty-posts {
             text-align: center;
-            padding: 3rem 2rem;
+            padding: 2rem;
             color: var(--gray-500);
         }
 
-        .empty-gallery i {
-            font-size: 3rem;
-            margin-bottom: 1rem;
+        .empty-posts i {
+            font-size: 2.5rem;
             color: rgba(208, 160, 79, 0.3);
+            margin-bottom: 0.5rem;
         }
 
         /* Contact Info */
@@ -556,6 +569,95 @@
         .contact-details p {
             font-size: 0.875rem;
             color: var(--gray-600);
+        }
+
+        /* Upload button styling */
+        .upload-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: var(--radius);
+            font-weight: 500;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .upload-btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+
+        .profile-edit-icon {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: var(--primary-color);
+            color: white;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-md);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .profile-edit-icon:hover {
+            transform: scale(1.1);
+        }
+
+        .user-dropdown {
+            position: relative;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: #fff;
+            min-width: 200px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border-radius: 6px;
+            overflow: hidden;
+            display: none;
+            z-index: 1000;
+            padding: 0.5rem 0;
+        }
+
+        .user-dropdown:hover .dropdown-menu {
+            display: block;
+        }
+
+        .dropdown-menu a,
+        .dropdown-menu button {
+            display: block;
+            width: 100%;
+            padding: 10px 15px;
+            text-align: left;
+            border: none;
+            background: none;
+            color: #333;
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 0.875rem;
+        }
+
+        .dropdown-menu a:hover,
+        .dropdown-menu button:hover {
+            background: rgba(208, 160, 79, 0.1);
+            color: var(--primary-color);
+        }
+
+        .dropdown-divider {
+            height: 1px;
+            background-color: var(--gray-200);
+            margin: 0.5rem 0;
         }
 
         /* Responsive */
@@ -614,166 +716,10 @@
             .profile-actions {
                 flex-wrap: wrap;
             }
-        }
-
-        @media (max-width: 640px) {
-            .header {
-                padding: 1rem;
-            }
 
             .user-btn .user-info {
                 display: none;
             }
-
-            .gallery-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-        }
-
-        /* Upload button styling */
-        .upload-btn {
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: var(--radius);
-            font-weight: 500;
-            transition: var(--transition);
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.875rem;
-        }
-
-        .upload-btn:hover {
-            background-color: var(--primary-dark);
-            transform: translateY(-1px);
-        }
-
-        .profile-avatar-wrapper:hover .profile-edit-icon {
-            opacity: 1;
-            transform: scale(1);
-        }
-
-        .profile-edit-icon {
-            position: absolute;
-            margin-bottom: 20px;
-            margin-right: 6px;
-            background: var(--primary-color);
-            color: white;
-            width: 34px;
-            height: 34px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: var(--shadow-md);
-
-            transform: scale(0.8);
-            transition: all 0.2s ease;
-        }
-
-        .user-dropdown {
-            position: relative;
-        }
-
-        .dropdown-menu {
-            position: absolute;
-            top: 100%;
-            right: 0;
-            background: #fff;
-            min-width: 160px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            border-radius: 6px;
-            overflow: hidden;
-            display: none;
-            z-index: 1000;
-        }
-
-        .dropdown-menu a,
-        .dropdown-menu button {
-            display: block;
-            width: 100%;
-            padding: 10px 15px;
-            text-align: left;
-            border: none;
-            background: none;
-            color: #333;
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        .dropdown-menu a:hover,
-        .dropdown-menu button:hover {
-            background: #f5f5f5;
-        }
-
-        /* Show dropdown on hover */
-        .user-dropdown:hover .dropdown-menu {
-            display: block;
-        }
-
-        /* Custom styles to complement Bootstrap */
-        .btn-outline-primary,
-        .btn-outline-dark,
-        .btn-outline-info,
-        .btn-outline-success,
-        .btn-outline-danger,
-        .btn-outline-secondary {
-            transition: all 0.2s ease;
-        }
-
-        .btn-outline-primary:hover i,
-        .btn-outline-dark:hover i,
-        .btn-outline-info:hover i,
-        .btn-outline-success:hover i,
-        .btn-outline-danger:hover i,
-        .btn-outline-secondary:hover i {
-            transform: scale(1.1);
-        }
-
-        .btn i {
-            transition: transform 0.2s ease;
-        }
-
-        .modal-body {
-            max-height: 70vh;
-            overflow-y: auto;
-        }
-
-        /* Responsive adjustments */
-        @media (max-width: 576px) {
-            .modal-dialog {
-                margin: 0.5rem;
-            }
-
-            .row.g-2 [class*="col-"] {
-                padding: 0 4px;
-            }
-
-            .btn.w-100.py-3 {
-                padding: 0.75rem 0.25rem !important;
-                font-size: 0.8rem;
-            }
-        }
-
-        /* Custom animation for copy button */
-        .btn-success {
-            transition: all 0.3s ease;
-        }
-
-        /* Toast customization */
-        .toast-container {
-            z-index: 1060;
-        }
-
-        .toast {
-            background: white;
-            border-left: 4px solid #28a745;
-        }
-
-        .toast-header {
-            border-bottom-color: #f0f0f0;
         }
     </style>
 </head>
@@ -790,19 +736,26 @@
 
         <nav class="sidebar-nav">
             <div class="nav-item">
-                <a href="{{ route('profile') }}" class="nav-link active">
+                <a href="{{ route('profile') }}" class="nav-link {{ request()->routeIs('profile') ? 'active' : '' }}">
                     <i class="fas fa-home"></i>
                     <span>Dashboard</span>
                 </a>
             </div>
             <div class="nav-item">
-                <a href="{{ route('profile.edit') }}" class="nav-link">
+                <a href="{{ route('profile.edit') }}" class="nav-link {{ request()->routeIs('profile.edit') ? 'active' : '' }}">
                     <i class="fas fa-user-edit"></i>
                     <span>Edit Profile</span>
                 </a>
             </div>
+            <!-- Gallery Menu Item -->
             <div class="nav-item">
-                <a href="{{ route('profile.settings') }}" class="nav-link">
+                <a href="{{ route('profile.gallery') }}" class="nav-link {{ request()->routeIs('profile.gallery') ? 'active' : '' }}">
+                    <i class="fas fa-images"></i>
+                    <span>Gallery</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="{{ route('profile.settings') }}" class="nav-link {{ request()->routeIs('profile.settings') ? 'active' : '' }}">
                     <i class="fas fa-cog"></i>
                     <span>Settings</span>
                 </a>
@@ -831,6 +784,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
         @endif
+
         <!-- Header -->
         <header class="header">
             <div class="header-content">
@@ -856,32 +810,30 @@
                             </button>
 
                             <div class="dropdown-menu">
-                                <a href="{{ url('/') }}">🏠 Home</a>
-
+                                <a href="{{ url('/') }}">
+                                    <i class="fas fa-home"></i> Home
+                                </a>
+                                <a href="{{ route('profile') }}">
+                                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                                </a>
+                                <a href="{{ route('profile.edit') }}">
+                                    <i class="fas fa-user-edit"></i> Edit Profile
+                                </a>
+                                <a href="{{ route('profile.gallery') }}">
+                                    <i class="fas fa-images"></i> Gallery
+                                </a>
+                                <a href="{{ route('profile.settings') }}">
+                                    <i class="fas fa-cog"></i> Settings
+                                </a>
+                                <div class="dropdown-divider"></div>
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
-                                    <button type="submit">🚪 Logout</button>
+                                    <button type="submit">
+                                        <i class="fas fa-sign-out-alt"></i> Logout
+                                    </button>
                                 </form>
                             </div>
                         </div>
-
-
-                        <!-- Dropdown Menu -->
-                        <div class="dropdown-menu" id="dropdownMenu">
-                            <a href="{{ url('/') }}" class="dropdown-item">
-                                <i class="fas fa-home"></i> Home
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <a href="{{ route('logout') }}" class="dropdown-item"
-                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                <i class="fas fa-sign-out-alt"></i> Logout
-                            </a>
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                @csrf
-                            </form>
-                        </div>
-
-
                     </div>
                 </div>
             </div>
@@ -903,11 +855,13 @@
                 <div class="profile-info">
                     <input type="file" id="profileInput" accept="image/*" hidden>
 
-                    <img id="profileAvatar" src="{{ Auth::user()->profile_image ? asset(Auth::user()->profile_image) : 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->name) . '&background=D0A04F&color=fff' }}"
-                        class="profile-avatar  cursor-pointer"
-                        alt="{{ Auth::user()->name }}">
-                    <div class="profile-edit-icon">
-                        <i class="fas fa-camera"></i>
+                    <div style="position: relative; display: inline-block;">
+                        <img id="profileAvatar" src="{{ Auth::user()->profile_image ? asset(Auth::user()->profile_image) : 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->name) . '&background=D0A04F&color=fff' }}"
+                            class="profile-avatar cursor-pointer"
+                            alt="{{ Auth::user()->name }}">
+                        <div class="profile-edit-icon" onclick="document.getElementById('profileInput').click()">
+                            <i class="fas fa-camera"></i>
+                        </div>
                     </div>
 
                     <div class="profile-details">
@@ -932,6 +886,10 @@
 
                         <div class="profile-stats">
                             <div class="stat">
+                                <div class="stat-value">{{ $feeds->count() }}</div>
+                                <div class="stat-label">Posts</div>
+                            </div>
+                            <div class="stat">
                                 <div class="stat-value">{{ Auth::user()->multipleImages ? count(Auth::user()->multipleImages) : 0 }}</div>
                                 <div class="stat-label">Photos</div>
                             </div>
@@ -946,132 +904,7 @@
                             <button class="btn btn-outline" id="shareProfileBtn" data-bs-toggle="modal" data-bs-target="#shareModal">
                                 <i class="fas fa-share-alt"></i> Share
                             </button>
-
-                            <!-- Bootstrap Share Modal -->
-                            <div class="modal fade" id="shareModal" tabindex="-1" aria-labelledby="shareModalLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="shareModalLabel">
-                                                <i class="fas fa-share-alt me-2"></i>Share Profile
-                                            </h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <!-- Profile Preview with Actual User Data -->
-                                            <div class="card mb-4 border-0 bg-light">
-                                                <div class="card-body">
-                                                    <div class="d-flex align-items-center">
-                                                        <div class="flex-shrink-0">
-                                                            <img src="{{ Auth::user()->profile_image ? asset(Auth::user()->profile_image) : 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->name) . '&background=D0A04F&color=fff' }}"
-                                                                alt="{{ Auth::user()->name }}"
-                                                                class="rounded-circle"
-                                                                width="50"
-                                                                height="50"
-                                                                id="modalProfileAvatar">
-                                                        </div>
-                                                        <div class="flex-grow-1 ms-3">
-                                                            <h6 class="mb-1" id="modalProfileName">{{ Auth::user()->name }}</h6>
-                                                            <p class="mb-0 text-muted small" id="modalProfileEmail">{{ Auth::user()->email }}</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- Share Via Label -->
-                                            <p class="text-muted mb-3">Share via:</p>
-
-                                            <!-- Social Media Grid -->
-                                            <div class="row g-2 mb-3">
-                                                <div class="col-4 col-md-3">
-                                                    <button onclick="shareOnFacebook()" class="btn btn-outline-primary w-100 py-3" data-bs-dismiss="modal">
-                                                        <i class="fab fa-facebook-f fa-lg mb-2 d-block"></i>
-                                                        <span class="small">Facebook</span>
-                                                    </button>
-                                                </div>
-                                                <div class="col-4 col-md-3">
-                                                    <button onclick="shareOnTwitter()" class="btn btn-outline-dark w-100 py-3" data-bs-dismiss="modal">
-                                                        <i class="fab fa-twitter fa-lg mb-2 d-block"></i>
-                                                        <span class="small">Twitter</span>
-                                                    </button>
-                                                </div>
-                                                <div class="col-4 col-md-3">
-                                                    <button onclick="shareOnLinkedIn()" class="btn btn-outline-info w-100 py-3" data-bs-dismiss="modal">
-                                                        <i class="fab fa-linkedin-in fa-lg mb-2 d-block"></i>
-                                                        <span class="small">LinkedIn</span>
-                                                    </button>
-                                                </div>
-                                                <div class="col-4 col-md-3">
-                                                    <button onclick="shareOnWhatsApp()" class="btn btn-outline-success w-100 py-3" data-bs-dismiss="modal">
-                                                        <i class="fab fa-whatsapp fa-lg mb-2 d-block"></i>
-                                                        <span class="small">WhatsApp</span>
-                                                    </button>
-                                                </div>
-                                                <div class="col-4 col-md-3">
-                                                    <button onclick="shareOnTelegram()" class="btn btn-outline-info w-100 py-3" data-bs-dismiss="modal">
-                                                        <i class="fab fa-telegram-plane fa-lg mb-2 d-block"></i>
-                                                        <span class="small">Telegram</span>
-                                                    </button>
-                                                </div>
-                                                <div class="col-4 col-md-3">
-                                                    <button onclick="shareViaEmail()" class="btn btn-outline-danger w-100 py-3" data-bs-dismiss="modal">
-                                                        <i class="fas fa-envelope fa-lg mb-2 d-block"></i>
-                                                        <span class="small">Email</span>
-                                                    </button>
-                                                </div>
-                                                <div class="col-4 col-md-3">
-                                                    <button onclick="copyProfileLink()" class="btn btn-outline-secondary w-100 py-3" id="copyLinkBtn">
-                                                        <i class="fas fa-link fa-lg mb-2 d-block"></i>
-                                                        <span class="small">Copy Link</span>
-                                                    </button>
-                                                </div>
-                                                <div class="col-4 col-md-3" id="nativeShareContainer">
-                                                    <button onclick="shareNative()" class="btn btn-outline-primary w-100 py-3" data-bs-dismiss="modal">
-                                                        <i class="fas fa-share-alt fa-lg mb-2 d-block"></i>
-                                                        <span class="small">More</span>
-                                                    </button>
-                                                </div>
-                                            </div>
-
-                                            <!-- Direct Link Input -->
-                                            <div class="mt-4">
-                                                <label class="form-label text-muted small mb-2">Or copy direct link:</label>
-                                                <div class="input-group">
-
-                                                    <input type="text" class="form-control" id="profileLinkInput" value="" readonly>
-
-                                                    <button class="btn btn-outline-primary" type="button" onclick="copyProfileLink()">
-                                                        <i class="fas fa-copy"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Toast Notification (Bootstrap Toast) -->
-                            <div class="toast-container position-fixed bottom-0 end-0 p-3">
-                                <div id="shareToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-                                    <div class="toast-header">
-                                        <i class="fas fa-check-circle text-success me-2"></i>
-                                        <strong class="me-auto">Success</strong>
-                                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-                                    </div>
-                                    <div class="toast-body">
-                                        Link copied to clipboard!
-                                    </div>
-                                </div>
-                            </div>
-
-
-
-
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -1081,7 +914,7 @@
                 <!-- Main Column -->
                 <div class="main-column">
                     <!-- About Section -->
-                    <div class="card mb-4">
+                    <div class="card">
                         <div class="card-header">
                             <h2 class="card-title">
                                 <i class="fas fa-user"></i> About Me
@@ -1092,45 +925,53 @@
                         </div>
                     </div>
 
-                    <!-- Gallery Section -->
+                    <!-- My Posts Section (Under About) -->
                     <div class="card">
                         <div class="card-header">
                             <h2 class="card-title">
-                                <i class="fas fa-images"></i> Gallery
+                                <i class="fas fa-images"></i> My Posts
                             </h2>
-                            <button class="upload-btn" id="galleryUploadBtn">
-                                <i class="fas fa-upload"></i> Upload Image
-                            </button>
                         </div>
 
-                        @if(Auth::user()->multipleImages && count(Auth::user()->multipleImages) > 0)
-                        <div class="gallery-grid">
-                            @foreach(Auth::user()->multipleImages->take(9) as $image)
-                            <a href="{{ asset($image->image) }}" data-lightbox="gallery" class="gallery-item">
-                                <img src="{{ asset($image->image) }}" alt="Gallery Image">
-                                <div class="gallery-overlay">
-                                    <i class="fas fa-search text-white"></i>
+                        <div class="posts-list">
+                            @forelse($feeds as $feed)
+                            <div class="post-item">
+                                <h3 class="post-title">{{ $feed->title }}</h3>
+                                
+                                @if($feed->images && $feed->images->count())
+                                <div class="post-images">
+                                    @foreach($feed->images->take(4) as $image)
+                                    <img src="{{ asset('storage/'.$image->image) }}" 
+                                         class="post-thumbnail"
+                                         alt="Post image">
+                                    @endforeach
+                                    @if($feed->images->count() > 4)
+                                    <span class="post-thumbnail d-flex align-items-center justify-content-center bg-light">
+                                        +{{ $feed->images->count() - 4 }}
+                                    </span>
+                                    @endif
                                 </div>
-                            </a>
-                            @endforeach
+                                @endif
+                                
+                                <div class="post-date">
+                                    <i class="fas fa-clock"></i>
+                                    {{ $feed->created_at->diffForHumans() }}
+                                </div>
+                            </div>
+                            @empty
+                            <div class="empty-posts">
+                                <i class="fas fa-images"></i>
+                                <p>No posts yet. Create your first post!</p>
+                            </div>
+                            @endforelse
                         </div>
-                        @else
-                        <div class="empty-gallery">
-                            <i class="fas fa-images"></i>
-                            <h3>No photos yet</h3>
-                            <p>Upload photos to showcase your work or moments</p>
-                            <button class="btn btn-primary mt-2">
-                                <i class="fas fa-upload"></i> Upload Photos
-                            </button>
-                        </div>
-                        @endif
                     </div>
                 </div>
 
                 <!-- Sidebar Column -->
                 <div class="sidebar-column">
                     <!-- Contact Information -->
-                    <div class="card mb-4">
+                    <div class="card">
                         <div class="card-header">
                             <h2 class="card-title">
                                 <i class="fas fa-address-card"></i> Contact Information
@@ -1170,6 +1011,30 @@
                                 </div>
                             </div>
                             @endif
+
+                            @if(Auth::user()->website)
+                            <div class="contact-item">
+                                <div class="contact-icon">
+                                    <i class="fas fa-globe"></i>
+                                </div>
+                                <div class="contact-details">
+                                    <h4>Website</h4>
+                                    <p>{{ Auth::user()->website }}</p>
+                                </div>
+                            </div>
+                            @endif
+
+                            @if(Auth::user()->profession)
+                            <div class="contact-item">
+                                <div class="contact-icon">
+                                    <i class="fas fa-briefcase"></i>
+                                </div>
+                                <div class="contact-details">
+                                    <h4>Profession</h4>
+                                    <p>{{ Auth::user()->profession }}</p>
+                                </div>
+                            </div>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -1178,15 +1043,109 @@
         <input type="file" id="galleryInput" multiple accept="image/*" hidden>
     </div>
 
+    <!-- Share Modal -->
+    <div class="modal fade" id="shareModal" tabindex="-1" aria-labelledby="shareModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="shareModalLabel">
+                        <i class="fas fa-share-alt me-2"></i>Share Profile
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Profile Preview -->
+                    <div class="card mb-4 border-0 bg-light">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0">
+                                    <img src="{{ Auth::user()->profile_image ? asset(Auth::user()->profile_image) : 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->name) . '&background=D0A04F&color=fff' }}"
+                                        alt="{{ Auth::user()->name }}"
+                                        class="rounded-circle"
+                                        width="50"
+                                        height="50"
+                                        id="modalProfileAvatar">
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <h6 class="mb-1" id="modalProfileName">{{ Auth::user()->name }}</h6>
+                                    <p class="mb-0 text-muted small" id="modalProfileEmail">{{ Auth::user()->email }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Share Via Label -->
+                    <p class="text-muted mb-3">Share via:</p>
+
+                    <!-- Social Media Grid -->
+                    <div class="row g-2 mb-3">
+                        <div class="col-4 col-md-3">
+                            <button onclick="shareOnFacebook()" class="btn btn-outline-primary w-100 py-3" data-bs-dismiss="modal">
+                                <i class="fab fa-facebook-f fa-lg mb-2 d-block"></i>
+                                <span class="small">Facebook</span>
+                            </button>
+                        </div>
+                        <div class="col-4 col-md-3">
+                            <button onclick="shareOnTwitter()" class="btn btn-outline-dark w-100 py-3" data-bs-dismiss="modal">
+                                <i class="fab fa-twitter fa-lg mb-2 d-block"></i>
+                                <span class="small">Twitter</span>
+                            </button>
+                        </div>
+                        <div class="col-4 col-md-3">
+                            <button onclick="shareOnLinkedIn()" class="btn btn-outline-info w-100 py-3" data-bs-dismiss="modal">
+                                <i class="fab fa-linkedin-in fa-lg mb-2 d-block"></i>
+                                <span class="small">LinkedIn</span>
+                            </button>
+                        </div>
+                        <div class="col-4 col-md-3">
+                            <button onclick="shareOnWhatsApp()" class="btn btn-outline-success w-100 py-3" data-bs-dismiss="modal">
+                                <i class="fab fa-whatsapp fa-lg mb-2 d-block"></i>
+                                <span class="small">WhatsApp</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Direct Link Input -->
+                    <div class="mt-4">
+                        <label class="form-label text-muted small mb-2">Or copy direct link:</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="profileLinkInput" value="" readonly>
+                            <button class="btn btn-outline-primary" type="button" onclick="copyProfileLink()">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="shareToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <i class="fas fa-check-circle text-success me-2"></i>
+                <strong class="me-auto">Success</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                Link copied to clipboard!
+            </div>
+        </div>
+    </div>
+
     <!-- Lightbox JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
-
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    
     <script>
         const csrf = '{{ csrf_token() }}';
 
-        // ===== PROFILE =====
+        // Profile image upload
         document.getElementById('profileAvatar').addEventListener('click', () => {
             document.getElementById('profileInput').click();
         });
@@ -1195,7 +1154,7 @@
             uploadImage(this.files[0], 'profile_image');
         });
 
-        // ===== COVER =====
+        // Cover image upload
         document.getElementById('changeCoverBtn').addEventListener('click', () => {
             document.getElementById('coverInput').click();
         });
@@ -1204,10 +1163,8 @@
             uploadImage(this.files[0], 'cover_image');
         });
 
-
-        // ===== CORE UPLOAD FUNCTION =====
+        // Core upload function
         function uploadImage(file, type) {
-
             if (!file) return;
 
             const formData = new FormData();
@@ -1215,62 +1172,48 @@
             formData.append('_token', csrf);
 
             fetch("{{ route('profile.image.update') }}", {
-                    method: "POST",
-                    body: formData,
-                })
-                .then(res => res.json())
-                .then(data => {
-
-                    if (data.status) {
-
-                        if (type === 'profile_image') {
-                            document.getElementById('profileAvatar').src = data.url;
-                            document.querySelector('.user-avatar').src = data.url;
-                        }
-
-                        if (type === 'cover_image') {
-                            document.querySelector('.cover-image').style.backgroundImage =
-                                `url('${data.url}')`;
-                        }
-
-                        toast('✅ Image updated');
-
-                    } else {
-                        toast(data.message || 'Upload failed');
+                method: "POST",
+                body: formData,
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.status) {
+                    if (type === 'profile_image') {
+                        document.getElementById('profileAvatar').src = data.url;
+                        document.querySelector('.user-avatar').src = data.url;
                     }
-
-                })
-                .catch(err => {
-                    console.error(err);
-                    toast('Server error');
-                });
+                    if (type === 'cover_image') {
+                        document.querySelector('.cover-image').style.backgroundImage = `url('${data.url}')`;
+                    }
+                    toast('✅ Image updated');
+                } else {
+                    toast(data.message || 'Upload failed');
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                toast('Server error');
+            });
         }
 
-
-        // ===== SIMPLE TOAST =====
+        // Simple toast
         function toast(msg) {
-
             const el = document.createElement('div');
-
             el.innerText = msg;
             el.style.cssText = `
-        position:fixed;
-        bottom:30px;
-        right:30px;
-        background:#111;
-        color:#fff;
-        padding:12px 18px;
-        border-radius:8px;
-        z-index:9999;
-    `;
-
+                position:fixed;
+                bottom:30px;
+                right:30px;
+                background:#111;
+                color:#fff;
+                padding:12px 18px;
+                border-radius:8px;
+                z-index:9999;
+            `;
             document.body.appendChild(el);
-
             setTimeout(() => el.remove(), 3000);
         }
-    </script>
 
-    <script>
         // Initialize Lightbox
         lightbox.option({
             'resizeDuration': 200,
@@ -1280,133 +1223,31 @@
 
         // Smooth transitions
         document.addEventListener('DOMContentLoaded', function() {
-            // Add hover effects to cards
             const cards = document.querySelectorAll('.card');
             cards.forEach(card => {
                 card.addEventListener('mouseenter', () => {
                     card.style.transform = 'translateY(-4px)';
                 });
-
                 card.addEventListener('mouseleave', () => {
                     card.style.transform = 'translateY(0)';
                 });
             });
 
-            // Gallery item animations
-            const galleryItems = document.querySelectorAll('.gallery-item');
-            galleryItems.forEach((item, index) => {
-                item.style.animationDelay = `${index * 0.05}s`;
-            });
-
-            // Button interactions
             const buttons = document.querySelectorAll('.btn');
             buttons.forEach(btn => {
                 btn.addEventListener('mousedown', () => {
                     btn.style.transform = 'scale(0.98)';
                 });
-
                 btn.addEventListener('mouseup', () => {
                     btn.style.transform = '';
                 });
-
                 btn.addEventListener('mouseleave', () => {
                     btn.style.transform = '';
                 });
             });
         });
-    </script>
-    <script>
-        document.getElementById('galleryUploadBtn').addEventListener('click', () => {
-            document.getElementById('galleryInput').click();
-        });
 
-        document.getElementById('galleryInput').addEventListener('change', function() {
-
-            const files = this.files;
-            if (!files.length) return;
-
-            const formData = new FormData();
-
-            for (let i = 0; i < files.length; i++) {
-                formData.append('gallery_images[]', files[i]);
-            }
-
-            formData.append('_token', '{{ csrf_token() }}');
-
-            fetch("{{ route('profile.gallery.upload') }}", {
-                    method: "POST",
-                    body: formData
-                })
-                .then(res => res.json())
-                .then(data => {
-
-                    if (!data.status) {
-                        toast(data.message || 'Upload failed');
-                        return;
-                    }
-
-                    const grid = document.querySelector('.gallery-grid');
-
-                    data.images.forEach(img => {
-
-                        const a = document.createElement('a');
-                        a.href = img.url;
-                        a.setAttribute('data-lightbox', 'gallery');
-                        a.className = 'gallery-item';
-
-                        a.innerHTML = `
-                <img src="${img.url}">
-                <div class="gallery-overlay">
-                    <i class="fas fa-search text-white"></i>
-                </div>
-            `;
-
-                        grid.prepend(a);
-                    });
-
-                    toast('✅ Gallery updated');
-
-                    document.getElementById('galleryInput').value = '';
-
-                })
-                .catch(err => {
-                    console.error(err);
-                    toast('Server error');
-                });
-
-        });
-    </script>
-    <script>
-        // Initialize Bootstrap components
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize toast
-            const toastEl = document.getElementById('shareToast');
-            window.shareToast = new bootstrap.Toast(toastEl, {
-                animation: true,
-                autohide: true,
-                delay: 3000
-            });
-
-            // Set profile link in input
-            document.getElementById('profileLinkInput').value = window.location.href;
-
-            // Check if Web Share API is available
-            const nativeShareContainer = document.getElementById('nativeShareContainer');
-            if (!navigator.share) {
-                nativeShareContainer.style.display = 'none';
-            }
-
-            // Handle modal hidden event
-            const shareModal = document.getElementById('shareModal');
-            shareModal.addEventListener('hidden.bs.modal', function() {
-                // Optional: Reset any state when modal is closed
-                console.log('Share modal closed');
-            });
-        });
-
-
-        // ===== SHARE FUNCTIONALITY =====
-        // Profile data from Laravel
+        // Share functionality
         const profileData = {
             id: '{{ Auth::user()->id }}',
             name: '{{ Auth::user()->name }}',
@@ -1416,50 +1257,17 @@
             description: 'Check out {{ Auth::user()->name }}\'s profile on our platform!'
         };
 
-        // Wait for DOM to be fully loaded
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('DOM loaded, initializing share functionality');
-
-            // Initialize toast
             const toastEl = document.getElementById('shareToast');
-            if (toastEl) {
-                window.shareToast = new bootstrap.Toast(toastEl, {
-                    animation: true,
-                    autohide: true,
-                    delay: 3000
-                });
-                console.log('Toast initialized');
-            }
+            window.shareToast = new bootstrap.Toast(toastEl, {
+                animation: true,
+                autohide: true,
+                delay: 3000
+            });
 
-            // Check if Web Share API is available
-            const nativeShareContainer = document.getElementById('nativeShareContainer');
-            if (nativeShareContainer) {
-                if (!navigator.share) {
-                    nativeShareContainer.style.display = 'none';
-                    console.log('Web Share API not available, hiding native button');
-                }
-            }
-
-            // Set profile link in input
-            const linkInput = document.getElementById('profileLinkInput');
-            if (linkInput) {
-                linkInput.value = profileData.url;
-                console.log('Link input set to:', profileData.url);
-            }
-
-            // Update modal profile info
-            const modalProfileName = document.getElementById('modalProfileName');
-            const modalProfileEmail = document.getElementById('modalProfileEmail');
-            const modalProfileAvatar = document.getElementById('modalProfileAvatar');
-
-            if (modalProfileName) modalProfileName.textContent = profileData.name;
-            if (modalProfileEmail) modalProfileEmail.textContent = profileData.email;
-            if (modalProfileAvatar) {
-                modalProfileAvatar.src = '{{ Auth::user()->profile_image ? asset(Auth::user()->profile_image) : "https://ui-avatars.com/api/?name=" . urlencode(Auth::user()->name) . "&background=D0A04F&color=fff" }}';
-            }
+            document.getElementById('profileLinkInput').value = profileData.url;
         });
 
-        // Share functions - make them global
         window.shareOnFacebook = function() {
             const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(profileData.url)}`;
             window.open(url, '_blank', 'width=600,height=400');
@@ -1486,164 +1294,40 @@
             return false;
         }
 
-        window.shareOnTelegram = function() {
-            const url = `https://t.me/share/url?url=${encodeURIComponent(profileData.url)}&text=${encodeURIComponent(profileData.name)}`;
-            window.open(url, '_blank');
-            return false;
-        }
-
-        window.shareViaEmail = function() {
-            const subject = encodeURIComponent(`Check out ${profileData.name}'s profile`);
-            const body = encodeURIComponent(`${profileData.name}\n${profileData.email}\n${profileData.url}`);
-            window.location.href = `mailto:?subject=${subject}&body=${body}`;
-            return false;
-        }
-
         window.copyProfileLink = function() {
-            console.log('Copy function called');
-
-            // Try multiple methods to ensure copy works
-            const linkInput = document.getElementById('profileLinkInput');
             const urlToCopy = profileData.url;
 
-            console.log('URL to copy:', urlToCopy);
-
-            // Method 1: Modern clipboard API
             if (navigator.clipboard && navigator.clipboard.writeText) {
                 navigator.clipboard.writeText(urlToCopy).then(() => {
-                    console.log('Copied using clipboard API');
                     showCopySuccess();
-                }).catch(err => {
-                    console.error('Clipboard API failed:', err);
-                    // Fallback to method 2
+                }).catch(() => {
                     fallbackCopy();
                 });
             } else {
-                // Method 2: Fallback method
                 fallbackCopy();
             }
 
             function fallbackCopy() {
+                const linkInput = document.getElementById('profileLinkInput');
                 if (linkInput) {
                     linkInput.select();
                     linkInput.setSelectionRange(0, 99999);
-
                     try {
-                        const successful = document.execCommand('copy');
-                        if (successful) {
-                            console.log('Copied using execCommand');
-                            showCopySuccess();
-                        } else {
-                            console.error('execCommand failed');
-                            alert('Press Ctrl+C to copy the link');
-                        }
+                        document.execCommand('copy');
+                        showCopySuccess();
                     } catch (err) {
-                        console.error('Fallback copy failed:', err);
-                        alert('Please manually copy the link');
+                        prompt('Copy this link:', urlToCopy);
                     }
-                } else {
-                    // Last resort - prompt user to copy
-                    prompt('Copy this link:', urlToCopy);
                 }
             }
 
             function showCopySuccess() {
-                // Show Bootstrap toast
                 if (window.shareToast) {
                     window.shareToast.show();
                 }
-
-                // Update button temporarily
-                const copyBtn = document.getElementById('copyLinkBtn');
-                if (copyBtn) {
-                    const originalHtml = copyBtn.innerHTML;
-                    const originalClasses = copyBtn.className;
-
-                    copyBtn.innerHTML = '<i class="fas fa-check fa-lg mb-2 d-block"></i><span class="small">Copied!</span>';
-                    copyBtn.classList.remove('btn-outline-secondary');
-                    copyBtn.classList.add('btn-success');
-
-                    setTimeout(() => {
-                        copyBtn.innerHTML = originalHtml;
-                        copyBtn.className = originalClasses;
-                    }, 2000);
-                }
             }
 
             return false;
-        }
-
-        window.shareNative = function() {
-            if (navigator.share) {
-                navigator.share({
-                    title: profileData.title,
-                    text: profileData.description,
-                    url: profileData.url,
-                }).then(() => {
-                    console.log('Shared successfully');
-                }).catch((error) => {
-                    if (error.name !== 'AbortError') {
-                        console.error('Error sharing:', error);
-                    }
-                });
-            }
-            return false;
-        }
-
-        // For debugging - log when buttons are clicked
-        document.addEventListener('click', function(e) {
-            if (e.target.closest('[onclick^="copyProfileLink"]')) {
-                console.log('Copy button clicked');
-            }
-        });
-
-
-        // Optional: Track shares
-        function trackShare(platform) {
-            console.log(`Shared on: ${platform}`);
-
-            // You can send analytics here
-            if (typeof gtag !== 'undefined') {
-                gtag('event', 'share', {
-                    'method': platform,
-                    'content_type': 'profile',
-                    'item_id': 'profile_123' // Replace with actual profile ID
-                });
-            }
-
-            // Or send to your backend
-            // fetch('/api/track-share', {
-            //     method: 'POST',
-            //     headers: { 'Content-Type': 'application/json' },
-            //     body: JSON.stringify({ 
-            //         platform: platform, 
-            //         profileId: 'profile_123',
-            //         timestamp: new Date().toISOString()
-            //     })
-            // });
-        }
-
-        // Optional: Update profile data dynamically
-        function updateProfileShareInfo(profile) {
-            profileData.name = profile.name;
-            profileData.username = profile.username;
-            profileData.url = profile.profileUrl;
-
-            // Update preview in modal
-            const modalPreview = document.querySelector('#shareModal .card-body');
-            if (modalPreview) {
-                modalPreview.innerHTML = `Fconst
-            <div class="d-flex align-items-center">
-                <div class="flex-shrink-0">
-                    <img src="${profile.avatar || 'https://via.placeholder.com/50'}" alt="${profile.name}" class="rounded-circle" width="50" height="50">
-                </div>
-                <div class="flex-grow-1 ms-3">
-                    <h6 class="mb-1">${profile.name}</h6>
-                    <p class="mb-0 text-muted small">${profile.username}</p>
-                </div>
-            </div>
-        `;
-            }
         }
     </script>
 </body>
