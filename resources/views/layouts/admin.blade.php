@@ -391,6 +391,31 @@ nav svg {
             </li>
 
 
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+                <i class="nav-icon bi bi-box-arrow-in-right"></i>
+                <p>
+                  Feeds
+                  <i class="nav-arrow bi bi-chevron-right"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="{{ route('admin.page.create', ['slug' =>'blog']) }}" class="nav-link">
+                    <i class="nav-icon bi bi-circle"></i>
+                    <p>Manage Feeds</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{{ route('admin.page.index', ['slug' => 'blog']) }}" class="nav-link">
+                    <i class="nav-icon bi bi-circle"></i>
+                    <p>Reported Feeds</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+
+
 
 
             <li class="nav-item">
