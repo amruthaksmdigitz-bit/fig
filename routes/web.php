@@ -33,6 +33,8 @@ use App\Http\Controllers\LocationController;
 use App\Http\Controllers\FeedController;
 use App\Models\Location;
 use Illuminate\Support\Str;
+use App\Http\Controllers\Admin\FeedsController;
+
 
 Route::get('/generate-location-slugs', function () {
 
@@ -232,7 +234,23 @@ Route::prefix('admin')->middleware('auth')->name('admin.')->group(function () {
 
 
 
+Route::prefix('admin')->group(function () {
 
+    Route::get('/feeds', [FeedController::class,'index'])->name('admin.feeds.index');
 
+    Route::delete('/feeds/{id}', [FeedController::class,'destroy'])->name('admin.feeds.delete');
+
+});
+
+Route::prefix('admin')->group(function () {
+
+    Route::get('/feeds', [FeedsController::class,'index'])->name('admin.feeds.index');
+    
+    Route::get('/admin/feeds/{id}', [FeedsController::class,'show'])
+        ->name('admin.feeds.show');
+
+    Route::delete('/feeds/{id}', [FeedsController::class,'destroy'])->name('admin.feeds.delete');
+
+});
 
 //Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

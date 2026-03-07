@@ -24,7 +24,7 @@ class FeedController extends Controller
 
         $request->validate([
             'title' => 'nullable|string',
-            'images.*' => 'image|mimes:jpg,jpeg,png|max:2048'
+            'images.*' => 'image|mimes:jpg,jpeg,png|max:20480'
         ]);
 
         $feed = Feed::create([
