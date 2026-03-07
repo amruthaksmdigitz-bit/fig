@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Models\Feed;
 use App\Models\FeedImage;
 use Illuminate\Http\Request;
@@ -16,7 +15,7 @@ class FeedController extends Controller
                     ->latest()
                     ->get();
 
-        return view('feeds.index',compact('feeds'));
+        return view('feeds',compact('feeds'));
     }
 
     public function store(Request $request)

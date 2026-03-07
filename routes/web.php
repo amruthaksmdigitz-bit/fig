@@ -138,7 +138,6 @@ Route::get('/feeds',[FeedController::class,'index'])->name('feeds');
 Route::post('/feeds/store',[FeedController::class,'store'])
 ->middleware('auth')
 ->name('feeds.store');
-
 // Frontend blog routes
 Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
 Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.show');
