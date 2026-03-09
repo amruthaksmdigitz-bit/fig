@@ -23,14 +23,14 @@ class FeedController extends Controller
 
         $request->validate([
             'title' => 'nullable|string',
-            'images.*' => 'image|mimes:jpg,jpeg,png|max:2048'
+            'images.*' => 'image|mimes:jpg,jpeg,png|max:20480'
         ]);
 
         $feed = Feed::create([
             'user_id' => Auth::id(),
             'title' => $request->title
         ]);
-
+ 
         if($request->hasFile('images'))
         {
             foreach($request->file('images') as $image)
