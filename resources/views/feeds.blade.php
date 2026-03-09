@@ -115,59 +115,53 @@
     </div>
 </div>
 
-<!-- Report Modal -->
+<!-- Report Modal - Simplified with Textarea and Screenshot Upload -->
 <div id="reportModal" class="report-modal" onclick="closeReportModalOnOutsideClick(event)">
     <div class="report-modal-content">
         <div class="report-modal-header">
             <h3>Report Post</h3>
             <button class="report-modal-close" onclick="closeReportModal()">✕</button>
         </div>
+        
         <div class="report-modal-body">
-            <p>Why are you reporting this post?</p>
-            
             <form id="reportForm">
                 <input type="hidden" id="reportPostId" value="">
                 
-                <div class="report-option">
-                    <input type="radio" name="reportReason" id="reason1" value="spam" required>
-                    <label for="reason1">It's spam</label>
+                <!-- Textarea for report reason -->
+                <div class="form-group">
+                    <label for="reportReason">Please describe the issue:</label>
+                    <textarea 
+                        name="reportReason" 
+                        id="reportReason" 
+                        placeholder="Tell us why you're reporting this post..." 
+                        rows="4"
+                        required
+                    ></textarea>
                 </div>
                 
-                <div class="report-option">
-                    <input type="radio" name="reportReason" id="reason2" value="nudity">
-                    <label for="reason2">Nudity or sexual activity</label>
-                </div>
-                
-                <div class="report-option">
-                    <input type="radio" name="reportReason" id="reason3" value="hate">
-                    <label for="reason3">Hate speech or symbols</label>
-                </div>
-                
-                <div class="report-option">
-                    <input type="radio" name="reportReason" id="reason4" value="violence">
-                    <label for="reason4">Violence or dangerous organizations</label>
-                </div>
-                
-                <div class="report-option">
-                    <input type="radio" name="reportReason" id="reason5" value="bullying">
-                    <label for="reason5">Bullying or harassment</label>
-                </div>
-                
-                <div class="report-option">
-                    <input type="radio" name="reportReason" id="reason6" value="false">
-                    <label for="reason6">False information</label>
-                </div>
-                
-                <div class="report-option">
-                    <input type="radio" name="reportReason" id="reason7" value="other">
-                    <label for="reason7">Other</label>
-                </div>
-                
-                <div class="form-group" id="otherReasonGroup" style="display: none;">
-                    <textarea name="otherReason" id="otherReason" placeholder="Please specify your reason..." rows="3"></textarea>
+                <!-- Screenshot upload section -->
+                <div class="screenshot-upload-section">
+                    <label>Screenshot (optional):</label>
+                    <div class="screenshot-upload-area" onclick="document.getElementById('screenshotInput').click()">
+                        <div class="upload-icon">📸</div>
+                        <span>Click to upload screenshot</span>
+                        <small>PNG, JPG (max 5MB)</small>
+                    </div>
+                    
+                    <input 
+                        type="file" 
+                        id="screenshotInput" 
+                        class="file-input" 
+                        name="screenshot" 
+                        accept="image/*" 
+                        hidden
+                    >
+                    
+                    <div class="screenshot-preview" id="screenshotPreview"></div>
                 </div>
             </form>
         </div>
+        
         <div class="report-modal-footer">
             <button class="btn btn-secondary" onclick="closeReportModal()">Cancel</button>
             <button class="btn btn-primary" onclick="submitReport()">Submit Report</button>
@@ -327,7 +321,7 @@
         
         // Reset form
         document.getElementById('reportForm').reset();
-        document.getElementById('otherReasonGroup').style.display = 'none';
+        document.getElementById('screenshotPreview').innerHTML = '';
     }
 
     function closeReportModalOnOutsideClick(event) {
@@ -336,33 +330,56 @@
         }
     }
 
-    // Show/hide other reason field
-    document.querySelectorAll('input[name="reportReason"]').forEach(radio => {
-        radio.addEventListener('change', function() {
-            if (this.value === 'other') {
-                document.getElementById('otherReasonGroup').style.display = 'block';
-            } else {
-                document.getElementById('otherReasonGroup').style.display = 'none';
-            }
-        });
+    // Screenshot preview functionality
+    let screenshotInput = document.getElementById("screenshotInput");
+    let screenshotPreview = document.getElementById("screenshotPreview");
+
+    screenshotInput.addEventListener("change", function(e) {
+        screenshotPreview.innerHTML = "";
+        let file = e.target.files[0];
+
+        if (file) {
+            let reader = new FileReader();
+            reader.onload = function(event) {
+                let container = document.createElement("div");
+                container.classList.add("screenshot-preview-item");
+
+                let img = document.createElement("img");
+                img.src = event.target.result;
+
+                let removeBtn = document.createElement("button");
+                removeBtn.innerHTML = "✕";
+                removeBtn.classList.add("remove-screenshot");
+                removeBtn.onclick = function(e) {
+                    e.stopPropagation();
+                    screenshotInput.value = "";
+                    screenshotPreview.innerHTML = "";
+                };
+
+                container.appendChild(img);
+                container.appendChild(removeBtn);
+                screenshotPreview.appendChild(container);
+            };
+            reader.readAsDataURL(file);
+        }
     });
 
     function submitReport() {
-        const reason = document.querySelector('input[name="reportReason"]:checked');
+        const reason = document.getElementById('reportReason').value;
         
-        if (!reason) {
-            alert('Please select a reason for reporting');
+        if (!reason.trim()) {
+            alert('Please describe the issue before submitting');
             return;
         }
         
         const postId = document.getElementById('reportPostId').value;
-        const otherReason = document.getElementById('otherReason').value;
+        const screenshot = document.getElementById('screenshotInput').files[0];
         
         // Here you would typically send this to your server
         console.log('Report submitted:', {
             postId: postId,
-            reason: reason.value,
-            otherReason: reason.value === 'other' ? otherReason : null
+            reason: reason,
+            screenshot: screenshot ? screenshot.name : null
         });
         
         closeReportModal();
