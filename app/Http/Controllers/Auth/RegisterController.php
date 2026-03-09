@@ -35,6 +35,8 @@ class RegisterController extends Controller
 
             'location' => ['required', 'integer', 'exists:locations,id'],
 
+             'phone_no' => ['required', 'string', 'size:10', 'regex:/^[0-9]+$/', 'unique:users,phone_no'],
+
             'captcha' => ['required'],
 
 
@@ -59,6 +61,7 @@ class RegisterController extends Controller
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
             'location' => $validated['location'],
+            'phone_no' => $validated['phone_no'],
         ]);
 
         if ($usercreate) {

@@ -22,6 +22,7 @@ class User extends Authenticatable
         'cover_image',
         'role_id',
         'last_login_at' => 'datetime',
+        'phone_no',
     ];
 
     protected $hidden = [
