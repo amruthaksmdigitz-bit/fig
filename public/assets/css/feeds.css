@@ -24,12 +24,14 @@
         display: flex;
         flex-direction: column;
         gap: 0.25rem;
+        margin-bottom: 1rem;
     }
 
     .form-group label {
         font-weight: 500;
         color: #4b5563;
         font-size: 0.85rem;
+        margin-bottom: 0.25rem;
     }
 
     .form-group input[type="text"] {
@@ -42,6 +44,23 @@
     }
 
     .form-group input[type="text"]:focus {
+        outline: none;
+        border-color: #1877f2;
+        box-shadow: 0 0 0 2px rgba(24,119,242,0.2);
+    }
+
+    .form-group textarea {
+        padding: 0.75rem;
+        border: 1px solid #e0e0e0;
+        border-radius: 6px;
+        font-size: 0.9rem;
+        transition: border-color 0.3s;
+        width: 100%;
+        resize: vertical;
+        font-family: inherit;
+    }
+
+    .form-group textarea:focus {
         outline: none;
         border-color: #1877f2;
         box-shadow: 0 0 0 2px rgba(24,119,242,0.2);
@@ -483,6 +502,10 @@
         flex-wrap: wrap;
     }
 
+    .preview-item {
+        position: relative;
+    }
+
     .preview-item img {
         width: 90px;
         height: 90px;
@@ -490,7 +513,7 @@
         border-radius: 8px;
     }
 
-    /* Report Modal Styles */
+    /* Report Modal Styles - Simplified */
     .report-modal {
         display: none;
         position: fixed;
@@ -563,53 +586,89 @@
         padding: 1.5rem;
     }
 
-    .report-modal-body p {
-        color: #4b5563;
-        margin-bottom: 1rem;
-        font-size: 0.95rem;
+    /* Screenshot upload section */
+    .screenshot-upload-section {
+        margin-top: 1.5rem;
     }
 
-    .report-option {
-        margin-bottom: 0.75rem;
+    .screenshot-upload-section label {
+        font-weight: 500;
+        color: #4b5563;
+        font-size: 0.85rem;
+        display: block;
+        margin-bottom: 0.5rem;
+    }
+
+    .screenshot-upload-area {
+        border: 1px dashed #e0e0e0;
+        border-radius: 6px;
+        padding: 1rem;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s;
+        background-color: #fafafa;
+    }
+
+    .screenshot-upload-area:hover {
+        border-color: #1877f2;
+        background-color: #f0f2f5;
+    }
+
+    .screenshot-upload-area .upload-icon {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .screenshot-upload-area span {
+        color: #4b5563;
+        font-size: 0.9rem;
+        display: block;
+        margin-bottom: 0.25rem;
+    }
+
+    .screenshot-upload-area small {
+        color: #9ca3af;
+        font-size: 0.75rem;
+    }
+
+    .screenshot-preview {
+        margin-top: 1rem;
+    }
+
+    .screenshot-preview-item {
+        position: relative;
+        display: inline-block;
+    }
+
+    .screenshot-preview-item img {
+        width: 120px;
+        height: 120px;
+        object-fit: cover;
+        border-radius: 8px;
+        border: 1px solid #e0e0e0;
+    }
+
+    .remove-screenshot {
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        background: #dc2626;
+        color: white;
+        border: none;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        cursor: pointer;
         display: flex;
         align-items: center;
-        gap: 0.75rem;
+        justify-content: center;
+        font-size: 14px;
+        transition: all 0.2s;
     }
 
-    .report-option input[type="radio"] {
-        width: 18px;
-        height: 18px;
-        cursor: pointer;
-        accent-color: #1877f2;
-    }
-
-    .report-option label {
-        color: #1a1a1a;
-        font-size: 0.95rem;
-        cursor: pointer;
-        flex: 1;
-    }
-
-    #otherReasonGroup {
-        margin-top: 1rem;
-        margin-bottom: 1rem;
-    }
-
-    #otherReasonGroup textarea {
-        width: 100%;
-        padding: 0.75rem;
-        border: 1px solid #e0e0e0;
-        border-radius: 6px;
-        font-size: 0.9rem;
-        resize: vertical;
-        min-height: 80px;
-        font-family: inherit;
-    }
-
-    #otherReasonGroup textarea:focus {
-        outline: none;
-        border-color: #1877f2;
-        box-shadow: 0 0 0 2px rgba(24,119,242,0.2);
+    .remove-screenshot:hover {
+        background: #b91c1c;
+        transform: scale(1.1);
     }
 
     .report-modal-footer {
