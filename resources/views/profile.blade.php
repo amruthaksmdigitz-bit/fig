@@ -935,22 +935,26 @@
 
                         <div class="posts-list">
                             @forelse($feeds as $feed)
-                            <div class="post-item">
+                            <div class="post-item" data-post-id="{{ $feed->id }}" style="cursor: pointer;">
                                 <h3 class="post-title">{{ $feed->title }}</h3>
                                 
                                 @if($feed->images && $feed->images->count())
-                                <div class="post-images">
-                                    @foreach($feed->images->take(4) as $image)
-                                    <img src="{{ asset('storage/'.$image->image) }}" 
-                                         class="post-thumbnail"
-                                         alt="Post image">
-                                    @endforeach
-                                    @if($feed->images->count() > 4)
-                                    <span class="post-thumbnail d-flex align-items-center justify-content-center bg-light">
-                                        +{{ $feed->images->count() - 4 }}
-                                    </span>
-                                    @endif
-                                </div>
+                                @if($feed->images && $feed->images->count())
+<div class="post-images">
+    @foreach($feed->images->take(3) as $image)
+    <img src="{{ asset('storage/'.$image->image) }}" 
+         class="post-thumbnail cursor-pointer"
+         alt="Post image"
+         onclick="event.stopPropagation(); openPostGallery({{ $feed->id }})">
+    @endforeach
+    @if($feed->images->count() > 3)
+    <div class="post-thumbnail d-flex align-items-center justify-content-center bg-light cursor-pointer"
+         onclick="event.stopPropagation(); openPostGallery({{ $feed->id }})">
+        +{{ $feed->images->count() - 3 }}
+    </div>
+    @endif
+</div>
+@endif
                                 @endif
                                 
                                 <div class="post-date">
@@ -1123,6 +1127,35 @@
         </div>
     </div>
 
+    <!-- Post Images Modal -->
+<div class="modal fade" id="postImagesModal" tabindex="-1" aria-labelledby="postImagesModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="postImagesModalLabel">
+                    <i class="fas fa-images me-2"></i>Post Images
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <input type="file" id="modalImageInput" multiple accept="image/*" hidden>
+                    <button class="btn btn-primary" onclick="document.getElementById('modalImageInput').click()">
+                        <i class="fas fa-plus-circle"></i> Add Images
+                    </button>
+                </div>
+                
+                <div id="postImagesContainer" class="row g-3">
+                    <!-- Images will be loaded here dynamically -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
     <!-- Toast Notification -->
     <div class="toast-container position-fixed bottom-0 end-0 p-3">
         <div id="shareToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
@@ -1195,6 +1228,8 @@
                 toast('Server error');
             });
         }
+
+
 
         // Simple toast
         function toast(msg) {
@@ -1330,6 +1365,365 @@
             return false;
         }
     </script>
+    <script>
+    // Post images functionality
+    let currentPostId = null;
+    let currentModal = null;
+
+    // Make posts clickable
+    document.addEventListener('DOMContentLoaded', function() {
+        initializePostItems();
+        initializeModalHandlers();
+    });
+
+    function initializePostItems() {
+        const postItems = document.querySelectorAll('.post-item');
+        postItems.forEach(item => {
+            item.addEventListener('click', function(e) {
+                // Don't open if clicking on an image (to allow lightbox)
+                if (e.target.classList.contains('post-thumbnail')) {
+                    return;
+                }
+                
+                const postId = this.dataset.postId;
+                if (postId) {
+                    openPostGallery(postId);
+                }
+            });
+        });
+    }
+
+    function initializeModalHandlers() {
+        // Handle modal hidden event to ensure cleanup
+        const modalEl = document.getElementById('postImagesModal');
+        if (modalEl) {
+            modalEl.addEventListener('hidden.bs.modal', function() {
+                cleanupModal();
+            });
+        }
+
+        // Handle modal close button
+        const closeBtn = document.querySelector('#postImagesModal .btn-close');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                hideModal();
+            });
+        }
+
+        // Handle modal footer close button
+        const footerCloseBtn = document.querySelector('#postImagesModal .modal-footer .btn-light');
+        if (footerCloseBtn) {
+            footerCloseBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                hideModal();
+            });
+        }
+
+        // Handle escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && currentModal) {
+                hideModal();
+            }
+        });
+    }
+
+    function cleanupModal() {
+        // Remove any lingering modal backdrops
+        const backdrops = document.querySelectorAll('.modal-backdrop');
+        backdrops.forEach(backdrop => backdrop.remove());
+        
+        // Reset body classes and styles
+        document.body.classList.remove('modal-open');
+        document.body.style.overflow = '';
+        document.body.style.paddingRight = '';
+        
+        // Reset modal instance
+        if (currentModal) {
+            currentModal = null;
+        }
+    }
+
+    function hideModal() {
+        if (currentModal) {
+            currentModal.hide();
+        } else {
+            // Fallback cleanup if modal instance is lost
+            cleanupModal();
+            const modalEl = document.getElementById('postImagesModal');
+            if (modalEl) {
+                modalEl.classList.remove('show');
+                modalEl.style.display = 'none';
+            }
+        }
+    }
+
+    function showModal() {
+        const modalEl = document.getElementById('postImagesModal');
+        
+        // Dispose existing modal instance if any
+        if (currentModal) {
+            currentModal.dispose();
+        }
+        
+        // Create new modal instance
+        currentModal = new bootstrap.Modal(modalEl, {
+            backdrop: 'static',
+            keyboard: true
+        });
+        
+        currentModal.show();
+    }
+
+    function openPostGallery(postId) {
+        if (!postId) return;
+        
+        currentPostId = postId;
+        
+        // Show loading state
+        const container = document.getElementById('postImagesContainer');
+        container.innerHTML = '<div class="col-12 text-center py-5"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div><p class="mt-2">Loading images...</p></div>';
+        
+        fetch(`/post/${postId}/images`, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json'
+            }
+        })
+        .then(res => {
+            if (!res.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return res.json();
+        })
+        .then(data => {
+            if (data.status) {
+                displayPostImages(data.images);
+                showModal();
+            } else {
+                throw new Error(data.message || 'Failed to load images');
+            }
+        })
+        .catch(err => {
+            console.error('Error loading post images:', err);
+            container.innerHTML = '<div class="col-12 text-center py-5"><i class="fas fa-exclamation-triangle fa-3x text-danger mb-3"></i><p>Failed to load images. Please try again.</p></div>';
+            toast('❌ ' + err.message);
+        });
+    }
+
+    function displayPostImages(images) {
+        const container = document.getElementById('postImagesContainer');
+        container.innerHTML = '';
+        
+        if (!images || images.length === 0) {
+            container.innerHTML = '<div class="col-12 text-center py-5"><i class="fas fa-images fa-3x text-muted mb-3"></i><p>No images in this post</p><p class="text-muted small">Click the button above to add images</p></div>';
+            return;
+        }
+        
+        images.forEach(image => {
+            const col = document.createElement('div');
+            col.className = 'col-md-4 col-sm-6 mb-3';
+            col.innerHTML = `
+                <div class="position-relative image-card">
+                    <img src="${image.url}" 
+                         class="img-fluid rounded shadow-sm" 
+                         style="width:100%; height:150px; object-fit:cover; cursor:pointer"
+                         onclick="openLightbox('${image.url}')"
+                         alt="Post image">
+                    <div class="position-absolute top-0 end-0 m-2">
+                        <button class="btn btn-sm btn-danger rounded-circle" 
+                                onclick="deletePostImage(${image.id}, event)"
+                                title="Delete image">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+            container.appendChild(col);
+        });
+    }
+
+    // Open image in lightbox
+    window.openLightbox = function(imageUrl) {
+        // You can integrate with your existing lightbox here
+        // For now, we'll open in a new tab
+        window.open(imageUrl, '_blank');
+    }
+
+    // Handle adding new images
+    document.getElementById('modalImageInput')?.addEventListener('change', function() {
+        if (!this.files.length || !currentPostId) {
+            toast('❌ No post selected or no files chosen');
+            return;
+        }
+        
+        // Validate file types
+        const validTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+        const files = Array.from(this.files);
+        const invalidFiles = files.filter(file => !validTypes.includes(file.type));
+        
+        if (invalidFiles.length > 0) {
+            toast('❌ Please select only image files (JPEG, PNG, GIF, WEBP)');
+            this.value = '';
+            return;
+        }
+        
+        // Show uploading state
+        const uploadBtn = document.querySelector('[onclick="document.getElementById(\'modalImageInput\').click()"]');
+        const originalText = uploadBtn.innerHTML;
+        uploadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading...';
+        uploadBtn.disabled = true;
+        
+        const formData = new FormData();
+        formData.append('post_id', currentPostId);
+        formData.append('_token', csrf);
+        
+        files.forEach(file => {
+            formData.append('images[]', file);
+        });
+        
+        fetch('/post/images/add', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(res => {
+            if (!res.ok) {
+                throw new Error('Upload failed');
+            }
+            return res.json();
+        })
+        .then(data => {
+            if (data.status) {
+                toast('✅ Images added successfully');
+                // Refresh the gallery
+                openPostGallery(currentPostId);
+            } else {
+                throw new Error(data.message || 'Upload failed');
+            }
+        })
+        .catch(err => {
+            console.error('Error uploading images:', err);
+            toast('❌ ' + err.message);
+        })
+        .finally(() => {
+            // Reset upload button
+            uploadBtn.innerHTML = originalText;
+            uploadBtn.disabled = false;
+            this.value = '';
+        });
+    });
+
+    // Delete post image
+    window.deletePostImage = function(imageId, event) {
+        if (event) {
+            event.stopPropagation();
+        }
+        
+        if (!confirm('Are you sure you want to delete this image? This action cannot be undone.')) {
+            return;
+        }
+        
+        // Find and disable the delete button to prevent double clicks
+        const deleteBtn = event?.target?.closest('button');
+        if (deleteBtn) {
+            deleteBtn.disabled = true;
+            deleteBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+        }
+        
+        fetch('/post/images/delete', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrf,
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: JSON.stringify({
+                image_id: imageId
+            })
+        })
+        .then(res => {
+            if (!res.ok) {
+                throw new Error('Delete failed');
+            }
+            return res.json();
+        })
+        .then(data => {
+            if (data.status) {
+                toast('✅ Image deleted successfully');
+                // Refresh the gallery
+                openPostGallery(currentPostId);
+            } else {
+                throw new Error(data.message || 'Delete failed');
+            }
+        })
+        .catch(err => {
+            console.error('Error deleting image:', err);
+            toast('❌ ' + err.message);
+            // Re-enable the delete button if there's an error
+            if (deleteBtn) {
+                deleteBtn.disabled = false;
+                deleteBtn.innerHTML = '<i class="fas fa-trash"></i>';
+            }
+        });
+    }
+
+    // Enhanced toast function
+    function toast(message, duration = 3000) {
+        // Check if toast container exists, if not create it
+        let toastContainer = document.querySelector('.toast-container');
+        if (!toastContainer) {
+            toastContainer = document.createElement('div');
+            toastContainer.className = 'toast-container position-fixed bottom-0 end-0 p-3';
+            document.body.appendChild(toastContainer);
+        }
+        
+        // Create toast element
+        const toastEl = document.createElement('div');
+        toastEl.className = 'toast show';
+        toastEl.setAttribute('role', 'alert');
+        toastEl.setAttribute('aria-live', 'assertive');
+        toastEl.setAttribute('aria-atomic', 'true');
+        
+        // Determine toast style based on message
+        const isSuccess = message.includes('✅');
+        const isError = message.includes('❌');
+        
+        toastEl.innerHTML = `
+            <div class="toast-header ${isSuccess ? 'bg-success text-white' : isError ? 'bg-danger text-white' : ''}">
+                <i class="fas ${isSuccess ? 'fa-check-circle' : isError ? 'fa-exclamation-circle' : 'fa-info-circle'} me-2"></i>
+                <strong class="me-auto">${isSuccess ? 'Success' : isError ? 'Error' : 'Info'}</strong>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                ${message}
+            </div>
+        `;
+        
+        toastContainer.appendChild(toastEl);
+        
+        // Initialize Bootstrap toast
+        const toast = new bootstrap.Toast(toastEl, {
+            animation: true,
+            autohide: true,
+            delay: duration
+        });
+        
+        toast.show();
+        
+        // Remove toast after it's hidden
+        toastEl.addEventListener('hidden.bs.toast', function() {
+            this.remove();
+        });
+    }
+
+    // Expose necessary functions to global scope
+    window.openPostGallery = openPostGallery;
+    window.deletePostImage = deletePostImage;
+    window.toast = toast;
+</script>
 </body>
 
 </html>
