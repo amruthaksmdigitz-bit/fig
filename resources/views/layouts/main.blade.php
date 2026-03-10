@@ -32,6 +32,8 @@
     <meta name="description" content="Furniture International Group - Global directory of furniture manufacturers, suppliers, exporters. Find quality furniture companies worldwide for business networking and sourcing.">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
 
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <!-- Canonical URL -->
     <link rel="canonical" href="{{ url()->current() }}">
 
@@ -292,7 +294,6 @@
 .user-name {
     font-size: 16px;
     font-weight: 600;
-    color: #222;
     text-transform: lowercase;
 }
 

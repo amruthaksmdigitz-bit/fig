@@ -34,6 +34,7 @@ use App\Http\Controllers\FeedController;
 use App\Models\Location;
 use Illuminate\Support\Str;
 use App\Http\Controllers\Admin\FeedsController;
+use App\Http\Controllers\ReportController;
 
 
 Route::get('/generate-location-slugs', function () {
@@ -255,3 +256,7 @@ Route::prefix('admin')->group(function () {
 });
 
 //Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::middleware(['auth'])->group(function () {
+    Route::post('/reports', [ReportController::class, 'store'])->name('reports.store');
+});
