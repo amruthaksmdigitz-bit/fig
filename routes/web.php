@@ -140,6 +140,8 @@ Route::get('/feeds',[FeedController::class,'index'])->name('feeds');
 Route::post('/feeds/store',[FeedController::class,'store'])
 ->middleware('auth')
 ->name('feeds.store');
+
+
 // Frontend blog routes
 Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
 Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.show');
@@ -241,6 +243,8 @@ Route::prefix('admin')->group(function () {
 
     Route::delete('/feeds/{id}', [FeedController::class,'destroy'])->name('admin.feeds.delete');
 
+    
+
 });
 
 Route::prefix('admin')->group(function () {
@@ -252,6 +256,11 @@ Route::prefix('admin')->group(function () {
 
     Route::delete('/feeds/{id}', [FeedsController::class,'destroy'])->name('admin.feeds.delete');
 
+   Route::delete('/admin/feed-images/{id}', [FeedsController::class,'deleteImage'])
+    ->name('admin.feed-images.delete');
+
 });
+
+
 
 //Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

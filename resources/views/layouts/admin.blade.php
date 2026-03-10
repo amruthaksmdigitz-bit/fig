@@ -29,7 +29,7 @@
   <meta name="supported-color-schemes" content="light dark" />
   <link rel="stylesheet" href="{{asset('adminlte/dist/css/adminlte.css')}}" />
   <!--end::Accessibility Features-->
-
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" />
   <!--begin::Fonts-->
   <link
     rel="stylesheet"
@@ -39,7 +39,7 @@
     media="print"
     onload="this.media='all'" />
   <!--end::Fonts-->
-
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css">
   <!--begin::Third Party Plugin(OverlayScrollbars)-->
   <link
     rel="stylesheet"
@@ -71,6 +71,7 @@
     href="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/css/jsvectormap.min.css"
     integrity="sha256-+uGLJmmTKOqBr+2E6KDYs/NRsHxSkONXFHUL0fy2O/4="
     crossorigin="anonymous" />
+    
 	
 	<style>
 	/* Reduce pagination button padding */
@@ -1331,6 +1332,14 @@ nav svg {
     const sparkline3 = new ApexCharts(document.querySelector('#sparkline-3'), option_sparkline3);
     sparkline3.render();
   </script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script>
+<script>
+Fancybox.bind("[data-fancybox='gallery']", {
+});
+</script>
   <!--end::Script-->
 </body>
 <!--end::Body-->

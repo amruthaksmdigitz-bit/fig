@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Feed;
+use App\Models\FeedImage;
+
 
 class FeedsController extends Controller
 {
@@ -51,4 +53,13 @@ class FeedsController extends Controller
         return redirect()->route('admin.feeds.index')
             ->with('success', 'Feed deleted successfully');
     }
+
+    public function deleteImage($id)
+{
+    $image = FeedImage::findOrFail($id);
+
+    $image->delete();
+
+    return back()->with('success','Image deleted successfully');
+}
 }

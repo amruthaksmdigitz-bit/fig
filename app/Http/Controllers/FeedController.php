@@ -47,4 +47,6 @@ class FeedController extends Controller
 
         return back()->with('success','Post created successfully');
     }
+
+    
 }

@@ -18,13 +18,43 @@
 
                 <hr>
 
-                <h5>Images</h5>
+                <div class="row">
 
-                @foreach ($feed->images as $image)
-                    <img src="{{ asset('storage/' . $image->image) }}" width="150" style="margin:5px">
-                @endforeach
+@foreach ($feed->images as $image)
 
-            </div>
+<div class="col-md-3 mb-3">
+
+<div class="position-relative">
+
+<a data-fancybox="gallery" href="{{ asset('storage/'.$image->image) }}">
+    <img src="{{ asset('storage/'.$image->image) }}"
+         class="img-fluid rounded"
+         style="height:150px;width:100%;object-fit:cover;">
+</a>
+
+<!-- Delete Icon -->
+<form action="{{ route('admin.feed-images.delete',$image->id) }}"
+      method="POST">
+
+@csrf
+@method('DELETE')
+
+<button type="submit"
+        class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1 rounded-circle">
+
+<i class="bi bi-trash"></i>
+
+</button>
+
+</form>
+
+</div>
+
+</div>
+
+@endforeach
+
+</div>
         </div>
 
     </div>
