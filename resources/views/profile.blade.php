@@ -9,6 +9,8 @@
     <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
 
+<link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" rel="stylesheet">
+
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
@@ -659,6 +661,89 @@
             background-color: var(--gray-200);
             margin: 0.5rem 0;
         }
+        .cover-crop-container {
+    width: 100%;
+    height: 400px;
+    overflow: hidden;
+    background: #f0f0f0;
+    border-radius: 8px;
+}
+
+.cover-crop-container img {
+    max-width: 100%;
+    display: block;
+}
+
+/* Cropper.js custom styles */
+.cropper-view-box,
+.cropper-face {
+    border-radius: 8px;
+}
+
+.cropper-view-box {
+    outline: 2px solid var(--primary-color, #D0A04F);
+    outline-color: rgba(208, 160, 79, 0.75);
+}
+
+.cropper-line {
+    background-color: var(--primary-color, #D0A04F);
+}
+
+.cropper-point {
+    background-color: var(--primary-color, #D0A04F);
+    width: 8px;
+    height: 8px;
+}
+
+/* Crop controls styling */
+.crop-controls .btn {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s;
+}
+
+.crop-controls .btn:hover {
+    background-color: var(--primary-color, #D0A04F);
+    color: white;
+    transform: scale(1.1);
+}
+
+/* Aspect ratio buttons */
+.aspect-ratio-controls .btn.active {
+    background-color: var(--primary-color, #D0A04F);
+    color: white;
+    border-color: var(--primary-color, #D0A04F);
+}
+
+/* Modal animation */
+.modal.fade .modal-dialog {
+    transform: scale(0.95);
+    transition: transform 0.2s ease-out;
+}
+
+.modal.show .modal-dialog {
+    transform: scale(1);
+}
+
+/* Image preview while loading */
+.cover-crop-container::before {
+    content: 'Loading image...';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #999;
+    font-size: 14px;
+}
+
+.cover-crop-container img:not([src=""]) + .cover-crop-container::before {
+    display: none;
+}
 
         /* Responsive */
         @media (max-width: 1024px) {
@@ -720,7 +805,211 @@
             .user-btn .user-info {
                 display: none;
             }
+
+            .cropper-view-box,
+.cropper-face {
+    border-radius: 12px;
+}
+
+.cropper-container {
+    width: 100%;
+    height: 420px !important;
+}
+
+.cover-crop-container{
+width:100%;
+height:400px;
+overflow:hidden;
+background:#000;
+}
+
+.cover-crop-container img{
+max-width:100%;
+display:block;
+}
+
+.cropper-view-box,
+.cropper-face{
+border-radius:12px;
+}
+
+.cropper-crop-box{
+width:100%!important;
+height:100%!important;
+}
         }
+
+        .profile-crop-container {
+    width: 100%;
+    height: 350px;
+    overflow: hidden;
+    background: #f0f0f0;
+    border-radius: 12px;
+    position: relative;
+}
+
+.profile-crop-container img {
+    max-width: 100%;
+    display: block;
+}
+
+/* Custom cropper styles for profile */
+.profile-crop-container + .cropper-container {
+    border-radius: 12px;
+}
+
+.cropper-view-box {
+    border-radius: 12px;
+    outline: 2px solid var(--primary-color, #D0A04F);
+    outline-color: rgba(208, 160, 79, 0.75);
+}
+
+.cropper-face {
+    background-color: inherit;
+    border-radius: 12px;
+}
+
+.cropper-line {
+    background-color: var(--primary-color, #D0A04F);
+}
+
+.cropper-point {
+    background-color: var(--primary-color, #D0A04F);
+    width: 8px;
+    height: 8px;
+    border-radius: 4px;
+}
+
+.preview-circle img {
+    transition: all 0.2s;
+}
+
+.preview-square img {
+    transition: all 0.2s;
+}
+
+/* Crop controls for profile */
+.crop-controls .btn {
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s;
+    background: white;
+    border: 1px solid #dee2e6;
+}
+
+.crop-controls .btn:hover {
+    background-color: var(--primary-color, #D0A04F);
+    color: white;
+    transform: scale(1.1);
+    border-color: var(--primary-color, #D0A04F);
+}
+
+/* Size preset buttons */
+.size-presets .btn.active {
+    background-color: var(--primary-color, #D0A04F);
+    color: white;
+    border-color: var(--primary-color, #D0A04F);
+}
+
+.size-presets .btn {
+    transition: all 0.2s;
+}
+
+.size-presets .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* Preview section */
+.preview-section {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border: 1px solid rgba(208, 160, 79, 0.2);
+}
+
+/* Modal animations */
+.modal.fade .modal-dialog {
+    transform: scale(0.95);
+    transition: transform 0.2s ease-out;
+}
+
+.modal.show .modal-dialog {
+    transform: scale(1);
+}
+
+/* Loading indicator */
+.profile-crop-container.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 40px;
+    height: 40px;
+    margin: -20px 0 0 -20px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid var(--primary-color, #D0A04F);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Responsive design */
+@media (max-width: 576px) {
+    .profile-crop-container {
+        height: 250px;
+    }
+    
+    .crop-controls .btn {
+        width: 32px;
+        height: 32px;
+        font-size: 12px;
+    }
+    
+    .size-presets .btn {
+        font-size: 12px;
+        padding: 4px 8px;
+    }
+}
+
+/* Tooltip for keyboard shortcuts */
+.keyboard-shortcut {
+    position: relative;
+    cursor: help;
+}
+
+.keyboard-shortcut:hover::after {
+    content: attr(data-shortcut);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #333;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    z-index: 1000;
+}
+
+/* Success animation */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.profile-avatar.updated {
+    animation: pulse 0.5s ease-in-out;
+}
     </style>
 </head>
 
@@ -1155,6 +1444,170 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="coverCropModal" tabindex="-1" aria-labelledby="coverCropModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="coverCropModalLabel">
+                    <i class="fas fa-crop me-2"></i>Adjust Cover Image
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="cover-crop-container" style="max-height: 500px; overflow: hidden; background: #f5f5f5;">
+                    <img id="coverCropImage" src="" alt="Cover image to crop" style="max-width: 100%; display: block;">
+                </div>
+                
+                <!-- Crop Controls -->
+                <div class="crop-controls mt-3 d-flex justify-content-center gap-2">
+                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="cropper.zoom(0.1)">
+                        <i class="fas fa-search-plus"></i>
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="cropper.zoom(-0.1)">
+                        <i class="fas fa-search-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="cropper.move(-10, 0)">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="cropper.move(10, 0)">
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="cropper.move(0, -10)">
+                        <i class="fas fa-arrow-up"></i>
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="cropper.move(0, 10)">
+                        <i class="fas fa-arrow-down"></i>
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="cropper.reset()">
+                        <i class="fas fa-undo"></i>
+                    </button>
+                </div>
+                
+                <!-- Aspect Ratio Options -->
+                <div class="aspect-ratio-controls mt-3">
+                    <label class="form-label text-muted small">Aspect Ratio:</label>
+                    <div class="d-flex gap-2 flex-wrap">
+                        <button type="button" class="btn btn-sm btn-outline-primary active" onclick="setAspectRatio(16/5)">
+                            16:5 (Current)
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-primary" onclick="setAspectRatio(16/9)">
+                            16:9
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-primary" onclick="setAspectRatio(3/1)">
+                            3:1
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-primary" onclick="setAspectRatio(4/1)">
+                            4:1
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-primary" onclick="setAspectRatio(NaN)">
+                            Free
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-2"></i>Cancel
+                </button>
+                <button type="button" class="btn btn-primary" id="saveCoverBtn">
+                    <i class="fas fa-check me-2"></i>Save Cover
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{{-- model for profile pic --}}
+<!-- Add this modal for profile picture cropping after your existing modals -->
+<div class="modal fade" id="profileCropModal" tabindex="-1" aria-labelledby="profileCropModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="profileCropModalLabel">
+                    <i class="fas fa-crop me-2"></i>Adjust Profile Picture
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="profile-crop-container" style="max-height: 400px; overflow: hidden; background: #f5f5f5; border-radius: 12px;">
+                    <img id="profileCropImage" src="" alt="Profile image to crop" style="max-width: 100%; display: block;">
+                </div>
+                
+                <!-- Crop Controls -->
+                <div class="crop-controls mt-3 d-flex justify-content-center gap-2 flex-wrap">
+                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="profileCropper.zoom(0.1)">
+                        <i class="fas fa-search-plus"></i>
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="profileCropper.zoom(-0.1)">
+                        <i class="fas fa-search-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="profileCropper.move(-10, 0)">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="profileCropper.move(10, 0)">
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="profileCropper.move(0, -10)">
+                        <i class="fas fa-arrow-up"></i>
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="profileCropper.move(0, 10)">
+                        <i class="fas fa-arrow-down"></i>
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="profileCropper.rotate(-90)">
+                        <i class="fas fa-undo-alt"></i>
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="profileCropper.rotate(90)">
+                        <i class="fas fa-redo-alt"></i>
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="profileCropper.reset()">
+                        <i class="fas fa-undo"></i>
+                    </button>
+                </div>
+                
+                <!-- Size Presets -->
+                <div class="size-presets mt-3">
+                    <label class="form-label text-muted small">Size Presets:</label>
+                    <div class="d-flex gap-2 flex-wrap">
+                        <button type="button" class="btn btn-sm btn-outline-primary" onclick="setProfileSize(300, 300)">
+                            <i class="fas fa-image me-1"></i>Small (300x300)
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-primary" onclick="setProfileSize(512, 512)">
+                            <i class="fas fa-image me-1"></i>Medium (512x512)
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-primary" onclick="setProfileSize(1024, 1024)">
+                            <i class="fas fa-image me-1"></i>Large (1024x1024)
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Preview -->
+                <div class="preview-section mt-3 p-3 bg-light rounded">
+                    <label class="form-label text-muted small mb-2">Preview:</label>
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="preview-circle" style="width: 60px; height: 60px; border-radius: 12px; overflow: hidden; border: 2px solid var(--primary-color);">
+                            <img id="profilePreview" src="" alt="Preview" style="width: 100%; height: 100%; object-fit: cover; display: none;">
+                        </div>
+                        <div class="preview-square" style="width: 60px; height: 60px; overflow: hidden; border-radius: 8px; border: 2px solid var(--primary-color);">
+                            <img id="profilePreviewSquare" src="" alt="Preview square" style="width: 100%; height: 100%; object-fit: cover; display: none;">
+                        </div>
+                        <small class="text-muted">Rounded & Square preview</small>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-2"></i>Cancel
+                </button>
+                <button type="button" class="btn btn-primary" id="saveProfileBtn">
+                    <i class="fas fa-check me-2"></i>Save Profile Picture
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
     <!-- Toast Notification -->
     <div class="toast-container position-fixed bottom-0 end-0 p-3">
@@ -1723,7 +2176,895 @@
     window.openPostGallery = openPostGallery;
     window.deletePostImage = deletePostImage;
     window.toast = toast;
+
+
+let cropper;
+const csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+const coverInput = document.getElementById('coverInput');
+const coverModal = new bootstrap.Modal(document.getElementById('coverCropModal'));
+const cropImage = document.getElementById('coverCropImage');
+
+coverInput.addEventListener('change', function(e){
+
+const file = e.target.files[0];
+if(!file) return;
+
+const reader = new FileReader();
+
+reader.onload = function(event){
+
+cropImage.src = event.target.result;
+
+coverModal.show();
+
+if(cropper){
+cropper.destroy();
+}
+
+cropper = new Cropper(cropImage,{
+aspectRatio: 16/5,
+viewMode:1,
+dragMode:'move',
+cropBoxMovable:false,
+cropBoxResizable:false,
+guides:false,
+center:false,
+highlight:false,
+background:false,
+autoCropArea:1,
+zoomOnWheel:true
+});
+
+};
+
+reader.readAsDataURL(file);
+
+});
+
+
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
+
+<script>
+// Cover image cropping functionality
+let coverCropper = null;
+let coverCropModal = null;
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize modal
+    const modalElement = document.getElementById('coverCropModal');
+    coverCropModal = new bootstrap.Modal(modalElement);
+    
+    // Handle modal hidden event
+    modalElement.addEventListener('hidden.bs.modal', function() {
+        if (coverCropper) {
+            coverCropper.destroy();
+            coverCropper = null;
+        }
+        // Clear the file input
+        document.getElementById('coverInput').value = '';
+    });
+});
+
+// Set aspect ratio function
+window.setAspectRatio = function(ratio) {
+    if (coverCropper) {
+        coverCropper.setAspectRatio(ratio);
+        
+        // Update active button state
+        document.querySelectorAll('.aspect-ratio-controls .btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        
+        // Find and activate the clicked button
+        const buttons = document.querySelectorAll('.aspect-ratio-controls .btn');
+        if (isNaN(ratio)) {
+            // Free aspect ratio
+            buttons.forEach(btn => {
+                if (btn.textContent.trim() === 'Free') {
+                    btn.classList.add('active');
+                }
+            });
+        } else {
+            buttons.forEach(btn => {
+                const btnRatio = btn.getAttribute('onclick')?.match(/[\d.]+/g);
+                if (btnRatio && Math.abs(eval(btnRatio.join('/')) - ratio) < 0.01) {
+                    btn.classList.add('active');
+                }
+            });
+        }
+    }
+};
+
+// Handle cover input change
+document.getElementById('coverInput').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    // Validate file type
+    if (!file.type.match('image.*')) {
+        toast('❌ Please select an image file');
+        this.value = '';
+        return;
+    }
+
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+        toast('❌ Image size should be less than 5MB');
+        this.value = '';
+        return;
+    }
+
+    const reader = new FileReader();
+    
+    reader.onload = function(event) {
+        // Set the image source
+        const cropImage = document.getElementById('coverCropImage');
+        cropImage.src = event.target.result;
+        
+        // Show the modal
+        coverCropModal.show();
+        
+        // Initialize cropper after modal is shown
+        setTimeout(() => {
+            if (coverCropper) {
+                coverCropper.destroy();
+            }
+            
+            coverCropper = new Cropper(cropImage, {
+                aspectRatio: 16 / 5, // Default aspect ratio
+                viewMode: 1,
+                dragMode: 'move',
+                cropBoxMovable: true,
+                cropBoxResizable: true,
+                guides: true,
+                center: true,
+                highlight: false,
+                background: false,
+                autoCropArea: 1,
+                zoomOnWheel: true,
+                minContainerWidth: 600,
+                minContainerHeight: 400,
+                ready: function() {
+                    // Set crop box to cover entire image initially
+                    this.cropper.setCropBoxData({
+                        left: 0,
+                        top: 0,
+                        width: this.cropper.getContainerData().width,
+                        height: this.cropper.getContainerData().height / (16/5)
+                    });
+                }
+            });
+        }, 200);
+    };
+    
+    reader.readAsDataURL(file);
+});
+
+// Save cropped cover image
+document.getElementById('saveCoverBtn').addEventListener('click', function() {
+    if (!coverCropper) return;
+    
+    // Show loading state
+    const saveBtn = this;
+    const originalText = saveBtn.innerHTML;
+    saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Saving...';
+    saveBtn.disabled = true;
+    
+    // Get cropped canvas
+    const canvas = coverCropper.getCroppedCanvas({
+        width: 1920, // Max width
+        height: 600, // Max height (maintaining aspect ratio)
+        imageSmoothingEnabled: true,
+        imageSmoothingQuality: 'high',
+    });
+    
+    // Convert canvas to blob
+    canvas.toBlob(function(blob) {
+        const formData = new FormData();
+        formData.append('cover_image', blob, 'cover-image.jpg');
+        formData.append('_token', csrf);
+        
+        // Upload the cropped image
+        fetch("{{ route('profile.image.update') }}", {
+            method: "POST",
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(res => {
+            if (!res.ok) {
+                throw new Error('Upload failed');
+            }
+            return res.json();
+        })
+        .then(data => {
+            if (data.status) {
+                // Update cover image
+                document.querySelector('.cover-image').style.backgroundImage = `url('${data.url}?t=${Date.now()}')`;
+                
+                // Show success message
+                toast('✅ Cover image updated successfully');
+                
+                // Close modal
+                coverCropModal.hide();
+                
+                // Clear file input
+                document.getElementById('coverInput').value = '';
+            } else {
+                throw new Error(data.message || 'Upload failed');
+            }
+        })
+        .catch(err => {
+            console.error('Error uploading cover:', err);
+            toast('❌ ' + err.message);
+        })
+        .finally(() => {
+            // Reset button
+            saveBtn.innerHTML = originalText;
+            saveBtn.disabled = false;
+        });
+    }, 'image/jpeg', 0.95); // High quality JPEG
+});
+
+// Optional: Add preview before cropping
+function previewCoverImage(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (e) => resolve(e.target.result);
+        reader.onerror = (e) => reject(e);
+        reader.readAsDataURL(file);
+    });
+}
+
+// Enhanced change cover button to show file selection
+document.getElementById('changeCoverBtn').addEventListener('click', function() {
+    // Create a temporary file input if needed
+    const fileInput = document.getElementById('coverInput');
+    fileInput.value = ''; // Clear previous selection
+    
+});
+
+// Optional: Add drag and drop functionality
+const coverArea = document.querySelector('.cover-image');
+if (coverArea) {
+    coverArea.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        coverArea.style.opacity = '0.8';
+    });
+    
+    coverArea.addEventListener('dragleave', (e) => {
+        e.preventDefault();
+        coverArea.style.opacity = '1';
+    });
+    
+    coverArea.addEventListener('drop', (e) => {
+        e.preventDefault();
+        coverArea.style.opacity = '1';
+        
+        const files = e.dataTransfer.files;
+        if (files.length > 0 && files[0].type.match('image.*')) {
+            document.getElementById('coverInput').files = files;
+            // Trigger change event
+            const event = new Event('change', { bubbles: true });
+            document.getElementById('coverInput').dispatchEvent(event);
+        } else {
+            toast('❌ Please drop an image file');
+        }
+    });
+}
+
+// Enhanced toast function (if not already present)
+if (typeof window.toast !== 'function') {
+    window.toast = function(message, duration = 3000) {
+        // Create toast container if it doesn't exist
+        let toastContainer = document.querySelector('.toast-container');
+        if (!toastContainer) {
+            toastContainer = document.createElement('div');
+            toastContainer.className = 'toast-container position-fixed bottom-0 end-0 p-3';
+            document.body.appendChild(toastContainer);
+        }
+        
+        // Determine toast style based on message
+        const isSuccess = message.includes('✅');
+        const isError = message.includes('❌');
+        const isInfo = message.includes('ℹ️');
+        
+        const toastEl = document.createElement('div');
+        toastEl.className = 'toast show';
+        toastEl.setAttribute('role', 'alert');
+        toastEl.setAttribute('aria-live', 'assertive');
+        toastEl.setAttribute('aria-atomic', 'true');
+        
+        let bgClass = '';
+        if (isSuccess) bgClass = 'bg-success text-white';
+        else if (isError) bgClass = 'bg-danger text-white';
+        else if (isInfo) bgClass = 'bg-info text-white';
+        
+        toastEl.innerHTML = `
+            <div class="toast-header ${bgClass}">
+                <i class="fas ${isSuccess ? 'fa-check-circle' : isError ? 'fa-exclamation-circle' : isInfo ? 'fa-info-circle' : 'fa-bell'} me-2"></i>
+                <strong class="me-auto">${isSuccess ? 'Success' : isError ? 'Error' : isInfo ? 'Info' : 'Notification'}</strong>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                ${message.replace(/[✅❌ℹ️]/g, '')}
+            </div>
+        `;
+        
+        toastContainer.appendChild(toastEl);
+        
+        const toast = new bootstrap.Toast(toastEl, {
+            animation: true,
+            autohide: true,
+            delay: duration
+        });
+        
+        toast.show();
+        
+        toastEl.addEventListener('hidden.bs.toast', function() {
+            this.remove();
+        });
+    };
+}
+
+// Clean up on modal close
+document.getElementById('coverCropModal').addEventListener('hidden.bs.modal', function() {
+    if (coverCropper) {
+        coverCropper.destroy();
+        coverCropper = null;
+    }
+    document.getElementById('coverInput').value = '';
+});
+</script>
+
+<script>
+const csrf = '{{ csrf_token() }}';
+
+// Profile image upload - Show crop modal instead of uploading
+document.getElementById('profileAvatar').addEventListener('click', () => {
+    document.getElementById('profileInput').click();
+});
+
+// Cover image upload - Show crop modal instead of uploading
+document.getElementById('changeCoverBtn').addEventListener('click', () => {
+    document.getElementById('coverInput').click();
+});
+
+// Remove or comment out the old uploadImage function calls
+// document.getElementById('profileInput').addEventListener('change', function() {
+//     uploadImage(this.files[0], 'profile_image');
+// });
+
+// document.getElementById('coverInput').addEventListener('change', function() {
+//     uploadImage(this.files[0], 'cover_image');
+// });
+
+// Keep uploadImage function for backward compatibility but don't use it directly
+function uploadImage(file, type) {
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append(type, file);
+    formData.append('_token', csrf);
+
+    fetch("{{ route('profile.image.update') }}", {
+        method: "POST",
+        body: formData,
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.status) {
+            if (type === 'profile_image') {
+                document.getElementById('profileAvatar').src = data.url;
+                document.querySelector('.user-avatar').src = data.url;
+            }
+            if (type === 'cover_image') {
+                document.querySelector('.cover-image').style.backgroundImage = `url('${data.url}')`;
+            }
+            toast('✅ Image updated');
+        } else {
+            toast(data.message || 'Upload failed');
+        }
+    })
+    .catch(err => {
+        console.error(err);
+        toast('Server error');
+    });
+}
+</script>
+
+<!-- Update the cover input handler -->
+<script>
+let coverCropper = null;
+let coverCropModal = null;
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize modal
+    const modalElement = document.getElementById('coverCropModal');
+    coverCropModal = new bootstrap.Modal(modalElement);
+    
+    // Handle modal hidden event
+    modalElement.addEventListener('hidden.bs.modal', function() {
+        if (coverCropper) {
+            coverCropper.destroy();
+            coverCropper = null;
+        }
+        // Clear the file input
+        document.getElementById('coverInput').value = '';
+    });
+});
+
+// Set aspect ratio function
+window.setAspectRatio = function(ratio) {
+    if (coverCropper) {
+        coverCropper.setAspectRatio(ratio);
+        
+        // Update active button state
+        document.querySelectorAll('.aspect-ratio-controls .btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        
+        // Find and activate the clicked button
+        const buttons = document.querySelectorAll('.aspect-ratio-controls .btn');
+        if (isNaN(ratio)) {
+            // Free aspect ratio
+            buttons.forEach(btn => {
+                if (btn.textContent.trim() === 'Free') {
+                    btn.classList.add('active');
+                }
+            });
+        } else {
+            buttons.forEach(btn => {
+                const btnRatio = btn.getAttribute('onclick')?.match(/[\d.]+/g);
+                if (btnRatio && Math.abs(eval(btnRatio.join('/')) - ratio) < 0.01) {
+                    btn.classList.add('active');
+                }
+            });
+        }
+    }
+};
+
+// Handle cover input change - Show crop modal
+document.getElementById('coverInput').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    // Validate file type
+    if (!file.type.match('image.*')) {
+        toast('❌ Please select an image file');
+        this.value = '';
+        return;
+    }
+
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+        toast('❌ Image size should be less than 5MB');
+        this.value = '';
+        return;
+    }
+
+    const reader = new FileReader();
+    
+    reader.onload = function(event) {
+        // Set the image source
+        const cropImage = document.getElementById('coverCropImage');
+        cropImage.src = event.target.result;
+        
+        // Show the modal
+        coverCropModal.show();
+        
+        // Initialize cropper after modal is shown
+        setTimeout(() => {
+            if (coverCropper) {
+                coverCropper.destroy();
+            }
+            
+            coverCropper = new Cropper(cropImage, {
+                aspectRatio: 16 / 5, // Default aspect ratio
+                viewMode: 1,
+                dragMode: 'move',
+                cropBoxMovable: true,
+                cropBoxResizable: true,
+                guides: true,
+                center: true,
+                highlight: false,
+                background: false,
+                autoCropArea: 1,
+                zoomOnWheel: true,
+                minContainerWidth: 600,
+                minContainerHeight: 400,
+                ready: function() {
+                    // Set crop box to cover entire image initially
+                    const containerData = this.cropper.getContainerData();
+                    const cropBoxData = {
+                        left: 0,
+                        top: 0,
+                        width: containerData.width,
+                        height: containerData.width / (16/5)
+                    };
+                    // Center vertically if height is less than container
+                    if (cropBoxData.height < containerData.height) {
+                        cropBoxData.top = (containerData.height - cropBoxData.height) / 2;
+                    }
+                    this.cropper.setCropBoxData(cropBoxData);
+                }
+            });
+        }, 200);
+    };
+    
+    reader.readAsDataURL(file);
+});
+
+// Save cropped cover image
+document.getElementById('saveCoverBtn').addEventListener('click', function() {
+    if (!coverCropper) return;
+    
+    // Show loading state
+    const saveBtn = this;
+    const originalText = saveBtn.innerHTML;
+    saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Saving...';
+    saveBtn.disabled = true;
+    
+    // Get cropped canvas
+    const canvas = coverCropper.getCroppedCanvas({
+        width: 1920, // Max width
+        height: 600, // Max height (maintaining aspect ratio)
+        imageSmoothingEnabled: true,
+        imageSmoothingQuality: 'high',
+    });
+    
+    // Convert canvas to blob
+    canvas.toBlob(function(blob) {
+        const formData = new FormData();
+        formData.append('cover_image', blob, 'cover-image.jpg');
+        formData.append('_token', csrf);
+        
+        // Upload the cropped image
+        fetch("{{ route('profile.image.update') }}", {
+            method: "POST",
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(res => {
+            if (!res.ok) {
+                throw new Error('Upload failed');
+            }
+            return res.json();
+        })
+        .then(data => {
+            if (data.status) {
+                // Update cover image
+                document.querySelector('.cover-image').style.backgroundImage = `url('${data.url}?t=${Date.now()}')`;
+                
+                // Show success message
+                toast('✅ Cover image updated successfully');
+                
+                // Close modal
+                coverCropModal.hide();
+                
+                // Clear file input
+                document.getElementById('coverInput').value = '';
+            } else {
+                throw new Error(data.message || 'Upload failed');
+            }
+        })
+        .catch(err => {
+            console.error('Error uploading cover:', err);
+            toast('❌ ' + err.message);
+        })
+        .finally(() => {
+            // Reset button
+            saveBtn.innerHTML = originalText;
+            saveBtn.disabled = false;
+        });
+    }, 'image/jpeg', 0.95); // High quality JPEG
+});
+
+// Clean up on modal close
+document.getElementById('coverCropModal').addEventListener('hidden.bs.modal', function() {
+    if (coverCropper) {
+        coverCropper.destroy();
+        coverCropper = null;
+    }
+    document.getElementById('coverInput').value = '';
+});
+</script>
+
+<!-- Profile picture cropping script -->
+<script>
+// Profile picture cropping functionality
+let profileCropper = null;
+let profileCropModal = null;
+let selectedProfileSize = 512; // Default size
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize modal
+    const modalElement = document.getElementById('profileCropModal');
+    profileCropModal = new bootstrap.Modal(modalElement);
+    
+    // Handle modal hidden event
+    modalElement.addEventListener('hidden.bs.modal', function() {
+        if (profileCropper) {
+            profileCropper.destroy();
+            profileCropper = null;
+        }
+        // Clear preview images
+        document.getElementById('profilePreview').style.display = 'none';
+        document.getElementById('profilePreviewSquare').style.display = 'none';
+        // Clear the file input
+        document.getElementById('profileInput').value = '';
+    });
+});
+
+// Set profile image size
+window.setProfileSize = function(width, height) {
+    selectedProfileSize = width;
+    if (profileCropper) {
+        // Update active button state
+        document.querySelectorAll('.size-presets .btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        event.target.classList.add('active');
+        
+        toast(`ℹ️ Image will be saved as ${width}x${height} pixels`);
+    }
+};
+
+// Handle profile input change - Show crop modal
+document.getElementById('profileInput').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    // Validate file type
+    if (!file.type.match('image.*')) {
+        toast('❌ Please select an image file');
+        this.value = '';
+        return;
+    }
+
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+        toast('❌ Image size should be less than 5MB');
+        this.value = '';
+        return;
+    }
+
+    const reader = new FileReader();
+    
+    reader.onload = function(event) {
+        // Set the image source
+        const cropImage = document.getElementById('profileCropImage');
+        cropImage.src = event.target.result;
+        
+        // Show the modal
+        profileCropModal.show();
+        
+        // Initialize cropper after modal is shown
+        setTimeout(() => {
+            if (profileCropper) {
+                profileCropper.destroy();
+            }
+            
+            profileCropper = new Cropper(cropImage, {
+                aspectRatio: 1 / 1, // 1:1 aspect ratio for profile pictures
+                viewMode: 1,
+                dragMode: 'move',
+                cropBoxMovable: true,
+                cropBoxResizable: true,
+                guides: true,
+                center: true,
+                highlight: false,
+                background: false,
+                autoCropArea: 1,
+                zoomOnWheel: true,
+                minContainerWidth: 300,
+                minContainerHeight: 300,
+                crop: function(event) {
+                    // Update preview in real-time
+                    updateProfilePreview(event.detail);
+                },
+                ready: function() {
+                    // Set crop box to square in the center
+                    const containerData = this.cropper.getContainerData();
+                    const size = Math.min(containerData.width, containerData.height);
+                    this.cropper.setCropBoxData({
+                        left: (containerData.width - size) / 2,
+                        top: (containerData.height - size) / 2,
+                        width: size,
+                        height: size
+                    });
+                }
+            });
+        }, 200);
+    };
+    
+    reader.readAsDataURL(file);
+});
+
+// Update preview images
+function updateProfilePreview(data) {
+    if (!profileCropper) return;
+    
+    // Get cropped canvas for preview
+    const canvas = profileCropper.getCroppedCanvas({
+        width: 100,
+        height: 100,
+        imageSmoothingEnabled: true,
+        imageSmoothingQuality: 'high'
+    });
+    
+    // Update preview images
+    const previewImg = document.getElementById('profilePreview');
+    const previewSquareImg = document.getElementById('profilePreviewSquare');
+    
+    previewImg.src = canvas.toDataURL('image/jpeg');
+    previewSquareImg.src = canvas.toDataURL('image/jpeg');
+    
+    previewImg.style.display = 'block';
+    previewSquareImg.style.display = 'block';
+}
+
+// Save cropped profile image
+document.getElementById('saveProfileBtn').addEventListener('click', function() {
+    if (!profileCropper) return;
+    
+    // Show loading state
+    const saveBtn = this;
+    const originalText = saveBtn.innerHTML;
+    saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Saving...';
+    saveBtn.disabled = true;
+    
+    // Get cropped canvas with selected size
+    const canvas = profileCropper.getCroppedCanvas({
+        width: selectedProfileSize,
+        height: selectedProfileSize,
+        imageSmoothingEnabled: true,
+        imageSmoothingQuality: 'high',
+    });
+    
+    // Convert canvas to blob
+    canvas.toBlob(function(blob) {
+        const formData = new FormData();
+        formData.append('profile_image', blob, 'profile-image.jpg');
+        formData.append('_token', csrf);
+        
+        // Upload the cropped image
+        fetch("{{ route('profile.image.update') }}", {
+            method: "POST",
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(res => {
+            if (!res.ok) {
+                throw new Error('Upload failed');
+            }
+            return res.json();
+        })
+        .then(data => {
+            if (data.status) {
+                // Update profile images
+                const newImageUrl = `${data.url}?t=${Date.now()}`;
+                document.getElementById('profileAvatar').src = newImageUrl;
+                document.querySelector('.user-avatar').src = newImageUrl;
+                document.getElementById('modalProfileAvatar').src = newImageUrl;
+                
+                // Show success message
+                toast('✅ Profile picture updated successfully');
+                
+                // Close modal
+                profileCropModal.hide();
+                
+                // Clear file input
+                document.getElementById('profileInput').value = '';
+            } else {
+                throw new Error(data.message || 'Upload failed');
+            }
+        })
+        .catch(err => {
+            console.error('Error uploading profile image:', err);
+            toast('❌ ' + err.message);
+        })
+        .finally(() => {
+            // Reset button
+            saveBtn.innerHTML = originalText;
+            saveBtn.disabled = false;
+        });
+    }, 'image/jpeg', 0.95); // High quality JPEG
+});
+
+// Clean up on modal close
+document.getElementById('profileCropModal').addEventListener('hidden.bs.modal', function() {
+    if (profileCropper) {
+        profileCropper.destroy();
+        profileCropper = null;
+    }
+    document.getElementById('profileInput').value = '';
+    document.getElementById('profilePreview').style.display = 'none';
+    document.getElementById('profilePreviewSquare').style.display = 'none';
+});
+
+// Add keyboard shortcuts for cropping
+document.addEventListener('keydown', function(e) {
+    if (!profileCropper || !profileCropModal || !document.getElementById('profileCropModal').classList.contains('show')) {
+        return;
+    }
+    
+    switch(e.key) {
+        case '+':
+        case '=':
+            e.preventDefault();
+            profileCropper.zoom(0.1);
+            break;
+        case '-':
+            e.preventDefault();
+            profileCropper.zoom(-0.1);
+            break;
+        case 'ArrowLeft':
+            e.preventDefault();
+            profileCropper.move(-10, 0);
+            break;
+        case 'ArrowRight':
+            e.preventDefault();
+            profileCropper.move(10, 0);
+            break;
+        case 'ArrowUp':
+            e.preventDefault();
+            profileCropper.move(0, -10);
+            break;
+        case 'ArrowDown':
+            e.preventDefault();
+            profileCropper.move(0, 10);
+            break;
+        case 'r':
+            e.preventDefault();
+            profileCropper.reset();
+            break;
+        case 'Enter':
+            e.preventDefault();
+            document.getElementById('saveProfileBtn').click();
+            break;
+    }
+});
+
+// Optional: Add drag and drop for profile picture
+const profileAvatarContainer = document.querySelector('.profile-avatar').parentElement;
+if (profileAvatarContainer) {
+    profileAvatarContainer.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        profileAvatarContainer.style.opacity = '0.8';
+    });
+    
+    profileAvatarContainer.addEventListener('dragleave', (e) => {
+        e.preventDefault();
+        profileAvatarContainer.style.opacity = '1';
+    });
+    
+    profileAvatarContainer.addEventListener('drop', (e) => {
+        e.preventDefault();
+        profileAvatarContainer.style.opacity = '1';
+        
+        const files = e.dataTransfer.files;
+        if (files.length > 0 && files[0].type.match('image.*')) {
+            document.getElementById('profileInput').files = files;
+            // Trigger change event
+            const event = new Event('change', { bubbles: true });
+            document.getElementById('profileInput').dispatchEvent(event);
+        } else {
+            toast('❌ Please drop an image file');
+        }
+    });
+}
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
 </body>
 
 </html>
