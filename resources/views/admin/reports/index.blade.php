@@ -5,17 +5,17 @@
     <h3 class="mt-4">Reported Feeds</h3>
 
     @if (session('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ session('success') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
     @endif
 
     @if (session('error'))
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            {{ session('error') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{ session('error') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
     @endif
 
     <!-- Statistics Cards -->
@@ -70,8 +70,7 @@
     <form method="GET" action="{{ url('admin/reports') }}" class="mb-3">
         <div class="row">
             <div class="col-md-4">
-                <input type="text" name="search" value="{{ $search ?? '' }}" class="form-control"
-                    placeholder="Search by title, reporter, or message">
+                <input type="text" name="search" value="{{ $search ?? '' }}" class="form-control" placeholder="Search by title, reporter, or message">
             </div>
             <div class="col-md-2">
                 <button type="submit" class="btn btn-primary">Search</button>
@@ -93,7 +92,7 @@
         <div class="card-body">
             <form method="GET" class="row g-3">
                 @if(request('search'))
-                    <input type="hidden" name="search" value="{{ request('search') }}">
+                <input type="hidden" name="search" value="{{ request('search') }}">
                 @endif
                 <div class="col-md-3">
                     <label class="form-label">Status</label>
@@ -139,83 +138,77 @@
                         <td>#{{ $report->id }}</td>
                         <td>
                             @if($report->feed)
-                                <strong>{{ $report->feed->title }}</strong>
-                                @if($report->feed->is_hidden)
-                                    <span class="badge bg-warning">Hidden</span>
-                                @endif
-                                <br>
-                                <small class="text-muted">Reports: {{ $report->feed->report_count ?? 0 }}</small>
+                            <strong>{{ $report->feed->title }}</strong>
+                            @if($report->feed->is_hidden)
+                            <span class="badge bg-warning">Hidden</span>
+                            @endif
+                            <br>
+                            <small class="text-muted">Reports: {{ $report->feed->report_count ?? 0 }}</small>
                             @else
-                                <span class="text-danger">Post Deleted</span>
+                            <span class="text-danger">Post Deleted</span>
                             @endif
                         </td>
                         <td>
                             @if($report->feed && $report->feed->images->count())
-                                <img src="{{ asset('storage/'.$report->feed->images->first()->image) }}" 
-                                     width="50" height="50" style="object-fit: cover;" class="rounded">
+                            <img src="{{ asset('storage/'.$report->feed->images->first()->image) }}" width="50" height="50" style="object-fit: cover;" class="rounded">
                             @else
-                                <span class="text-muted">No image</span>
+                            <span class="text-muted">No image</span>
                             @endif
                         </td>
                         <td>
                             <small>{{ Str::limit($report->message, 50) }}</small>
                             @if($report->screenshot)
-                                <br>
-                                <a href="{{ asset('storage/'.$report->screenshot) }}" target="_blank" class="badge bg-info">
-                                    <i class="bi bi-image"></i> Evidence
-                                </a>
+                            <br>
+                            <a href="{{ asset('storage/'.$report->screenshot) }}" target="_blank" class="badge bg-info">
+                                <i class="bi bi-image"></i> Evidence
+                            </a>
                             @endif
                         </td>
                         <td>{{ $report->reporter->name ?? 'Unknown' }}</td>
                         <td>{{ $report->reportedUser->name ?? 'Unknown' }}</td>
                         <td>
                             @if($report->status == 'pending')
-                                <span class="badge bg-warning">Pending</span>
+                            <span class="badge bg-warning">Pending</span>
                             @elseif($report->status == 'resolved')
-                                <span class="badge bg-success">Resolved</span>
+                            <span class="badge bg-success">Resolved</span>
                             @elseif($report->status == 'dismissed')
-                                <span class="badge bg-secondary">Dismissed</span>
+                            <span class="badge bg-secondary">Dismissed</span>
                             @else
-                                <span class="badge bg-info">Action Taken</span>
+                            <span class="badge bg-info">Action Taken</span>
                             @endif
                         </td>
                         <td>{{ $report->created_at ? $report->created_at->format('Y-m-d') : 'N/A' }}</td>
                         <td>
                             <div class="btn-group" role="group">
-                                <a href="{{ url('admin/reports/' . $report->id) }}" 
-                                   class="btn btn-info btn-sm">
+                                <a href="{{ url('admin/reports/' . $report->id) }}" class="btn btn-info btn-sm">
                                     <i class="bi bi-eye"></i> View
                                 </a>
-                                
+
                                 @if($report->feed)
                                 {{-- <!-- Hide Post Form -->
-                                <form action="{{ url('admin/reports/hide-post/' . $report->feed->id) }}" 
-                                      method="POST" class="d-inline">
-                                    @csrf
-                                    <button type="submit" class="btn btn-warning btn-sm" 
-                                            onclick="return confirm('Hide this post? It will be hidden from public view.')">
-                                        <i class="bi bi-eye-slash"></i> Hide
-                                    </button>
+                                <form action="{{ url('admin/reports/hide-post/' . $report->feed->id) }}"
+                                method="POST" class="d-inline">
+                                @csrf
+                                <button type="submit" class="btn btn-warning btn-sm" onclick="return confirm('Hide this post? It will be hidden from public view.')">
+                                    <i class="bi bi-eye-slash"></i> Hide
+                                </button>
                                 </form> --}}
-                                
+
                                 <!-- Delete Post Form -->
-                                <form action="{{ url('admin/reports/delete-post/' . $report->feed->id) }}" 
-                                      method="POST" class="d-inline">
+                                <!-- Delete Post Form -->
+                                <form action="{{ url('admin/reports/delete-post/' . $report->feed->id) }}" method="POST" class="d-inline">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm" 
-                                            onclick="return confirm('Delete this post? All images will be removed. This action cannot be undone!')">
+                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Delete this post? All images will be removed. This action cannot be undone!\\n\\nBoth the reporter and post owner will receive email notifications about this deletion.')">
                                         <i class="bi bi-trash"></i> Delete
                                     </button>
                                 </form>
                                 @endif
-                                
+
                                 <!-- Dismiss Report Form -->
-                                <form action="{{ url('admin/reports/dismiss/' . $report->id) }}" 
-                                      method="POST" class="d-inline">
+                                <form action="{{ url('admin/reports/dismiss/' . $report->id) }}" method="POST" class="d-inline">
                                     @csrf
-                                    <button type="submit" class="btn btn-success btn-sm" 
-                                            onclick="return confirm('Dismiss this report? The report will be marked as dismissed.')">
+                                    <button type="submit" class="btn btn-success btn-sm" onclick="return confirm('Dismiss this report? The report will be marked as dismissed.')">
                                         <i class="bi bi-check"></i> Dismiss
                                     </button>
                                 </form>
@@ -240,16 +233,18 @@
 <style>
     .small-box {
         border-radius: 0.25rem;
-        box-shadow: 0 0 1px rgba(0,0,0,.125), 0 1px 3px rgba(0,0,0,.2);
+        box-shadow: 0 0 1px rgba(0, 0, 0, .125), 0 1px 3px rgba(0, 0, 0, .2);
         display: block;
         margin-bottom: 20px;
         position: relative;
     }
-    .small-box > .inner {
+
+    .small-box>.inner {
         padding: 10px;
         color: #fff;
     }
-    .small-box > .inner h3 {
+
+    .small-box>.inner h3 {
         font-size: 2.2rem;
         font-weight: 700;
         margin: 0 0 10px;
@@ -257,30 +252,47 @@
         white-space: nowrap;
         color: #fff;
     }
-    .small-box > .inner p {
+
+    .small-box>.inner p {
         color: #fff;
         font-size: 1rem;
     }
+
     .small-box .icon {
-        color: rgba(0,0,0,.15);
+        color: rgba(0, 0, 0, .15);
         font-size: 70px;
         position: absolute;
         right: 15px;
         top: 15px;
         transition: all .3s linear;
     }
+
     .small-box .icon i {
         font-size: 70px;
     }
-    .small-box.bg-info { background-color: #17a2b8; }
-    .small-box.bg-warning { background-color: #ffc107; }
-    .small-box.bg-success { background-color: #28a745; }
-    .small-box.bg-secondary { background-color: #6c757d; }
+
+    .small-box.bg-info {
+        background-color: #17a2b8;
+    }
+
+    .small-box.bg-warning {
+        background-color: #ffc107;
+    }
+
+    .small-box.bg-success {
+        background-color: #28a745;
+    }
+
+    .small-box.bg-secondary {
+        background-color: #6c757d;
+    }
+
     .btn-group {
         display: flex;
         flex-wrap: wrap;
         gap: 5px;
     }
+
     .btn-group .btn {
         margin-right: 0 !important;
     }

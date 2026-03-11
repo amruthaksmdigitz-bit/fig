@@ -7,6 +7,8 @@ use App\Models\Report;
 use App\Models\Feed;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\PostDeletedMail;
 
 class AdminReportController extends Controller
 {
@@ -166,8 +168,13 @@ class AdminReportController extends Controller
     public function deletePost($id)
     {
         $feed = Feed::with('images')->findOrFail($id);
+        
+        // Get all reports for this feed before deletion
+        $reports = Report::where('feed_id', $feed->id)
+                         ->with(['reporter', 'reportedUser'])
+                         ->get();
 
-        DB::transaction(function () use ($feed) {
+        DB::transaction(function () use ($feed, $reports) {
             // Update related reports
             Report::where('feed_id', $feed->id)
                 ->update([
@@ -190,8 +197,39 @@ class AdminReportController extends Controller
             $feed->delete();
         });
 
+        // Send emails after successful deletion
+        foreach ($reports as $report) {
+            try {
+                // Send email to reporter
+                if ($report->reporter) {
+                    Mail::to($report->reporter->email)
+                        ->send(new PostDeletedMail(
+                            $report->reporter, 
+                            $feed, 
+                            $report, 
+                            'reporter'
+                        ));
+                }
+
+                // Send email to post owner (if not already sent as reporter)
+                if ($report->reportedUser && 
+                    (!$report->reporter || $report->reporter->id !== $report->reportedUser->id)) {
+                    Mail::to($report->reportedUser->email)
+                        ->send(new PostDeletedMail(
+                            $report->reportedUser, 
+                            $feed, 
+                            $report, 
+                            'owner'
+                        ));
+                }
+            } catch (\Exception $e) {
+                // Log email error but don't stop the process
+                \Log::error('Failed to send post deletion email: ' . $e->getMessage());
+            }
+        }
+
         return redirect()->route('admin.reports.index')
-            ->with('success', 'Post deleted successfully');
+            ->with('success', 'Post deleted successfully and notifications sent to reporter(s) and post owner.');
     }
 
     /**
