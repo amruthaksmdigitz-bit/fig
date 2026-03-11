@@ -4,6 +4,11 @@
         margin: 0 auto;
     }
 
+    .fancybox__container {
+    top: 100px !important;   /* adjust according to navbar height */
+    height: calc(100% - 100px) !important;
+}
+
     /* Post Form Styles - Smaller and Vertical */
     .post-form-container {
         background: white;
