@@ -267,3 +267,7 @@ Route::prefix('admin')->group(function () {
 Route::middleware(['auth'])->group(function () {
     Route::post('/reports', [ReportController::class, 'store'])->name('reports.store');
 });
+
+Route::post('/profile/image/update',[ProfileController::class,'ajaxImageUpdate'])
+->name('profile.image.update')
+->middleware('auth');

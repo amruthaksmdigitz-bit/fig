@@ -71,7 +71,6 @@ class ProfileController extends Controller
         ]);
     }
 
- 
 public function settings()
 {
     $user = auth()->user();
@@ -127,49 +126,61 @@ public function gallery()
     return view('profile_gallery', compact('user', 'images'));
 }
 
-    public function ajaxImageUpdate(Request $request)
-    {
-        $user = auth()->user();
+   public function ajaxImageUpdate(Request $request)
+{
+    $user = auth()->user();
 
-        $request->validate([
-            'profile_image' => 'nullable|image|max:2048',
-            'cover_image'   => 'nullable|image|max:4096',
-        ]);
+    $request->validate([
+        'profile_image' => 'nullable|image|max:2048',
+        'cover_image'   => 'nullable|image|max:4096',
+    ]);
 
-        $type = $request->hasFile('profile_image')
-            ? 'profile_image'
-            : 'cover_image';
+    if ($request->hasFile('profile_image')) {
 
-        $file = $request->file($type);
+        $file = $request->file('profile_image');
+        $folder = 'uploads/profiles';
 
-        $folder = $type === 'profile_image'
-            ? 'uploads/profiles'
-            : 'uploads/covers';
-
-        $path = public_path($folder);
-
-        if (!file_exists($path)) {
-            mkdir($path, 0755, true);
+        if ($user->profile_image && file_exists(public_path($user->profile_image))) {
+            unlink(public_path($user->profile_image));
         }
 
-        // delete old
-        if ($user->$type && file_exists(public_path($user->$type))) {
-            unlink(public_path($user->$type));
-        }
+        $filename = time().'_profile.'.$file->getClientOriginalExtension();
+        $file->move(public_path($folder), $filename);
 
-        $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-
-        $file->move($path, $filename);
-
-        $user->$type = $folder . '/' . $filename;
+        $user->profile_image = $folder.'/'.$filename;
         $user->save();
 
         return response()->json([
-            'status' => true,
-            'url' => asset($folder . '/' . $filename)
+            'status'=>true,
+            'url'=>asset($user->profile_image)
         ]);
     }
 
+    if ($request->hasFile('cover_image')) {
+
+        $file = $request->file('cover_image');
+        $folder = 'uploads/covers';
+
+        if ($user->cover_image && file_exists(public_path($user->cover_image))) {
+            unlink(public_path($user->cover_image));
+        }
+
+        $filename = time().'_cover.'.$file->getClientOriginalExtension();
+        $file->move(public_path($folder), $filename);
+
+        $user->cover_image = $folder.'/'.$filename;
+        $user->save();
+
+        return response()->json([
+            'status'=>true,
+            'url'=>asset($user->cover_image)
+        ]);
+    }
+
+    return response()->json([
+        'status'=>false
+    ]);
+}
     public function edit()
     {
         $user = Auth::user();
