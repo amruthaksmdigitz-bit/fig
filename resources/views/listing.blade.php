@@ -24,20 +24,16 @@
                         <!-- Search by Name -->
                         <div class="form-group">
                             <label>Search by Name</label>
-                            <input type="text"
-                                   name="search"
-                                   class="form-control"
-                                   placeholder="Enter name"
-                                   value="{{ request('search') }}">
+                            <input type="text" name="search" class="form-control" placeholder="Enter name" value="{{ request('search') }}">
                         </div>
 
                         <!-- Location Filter -->
-                       <div class="form-group">
-    <label>Select Location</label>
-    <select name="location" id="location" class="form-control">
-        <option value="">All Locations</option>
-    </select>
-</div>
+                        <div class="form-group">
+                            <label>Select Location</label>
+                            <select name="location" id="location" class="form-control">
+                                <option value="">All Locations</option>
+                            </select>
+                        </div>
 
 
                         <!-- Submit -->
@@ -61,46 +57,49 @@
 
             @if($users->count() > 0)
 
-                <div class="row">
-                    @foreach($users as $user)
+            <div class="row">
+                @foreach($users as $user)
 
-                       <div class="col-lg-4 col-md-6 col-sm-6">
+                <div class="col-lg-4 col-md-6 col-sm-6">
                     <div class="single-location mb-30">
-					<a href="{{ route('userdetails.show', $user) }}">
-                        <div class="location-img">
-						
-						
-                            <img src="{{ $user->profile_image 
-                                ? asset($user->profile_image) 
-                                : asset('assets/img/placefurn.jpg') }}"
-                                style="height:300px; object-fit:cover;"
-                                class="img-fluid rounded"
-                                alt="Profile Image">
+                        <a href="{{ route('userdetails.show', $user) }}">
+                            <div class="location-img">
 
-                        </div>
-						</a>
+
+                                <img src="{{ $user->profile_image 
+                                ? asset($user->profile_image) 
+                                : asset('assets/img/placefurn.jpg') }}" style="height:300px; object-fit:cover;" class="img-fluid rounded" alt="Profile Image">
+
+                            </div>
+                        </a>
                         <div class="location-details">
                             <h2 class="mb-2" style="color:white">{{ $user->name }}</h2>
+                            @if($user->location)
                             <a href="{{ route('location.show', $user->location->slug) }}" class="location-btn mt-2 d-inline-block">
-                                {{ $user->location ? $user->location->name : 'No Location' }}
+                                {{ $user->location->name }}
                             </a>
+                            @else
+                            <span class="location-btn mt-2 d-inline-block">
+                                No Location
+                            </span>
+                            @endif
                         </div>
-						
+
                     </div>
                 </div>
-                    @endforeach
-                </div>
+                @endforeach
+            </div>
 
-                <!-- Pagination -->
-                <div class="mt-4">
-                    {{ $users->links('pagination::bootstrap-4') }}
-                </div>
+            <!-- Pagination -->
+            <div class="mt-4">
+                {{ $users->links('pagination::bootstrap-4') }}
+            </div>
 
             @else
 
-                <div class="alert alert-info text-center">
-                    No Profiles Found
-                </div>
+            <div class="alert alert-info text-center">
+                No Profiles Found
+            </div>
 
             @endif
 

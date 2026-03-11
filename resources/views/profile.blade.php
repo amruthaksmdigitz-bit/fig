@@ -20,6 +20,8 @@
     <!-- Lightbox for gallery -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css" />
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" />
+
     <style>
         :root {
             --primary-color: #D0A04F;
@@ -61,7 +63,9 @@
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
         }
-
+        .fancybox__container {
+    z-index: 999999 !important;
+}
         /* Sidebar */
         .sidebar {
             background: white;
@@ -1965,43 +1969,43 @@ height:100%!important;
     }
 
     function displayPostImages(images) {
-        const container = document.getElementById('postImagesContainer');
-        container.innerHTML = '';
-        
-        if (!images || images.length === 0) {
-            container.innerHTML = '<div class="col-12 text-center py-5"><i class="fas fa-images fa-3x text-muted mb-3"></i><p>No images in this post</p><p class="text-muted small">Click the button above to add images</p></div>';
-            return;
-        }
-        
-        images.forEach(image => {
-            const col = document.createElement('div');
-            col.className = 'col-md-4 col-sm-6 mb-3';
-            col.innerHTML = `
-                <div class="position-relative image-card">
-                    <img src="${image.url}" 
-                         class="img-fluid rounded shadow-sm" 
-                         style="width:100%; height:150px; object-fit:cover; cursor:pointer"
-                         onclick="openLightbox('${image.url}')"
-                         alt="Post image">
-                    <div class="position-absolute top-0 end-0 m-2">
-                        <button class="btn btn-sm btn-danger rounded-circle" 
-                                onclick="deletePostImage(${image.id}, event)"
-                                title="Delete image">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </div>
-                </div>
-            `;
-            container.appendChild(col);
-        });
+    const container = document.getElementById('postImagesContainer');
+    container.innerHTML = '';
+
+    if (!images || images.length === 0) {
+        container.innerHTML = '<div class="col-12 text-center py-5"><i class="fas fa-images fa-3x text-muted mb-3"></i><p>No images in this post</p></div>';
+        return;
     }
 
-    // Open image in lightbox
-    window.openLightbox = function(imageUrl) {
-        // You can integrate with your existing lightbox here
-        // For now, we'll open in a new tab
-        window.open(imageUrl, '_blank');
-    }
+    images.forEach(image => {
+        const col = document.createElement('div');
+        col.className = 'col-md-4 col-sm-6 mb-3';
+
+        col.innerHTML = `
+            <div class="position-relative image-card">
+
+                <a data-fancybox="post-gallery" href="${image.url}">
+                    <img src="${image.url}" 
+                         class="img-fluid rounded shadow-sm"
+                         style="width:100%; height:150px; object-fit:cover; cursor:pointer"
+                         alt="Post image">
+                </a>
+
+                <div class="position-absolute top-0 end-0 m-2">
+                    <button class="btn btn-sm btn-danger rounded-circle"
+                            onclick="deletePostImage(${image.id}, event)">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+
+            </div>
+        `;
+
+        container.appendChild(col);
+    });
+
+    Fancybox.bind("[data-fancybox='post-gallery']", {});
+}
 
     // Handle adding new images
     document.getElementById('modalImageInput')?.addEventListener('change', function() {
@@ -3065,6 +3069,7 @@ if (profileAvatarContainer) {
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script>
 </body>
 
 </html>

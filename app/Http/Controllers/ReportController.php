@@ -4,9 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Report;
 use App\Models\Feed;
+use App\Models\User; 
+use App\Mail\ReportSubmittedAdmin; 
+use App\Mail\ReportSubmittedPostOwner;
+use App\Mail\ReportConfirmationReporter; 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Mail; 
+use Illuminate\Support\Facades\Log; 
 
 class ReportController extends Controller
 {
@@ -59,12 +65,47 @@ class ReportController extends Controller
             }
 
             $report = Report::create($reportData);
+            
+            // Load relationships for email
+            $report->load(['feed', 'reporter', 'reportedUser']);
+
+            // ========== SEND EMAIL NOTIFICATIONS ==========
+            
+            // 1. Send to all admins (role_id = 1)
+            try {
+                $admins = User::where('role_id', 1)->get(); // role_id 1 is admin
+                
+                if ($admins->count() > 0) {
+                    foreach ($admins as $admin) {
+                        Mail::to($admin->email)->send(new ReportSubmittedAdmin($report));
+                    }
+                }
+            } catch (\Exception $e) {
+                Log::error('Admin email failed: ' . $e->getMessage());
+            }
+
+            // 2. Send to post owner
+            try {
+                Mail::to($feed->user->email)->send(new ReportSubmittedPostOwner($report));
+            } catch (\Exception $e) {
+                Log::error('Post owner email failed: ' . $e->getMessage());
+            }
+
+            // 3. Send confirmation to reporter
+            try {
+                Mail::to(Auth::user()->email)->send(new ReportConfirmationReporter($report));
+            } catch (\Exception $e) {
+                Log::error('Reporter email failed: ' . $e->getMessage());
+            }
+            
+            // ========== END EMAIL NOTIFICATIONS ==========
 
             return response()->json([
                 'success' => true,
                 'message' => 'Report submitted successfully',
                 'data' => $report
             ], 201);
+            
         } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json([
                 'success' => false,

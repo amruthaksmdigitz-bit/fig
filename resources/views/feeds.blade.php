@@ -86,20 +86,28 @@
                     </div>
 
                     @if ($feed->images->count())
-                        <div class="post-image-grid" data-images="{{ $feed->images->count() }}">
-                            @foreach ($feed->images as $index => $image)
-                                <div class="grid-item {{ $index == 3 && $feed->images->count() > 4 ? 'has-overlay' : '' }}"
-                                    onclick="openLightbox({{ $feed->id }}, {{ $index }})">
-                                    <img src="{{ asset('storage/' . $image->image) }}" alt="Post Image">
-                                    @if ($index == 3 && $feed->images->count() > 4)
-                                        <div class="more-images-overlay">
-                                            <span>+{{ $feed->images->count() - 4 }}</span>
-                                        </div>
-                                    @endif
-                                </div>
-                            @endforeach
-                        </div>
-                    @endif
+<div class="post-image-grid" data-images="{{ $feed->images->count() }}">
+
+    @foreach ($feed->images as $index => $image)
+
+        <a data-fancybox="feed-{{ $feed->id }}"
+           href="{{ asset('storage/' . $image->image) }}"
+           class="grid-item {{ $index == 3 && $feed->images->count() > 4 ? 'has-overlay' : '' }}">
+
+            <img src="{{ asset('storage/' . $image->image) }}" alt="Post Image">
+
+            @if ($index == 3 && $feed->images->count() > 4)
+                <div class="more-images-overlay">
+                    <span>+{{ $feed->images->count() - 4 }}</span>
+                </div>
+            @endif
+
+        </a>
+
+    @endforeach
+
+</div>
+@endif
                 </div>
             @endforeach
         </div>
