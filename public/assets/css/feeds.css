@@ -9,144 +9,175 @@
     height: calc(100% - 100px) !important;
 }
 
-    /* Post Form Styles - Smaller and Vertical */
-    .post-form-container {
-        background: white;
-        border-radius: 8px;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        padding: 1rem;
-        margin-bottom: 1.5rem;
-        width: 100%;
-    }
+    /* Post Form Styles - Smaller and Vertical *//* Premium Post Form - Unified Design */
+.post-form-container {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05), 0 1px 8px rgba(0, 0, 0, 0.05);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    width: 100%;
+    border: 1px solid rgba(0, 0, 0, 0.03);
+}
 
-    .post-form {
-        display: flex;
-        flex-direction: column;
-        gap: 0.75rem;
-    }
+.post-form {
+    display: flex;
+    flex-direction: column;
+}
 
-    .form-group {
-        display: flex;
-        flex-direction: column;
-        gap: 0.25rem;
-        margin-bottom: 1rem;
-    }
+/* Unified input area */
+.unified-input-area {
+    background: #f8fafc;
+    border-radius: 14px;
+    padding: 0.75rem 1rem;
+    border: 1.5px solid transparent;
+    transition: all 0.2s ease;
+    margin-bottom: 1.25rem;
+}
 
-    .form-group label {
-        font-weight: 500;
-        color: #4b5563;
-        font-size: 0.85rem;
-        margin-bottom: 0.25rem;
-    }
+.unified-input-area:focus-within {
+    background: white;
+    border-color: #cb9f00;
+    box-shadow: 0 4px 12px rgba(24, 119, 242, 0.08);
+}
 
-    .form-group input[type="text"] {
-        padding: 0.6rem;
-        border: 1px solid #e0e0e0;
-        border-radius: 6px;
-        font-size: 0.9rem;
-        transition: border-color 0.3s;
-        width: 100%;
-    }
+/* Title input - no border, just clean */
+#postTitle {
+    width: 100%;
+    border: none;
+    background: transparent;
+    padding: 0.5rem 0;
+    font-size: 0.95rem;
+    color: #1a1a1a;
+    font-weight: 500;
+    outline: none;
+}
 
-    .form-group input[type="text"]:focus {
-        outline: none;
-        border-color: #1877f2;
-        box-shadow: 0 0 0 2px rgba(24,119,242,0.2);
-    }
+#postTitle::placeholder {
+    color: #94a3b8;
+    font-weight: 400;
+    font-size: 0.95rem;
+}
 
-    .form-group textarea {
-        padding: 0.75rem;
-        border: 1px solid #e0e0e0;
-        border-radius: 6px;
-        font-size: 0.9rem;
-        transition: border-color 0.3s;
-        width: 100%;
-        resize: vertical;
-        font-family: inherit;
-    }
+/* Image upload - integrated below title */
+.image-upload-section {
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid #edf2f7;
+}
 
-    .form-group textarea:focus {
-        outline: none;
-        border-color: #1877f2;
-        box-shadow: 0 0 0 2px rgba(24,119,242,0.2);
-    }
+.image-upload-area {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.4rem 0.75rem;
+    border-radius: 40px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: fit-content;
+    background: white;
+    border: 1px solid #e9eef2;
+}
 
-    .image-upload-section {
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-    }
+.image-upload-area:hover {
+    background: #f0f7ff;
+    border-color: #cda206;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(24, 119, 242, 0.1);
+}
 
-    .image-upload-area {
-        border: 1px dashed #e0e0e0;
-        border-radius: 6px;
-        padding: 0.75rem;
-        text-align: center;
-        cursor: pointer;
-        transition: border-color 0.3s;
-        background-color: #fafafa;
-        font-size: 0.85rem;
-    }
+.image-upload-area i {
+    font-size: 1.1rem;
+    color: #af9006;
+}
 
-    .image-upload-area:hover {
-        border-color: #1877f2;
-    }
+.image-upload-area span {
+    color: #2d3a4f;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
 
-    .image-upload-area i {
-        font-size: 1.25rem;
-        color: #1877f2;
-        margin-right: 0.25rem;
-    }
+.image-upload-area small {
+    color: #94a3b8;
+    font-size: 0.75rem;
+    font-weight: 400;
+    margin-left: 0.25rem;
+}
 
-    .image-upload-area span {
-        color: #4b5563;
-    }
+/* Image preview - clean grid */
+.image-preview {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
 
-    .image-upload-area small {
-        display: block;
-        color: #9ca3af;
-        margin-top: 0.25rem;
-        font-size: 0.7rem;
-    }
+.preview-item {
+    position: relative;
+    aspect-ratio: 1;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    border: 1px solid #edf2f7;
+}
 
-    .file-input {
-        display: none;
-    }
+.preview-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
 
-    .form-actions {
-        display: flex;
-        gap: 0.5rem;
-        margin-top: 0.25rem;
-    }
+/* Action buttons - refined */
+.form-actions {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+}
 
-    .btn {
-        padding: 0.5rem 1rem;
-        border: none;
-        border-radius: 4px;
-        font-weight: 500;
-        cursor: pointer;
-        transition: all 0.3s;
-        font-size: 0.85rem;
-    }
+.btn {
+    padding: 0.7rem 1.5rem;
+    border: none;
+    border-radius: 40px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    letter-spacing: 0.2px;
+    flex: 1;
+}
 
-    .btn-primary {
-        background-color: #1877f2;
-        color: white;
-        flex: 1;
-    }
+.btn-primary {
+    background-color: #1877f2;
+    color: white;
+    box-shadow: 0 4px 12px rgba(24, 119, 242, 0.2);
+}
 
-    .btn-primary:hover {
-        background-color: #166fe5;
-    }
+.btn-primary:hover {
+    background-color: #166fe5;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(24, 119, 242, 0.25);
+}
 
-    .btn-secondary {
-        background-color: #e4e6eb;
-        color: #1a1a1a;
-    }
+.btn-secondary {
+    background-color: #f0f2f5;
+    color: #1a1a1a;
+    border: 1px solid #e4e6eb;
+}
 
-    .btn-secondary:hover {
-        background-color: #d8dadf;
-    }
+.btn-secondary:hover {
+    background-color: #e4e6eb;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* Remove any duplicate/conflicting styles */
+.form-group {
+    margin-bottom: 0;
+}
+
+.form-group label {
+    display: none; /* Hide the label since we have placeholder */
+}
 
     /* Posts Feed Styles */
     .feed {

@@ -61,9 +61,11 @@
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
         }
+
         .fancybox__container {
-    z-index: 999999 !important;
-}
+            z-index: 999999 !important;
+        }
+
         /* Sidebar */
         .sidebar {
             background: white;
@@ -313,59 +315,82 @@
             opacity: 1;
         }
 
-        .profile-info {
-            padding: 2rem;
-            position: relative;
-        }
+        /* Add these styles to your CSS */
+        /* Update these styles in your CSS */
+.profile-info {
+    padding: 2rem;
+    position: relative;
+    display: flex;
+    align-items: center; /* Changed from flex-end to center */
+    gap: 2rem;
+}
 
-        .profile-avatar {
-            position: absolute;
-            top: -60px;
-            left: 2rem;
-            width: 120px;
-            height: 120px;
-            border-radius: var(--radius-lg);
-            border: 4px solid white;
-            object-fit: cover;
-            box-shadow: var(--shadow-lg);
-        }
+.profile-image-wrapper {
+    flex-shrink: 0;
+    margin-bottom: 0; /* Removed negative margin */
+}
 
-        .profile-details {
-            margin-left: 140px;
-        }
+.profile-avatar {
+    position: relative;
+    top: auto;
+    left: auto;
+    width: 120px;
+    height: 120px;
+    border-radius: var(--radius-lg);
+    border: 4px solid white;
+    object-fit: cover;
+    box-shadow: var(--shadow-lg);
+}
 
-        .profile-name {
-            font-size: 1.75rem;
-            font-weight: 600;
-            color: var(--gray-900);
-            margin-bottom: 0.5rem;
-        }
+.profile-details {
+    flex: 1;
+    margin-left: 0;
+    padding-bottom: 0;
+}
 
-        .profile-meta {
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
-            color: var(--gray-600);
-            margin-bottom: 1.5rem;
-            font-size: 0.875rem;
-        }
+.profile-name {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: var(--gray-900);
+    margin-bottom: 0.5rem; /* Reduced from 0.75rem */
+}
 
-        .profile-meta-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
+.profile-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.5rem;
+    color: var(--gray-600);
+    margin-bottom: 1rem; /* Reduced from 1.5rem */
+    font-size: 0.875rem;
+}
 
-        .profile-meta-item i {
-            color: var(--primary-color);
-        }
+.profile-stats {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 1rem; /* Added margin bottom */
+}
 
-        .profile-stats {
-            display: flex;
-            gap: 2rem;
-            margin-bottom: 1.5rem;
-        }
+.profile-actions {
+    display: flex;
+    gap: 0.75rem;
+}
 
+/* Make sure the cover image and profile section work together */
+.cover-image {
+    height: 200px;
+    background: linear-gradient(135deg, var(--primary-light), var(--primary-dark));
+    position: relative;
+    background-size: cover;
+    background-position: center;
+}
+
+/* Remove any old positioning that might interfere */
+.profile-avatar {
+    position: relative !important;
+    top: 0 !important;
+    left: 0 !important;
+}
         .stat {
             text-align: center;
         }
@@ -474,37 +499,129 @@
         }
 
         /* Posts Section */
+        /* Enhanced Posts Styling */
         .posts-list {
             display: flex;
             flex-direction: column;
-            gap: 1.5rem;
+            gap: 2rem;
+            padding: 1.5rem;
         }
 
         .post-item {
-            padding: 1rem;
-            background: var(--gray-50);
-            border-radius: var(--radius);
-            transition: var(--transition);
+            background: white;
+            border-radius: 20px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            border: 1px solid #f0f2f5;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
         }
 
         .post-item:hover {
-            background: white;
-            box-shadow: var(--shadow-sm);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.15);
+            border-color: transparent;
         }
 
         .post-title {
-            font-size: 1rem;
+            font-size: 1.35rem !important;
             font-weight: 600;
-            color: var(--gray-800);
-            margin-bottom: 0.5rem;
+            color: #1a2639;
+            margin-bottom: 1rem !important;
+            line-height: 1.4;
+            letter-spacing: -0.01em;
         }
 
         .post-images {
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-            margin: 0.75rem 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
         }
+
+        .post-images img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 16px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .post-images img:hover {
+            transform: scale(1.03);
+            box-shadow: 0 15px 30px rgba(24, 119, 242, 0.2);
+        }
+
+        .post-images .bg-light {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border: 2px dashed #adb5bd;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #1877f2;
+            height: 200px;
+            border-radius: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .post-images .bg-light:hover {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            border-color: #1877f2;
+            color: #0d47a1;
+            transform: scale(1.02);
+        }
+
+        .post-date {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: #64748b;
+            font-size: 0.95rem;
+            margin-top: 1.25rem;
+            padding-top: 1.25rem;
+            border-top: 2px solid #f1f5f9;
+        }
+
+        .post-date i {
+            color: #1877f2;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .post-item {
+                padding: 1rem;
+            }
+
+            .post-title {
+                font-size: 1.2rem !important;
+            }
+
+            .post-images {
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+                gap: 0.75rem;
+            }
+
+            .post-images img,
+            .post-images .bg-light {
+                height: 140px;
+            }
+
+            .post-images .bg-light {
+                font-size: 1.1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .post-images {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .post-images img,
+            .post-images .bg-light {
+                height: 120px;
+            }
+        }
+
 
         .post-thumbnail {
             width: 60px;
@@ -512,19 +629,6 @@
             border-radius: var(--radius-sm);
             object-fit: cover;
             border: 1px solid var(--gray-200);
-        }
-
-        .post-date {
-            font-size: 0.75rem;
-            color: var(--gray-500);
-            display: flex;
-            align-items: center;
-            gap: 0.25rem;
-        }
-
-        .post-date i {
-            color: var(--primary-color);
-            font-size: 0.625rem;
         }
 
         .empty-posts {
@@ -801,9 +905,7 @@
                     <div class="user-menu">
                         <div class="user-dropdown">
                             <button class="user-btn">
-                                <img src="{{ Auth::user()->profile_image ? asset(Auth::user()->profile_image) : 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->name) . '&background=D0A04F&color=fff' }}"
-                                    class="user-avatar"
-                                    alt="{{ Auth::user()->name }}">
+                                <img src="{{ Auth::user()->profile_image ? asset(Auth::user()->profile_image) : 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->name) . '&background=D0A04F&color=fff' }}" class="user-avatar" alt="{{ Auth::user()->name }}">
 
                                 <div class="user-info">
                                     <div class="user-name">{{ Auth::user()->name }}</div>
@@ -856,61 +958,63 @@
                     </div>
                 </div>
 
+                <!-- Replace your entire profile-info div with this corrected structure -->
                 <div class="profile-info">
-                    <input type="file" id="profileInput" accept="image/*" hidden>
+    <!-- Profile image on the left -->
+    <div class="profile-image-wrapper">
+        <div style="position: relative; display: inline-block;">
+            <img id="profileAvatar" 
+                 src="{{ Auth::user()->profile_image ? asset(Auth::user()->profile_image) : 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->name) . '&background=D0A04F&color=fff' }}" 
+                 class="profile-avatar cursor-pointer" 
+                 alt="{{ Auth::user()->name }}">
+            <div class="profile-edit-icon" onclick="document.getElementById('profileInput').click()">
+                <i class="fas fa-camera"></i>
+            </div>
+        </div>
+    </div>
 
-                    <div style="position: relative; display: inline-block;">
-                        <img id="profileAvatar" src="{{ Auth::user()->profile_image ? asset(Auth::user()->profile_image) : 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->name) . '&background=D0A04F&color=fff' }}"
-                            class="profile-avatar cursor-pointer"
-                            alt="{{ Auth::user()->name }}">
-                        <div class="profile-edit-icon" onclick="document.getElementById('profileInput').click()">
-                            <i class="fas fa-camera"></i>
-                        </div>
-                    </div>
+    <!-- All text content on the right -->
+    <div class="profile-details">
+        <h1 class="profile-name">{{ Auth::user()->name }}</h1>
 
-                    <div class="profile-details">
-                        <h1 class="profile-name">{{ Auth::user()->name }}</h1>
+        <div class="profile-meta">
+            <div class="profile-meta-item">
+                <i class="fas fa-briefcase"></i>
+                <span>{{ Auth::user()->profession ?? 'Professional' }}</span>
+            </div>
+            @if(Auth::user()->locationRelation)
+            <div class="profile-meta-item">
+                <i class="fas fa-map-marker-alt"></i>
+                <span>{{ Auth::user()->locationRelation->name }}</span>
+            </div>
+            @endif
+            <div class="profile-meta-item">
+                <i class="fas fa-envelope"></i>
+                <span>{{ Auth::user()->email }}</span>
+            </div>
+        </div>
 
-                        <div class="profile-meta">
-                            <div class="profile-meta-item">
-                                <i class="fas fa-briefcase"></i>
-                                <span>{{ Auth::user()->profession ?? 'Professional' }}</span>
-                            </div>
-                            @if(Auth::user()->locationRelation)
-                            <div class="profile-meta-item">
-                                <i class="fas fa-map-marker-alt"></i>
-                                <span>{{ Auth::user()->locationRelation->name }}</span>
-                            </div>
-                            @endif
-                            <div class="profile-meta-item">
-                                <i class="fas fa-envelope"></i>
-                                <span>{{ Auth::user()->email }}</span>
-                            </div>
-                        </div>
+        <div class="profile-stats">
+            <div class="stat">
+                <div class="stat-value">{{ $feeds->count() }}</div>
+                <div class="stat-label">Posts</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">{{ Auth::user()->multipleImages ? count(Auth::user()->multipleImages) : 0 }}</div>
+                <div class="stat-label">Photos</div>
+            </div>
+        </div>
 
-                        <div class="profile-stats">
-                            <div class="stat">
-                                <div class="stat-value">{{ $feeds->count() }}</div>
-                                <div class="stat-label">Posts</div>
-                            </div>
-                            <div class="stat">
-                                <div class="stat-value">{{ Auth::user()->multipleImages ? count(Auth::user()->multipleImages) : 0 }}</div>
-                                <div class="stat-label">Photos</div>
-                            </div>
-                        </div>
-
-                        <div class="profile-actions">
-                            <a href="{{ route('profile.edit') }}" class="btn btn-primary">
-                                <i class="fas fa-edit"></i> Edit Profile
-                            </a>
-
-                            <!-- Share Button -->
-                            <button class="btn btn-outline" id="shareProfileBtn" data-bs-toggle="modal" data-bs-target="#shareModal">
-                                <i class="fas fa-share-alt"></i> Share
-                            </button>
-                        </div>
-                    </div>
-                </div>
+        <div class="profile-actions">
+            <a href="{{ route('profile.edit') }}" class="btn btn-primary">
+                <i class="fas fa-edit"></i> Edit Profile
+            </a>
+            <button class="btn btn-outline" id="shareProfileBtn" data-bs-toggle="modal" data-bs-target="#shareModal">
+                <i class="fas fa-share-alt"></i> Share
+            </button>
+        </div>
+    </div>
+</div>
             </div>
 
             <!-- Content Grid -->
@@ -930,6 +1034,7 @@
                     </div>
 
                     <!-- My Posts Section (Under About) -->
+                    <!-- My Posts Section (Under About) -->
                     <div class="card">
                         <div class="card-header">
                             <h2 class="card-title">
@@ -940,36 +1045,33 @@
                         <div class="posts-list">
                             @forelse($feeds as $feed)
                             <div class="post-item" data-post-id="{{ $feed->id }}" style="cursor: pointer;">
-                                <h3 class="post-title">{{ $feed->title }}</h3>
-                                
+                                <h3 class="post-title" style="font-size: 1.35rem; margin-bottom: 1rem;">{{ $feed->title }}</h3>
+
                                 @if($feed->images && $feed->images->count())
-                                @if($feed->images && $feed->images->count())
-<div class="post-images">
-    @foreach($feed->images->take(3) as $image)
-    <img src="{{ asset('storage/'.$image->image) }}" 
-         class="post-thumbnail cursor-pointer"
-         alt="Post image"
-         onclick="event.stopPropagation(); openPostGallery({{ $feed->id }})">
-    @endforeach
-    @if($feed->images->count() > 3)
-    <div class="post-thumbnail d-flex align-items-center justify-content-center bg-light cursor-pointer"
-         onclick="event.stopPropagation(); openPostGallery({{ $feed->id }})">
-        +{{ $feed->images->count() - 3 }}
-    </div>
-    @endif
-</div>
-@endif
+                                <div class="post-images" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1rem; margin-bottom: 1rem;">
+                                    @foreach($feed->images->take(4) as $image)
+                                    <div class="position-relative" style="aspect-ratio: 1; overflow: hidden; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                                        <img src="{{ asset('storage/'.$image->image) }}" class="w-100 h-100" style="object-fit: cover; cursor: pointer; transition: transform 0.3s;" alt="Post image" onclick="event.stopPropagation(); openPostGallery({{ $feed->id }})" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                                    </div>
+                                    @endforeach
+
+                                    @if($feed->images->count() > 4)
+                                    <div class="position-relative d-flex align-items-center justify-content-center bg-light" style="aspect-ratio: 1; border-radius: 12px; cursor: pointer; font-size: 1.5rem; font-weight: 600; color: #1877f2; border: 2px dashed #dee2e6;" onclick="event.stopPropagation(); openPostGallery({{ $feed->id }})" onmouseover="this.style.backgroundColor='#e7f0ff'" onmouseout="this.style.backgroundColor='#f8f9fa'">
+                                        +{{ $feed->images->count() - 4 }} more
+                                    </div>
+                                    @endif
+                                </div>
                                 @endif
-                                
-                                <div class="post-date">
+
+                                <div class="post-date" style="display: flex; align-items: center; gap: 0.5rem; color: #6c757d; font-size: 0.95rem; margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid #e9ecef;">
                                     <i class="fas fa-clock"></i>
                                     {{ $feed->created_at->diffForHumans() }}
                                 </div>
                             </div>
                             @empty
-                            <div class="empty-posts">
-                                <i class="fas fa-images"></i>
-                                <p>No posts yet. Create your first post!</p>
+                            <div class="empty-posts" style="text-align: center; padding: 3rem 1rem;">
+                                <i class="fas fa-images" style="font-size: 3rem; color: #dee2e6; margin-bottom: 1rem;"></i>
+                                <p style="font-size: 1.1rem; color: #6c757d;">No posts yet. Create your first post!</p>
                             </div>
                             @endforelse
                         </div>
@@ -1067,12 +1169,7 @@
                         <div class="card-body">
                             <div class="d-flex align-items-center">
                                 <div class="flex-shrink-0">
-                                    <img src="{{ Auth::user()->profile_image ? asset(Auth::user()->profile_image) : 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->name) . '&background=D0A04F&color=fff' }}"
-                                        alt="{{ Auth::user()->name }}"
-                                        class="rounded-circle"
-                                        width="50"
-                                        height="50"
-                                        id="modalProfileAvatar">
+                                    <img src="{{ Auth::user()->profile_image ? asset(Auth::user()->profile_image) : 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->name) . '&background=D0A04F&color=fff' }}" alt="{{ Auth::user()->name }}" class="rounded-circle" width="50" height="50" id="modalProfileAvatar">
                                 </div>
                                 <div class="flex-grow-1 ms-3">
                                     <h6 class="mb-1" id="modalProfileName">{{ Auth::user()->name }}</h6>
@@ -1132,33 +1229,33 @@
     </div>
 
     <!-- Post Images Modal -->
-<div class="modal fade" id="postImagesModal" tabindex="-1" aria-labelledby="postImagesModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="postImagesModalLabel">
-                    <i class="fas fa-images me-2"></i>Post Images
-                </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="mb-3">
-                    <input type="file" id="modalImageInput" multiple accept="image/*" hidden>
-                    <button class="btn btn-primary" onclick="document.getElementById('modalImageInput').click()">
-                        <i class="fas fa-plus-circle"></i> Add Images
-                    </button>
+    <div class="modal fade" id="postImagesModal" tabindex="-1" aria-labelledby="postImagesModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="postImagesModalLabel">
+                        <i class="fas fa-images me-2"></i>Post Images
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                
-                <div id="postImagesContainer" class="row g-3">
-                    <!-- Images will be loaded here dynamically -->
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <input type="file" id="modalImageInput" multiple accept="image/*" hidden>
+                        <button class="btn btn-primary" onclick="document.getElementById('modalImageInput').click()">
+                            <i class="fas fa-plus-circle"></i> Add Images
+                        </button>
+                    </div>
+
+                    <div id="postImagesContainer" class="row g-3">
+                        <!-- Images will be loaded here dynamically -->
+                    </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
     <!-- Toast Notification -->
     <div class="toast-container position-fixed bottom-0 end-0 p-3">
@@ -1178,7 +1275,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    
+
     <script>
         const csrf = '{{ csrf_token() }}';
 
@@ -1209,28 +1306,28 @@
             formData.append('_token', csrf);
 
             fetch("{{ route('profile.image.update') }}", {
-                method: "POST",
-                body: formData,
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.status) {
-                    if (type === 'profile_image') {
-                        document.getElementById('profileAvatar').src = data.url;
-                        document.querySelector('.user-avatar').src = data.url;
+                    method: "POST",
+                    body: formData,
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status) {
+                        if (type === 'profile_image') {
+                            document.getElementById('profileAvatar').src = data.url;
+                            document.querySelector('.user-avatar').src = data.url;
+                        }
+                        if (type === 'cover_image') {
+                            document.querySelector('.cover-image').style.backgroundImage = `url('${data.url}')`;
+                        }
+                        toast('✅ Image updated');
+                    } else {
+                        toast(data.message || 'Upload failed');
                     }
-                    if (type === 'cover_image') {
-                        document.querySelector('.cover-image').style.backgroundImage = `url('${data.url}')`;
-                    }
-                    toast('✅ Image updated');
-                } else {
-                    toast(data.message || 'Upload failed');
-                }
-            })
-            .catch(err => {
-                console.error(err);
-                toast('Server error');
-            });
+                })
+                .catch(err => {
+                    console.error(err);
+                    toast('Server error');
+                });
         }
 
 
@@ -1370,165 +1467,165 @@
         }
     </script>
     <script>
-    // Post images functionality
-    let currentPostId = null;
-    let currentModal = null;
+        // Post images functionality
+        let currentPostId = null;
+        let currentModal = null;
 
-    // Make posts clickable
-    document.addEventListener('DOMContentLoaded', function() {
-        initializePostItems();
-        initializeModalHandlers();
-    });
-
-    function initializePostItems() {
-        const postItems = document.querySelectorAll('.post-item');
-        postItems.forEach(item => {
-            item.addEventListener('click', function(e) {
-                // Don't open if clicking on an image (to allow lightbox)
-                if (e.target.classList.contains('post-thumbnail')) {
-                    return;
-                }
-                
-                const postId = this.dataset.postId;
-                if (postId) {
-                    openPostGallery(postId);
-                }
-            });
+        // Make posts clickable
+        document.addEventListener('DOMContentLoaded', function() {
+            initializePostItems();
+            initializeModalHandlers();
         });
-    }
 
-    function initializeModalHandlers() {
-        // Handle modal hidden event to ensure cleanup
-        const modalEl = document.getElementById('postImagesModal');
-        if (modalEl) {
-            modalEl.addEventListener('hidden.bs.modal', function() {
-                cleanupModal();
+        function initializePostItems() {
+            const postItems = document.querySelectorAll('.post-item');
+            postItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    // Don't open if clicking on an image (to allow lightbox)
+                    if (e.target.classList.contains('post-thumbnail')) {
+                        return;
+                    }
+
+                    const postId = this.dataset.postId;
+                    if (postId) {
+                        openPostGallery(postId);
+                    }
+                });
             });
         }
 
-        // Handle modal close button
-        const closeBtn = document.querySelector('#postImagesModal .btn-close');
-        if (closeBtn) {
-            closeBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                hideModal();
-            });
-        }
-
-        // Handle modal footer close button
-        const footerCloseBtn = document.querySelector('#postImagesModal .modal-footer .btn-light');
-        if (footerCloseBtn) {
-            footerCloseBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                hideModal();
-            });
-        }
-
-        // Handle escape key
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && currentModal) {
-                hideModal();
-            }
-        });
-    }
-
-    function cleanupModal() {
-        // Remove any lingering modal backdrops
-        const backdrops = document.querySelectorAll('.modal-backdrop');
-        backdrops.forEach(backdrop => backdrop.remove());
-        
-        // Reset body classes and styles
-        document.body.classList.remove('modal-open');
-        document.body.style.overflow = '';
-        document.body.style.paddingRight = '';
-        
-        // Reset modal instance
-        if (currentModal) {
-            currentModal = null;
-        }
-    }
-
-    function hideModal() {
-        if (currentModal) {
-            currentModal.hide();
-        } else {
-            // Fallback cleanup if modal instance is lost
-            cleanupModal();
+        function initializeModalHandlers() {
+            // Handle modal hidden event to ensure cleanup
             const modalEl = document.getElementById('postImagesModal');
             if (modalEl) {
-                modalEl.classList.remove('show');
-                modalEl.style.display = 'none';
+                modalEl.addEventListener('hidden.bs.modal', function() {
+                    cleanupModal();
+                });
+            }
+
+            // Handle modal close button
+            const closeBtn = document.querySelector('#postImagesModal .btn-close');
+            if (closeBtn) {
+                closeBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    hideModal();
+                });
+            }
+
+            // Handle modal footer close button
+            const footerCloseBtn = document.querySelector('#postImagesModal .modal-footer .btn-light');
+            if (footerCloseBtn) {
+                footerCloseBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    hideModal();
+                });
+            }
+
+            // Handle escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && currentModal) {
+                    hideModal();
+                }
+            });
+        }
+
+        function cleanupModal() {
+            // Remove any lingering modal backdrops
+            const backdrops = document.querySelectorAll('.modal-backdrop');
+            backdrops.forEach(backdrop => backdrop.remove());
+
+            // Reset body classes and styles
+            document.body.classList.remove('modal-open');
+            document.body.style.overflow = '';
+            document.body.style.paddingRight = '';
+
+            // Reset modal instance
+            if (currentModal) {
+                currentModal = null;
             }
         }
-    }
 
-    function showModal() {
-        const modalEl = document.getElementById('postImagesModal');
-        
-        // Dispose existing modal instance if any
-        if (currentModal) {
-            currentModal.dispose();
-        }
-        
-        // Create new modal instance
-        currentModal = new bootstrap.Modal(modalEl, {
-            backdrop: 'static',
-            keyboard: true
-        });
-        
-        currentModal.show();
-    }
-
-    function openPostGallery(postId) {
-        if (!postId) return;
-        
-        currentPostId = postId;
-        
-        // Show loading state
-        const container = document.getElementById('postImagesContainer');
-        container.innerHTML = '<div class="col-12 text-center py-5"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div><p class="mt-2">Loading images...</p></div>';
-        
-        fetch(`/post/${postId}/images`, {
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-                'Accept': 'application/json'
-            }
-        })
-        .then(res => {
-            if (!res.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return res.json();
-        })
-        .then(data => {
-            if (data.status) {
-                displayPostImages(data.images);
-                showModal();
+        function hideModal() {
+            if (currentModal) {
+                currentModal.hide();
             } else {
-                throw new Error(data.message || 'Failed to load images');
+                // Fallback cleanup if modal instance is lost
+                cleanupModal();
+                const modalEl = document.getElementById('postImagesModal');
+                if (modalEl) {
+                    modalEl.classList.remove('show');
+                    modalEl.style.display = 'none';
+                }
             }
-        })
-        .catch(err => {
-            console.error('Error loading post images:', err);
-            container.innerHTML = '<div class="col-12 text-center py-5"><i class="fas fa-exclamation-triangle fa-3x text-danger mb-3"></i><p>Failed to load images. Please try again.</p></div>';
-            toast('❌ ' + err.message);
-        });
-    }
+        }
 
-    function displayPostImages(images) {
-    const container = document.getElementById('postImagesContainer');
-    container.innerHTML = '';
+        function showModal() {
+            const modalEl = document.getElementById('postImagesModal');
 
-    if (!images || images.length === 0) {
-        container.innerHTML = '<div class="col-12 text-center py-5"><i class="fas fa-images fa-3x text-muted mb-3"></i><p>No images in this post</p></div>';
-        return;
-    }
+            // Dispose existing modal instance if any
+            if (currentModal) {
+                currentModal.dispose();
+            }
 
-    images.forEach(image => {
-        const col = document.createElement('div');
-        col.className = 'col-md-4 col-sm-6 mb-3';
+            // Create new modal instance
+            currentModal = new bootstrap.Modal(modalEl, {
+                backdrop: 'static',
+                keyboard: true
+            });
 
-        col.innerHTML = `
+            currentModal.show();
+        }
+
+        function openPostGallery(postId) {
+            if (!postId) return;
+
+            currentPostId = postId;
+
+            // Show loading state
+            const container = document.getElementById('postImagesContainer');
+            container.innerHTML = '<div class="col-12 text-center py-5"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div><p class="mt-2">Loading images...</p></div>';
+
+            fetch(`/post/${postId}/images`, {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(res => {
+                    if (!res.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return res.json();
+                })
+                .then(data => {
+                    if (data.status) {
+                        displayPostImages(data.images);
+                        showModal();
+                    } else {
+                        throw new Error(data.message || 'Failed to load images');
+                    }
+                })
+                .catch(err => {
+                    console.error('Error loading post images:', err);
+                    container.innerHTML = '<div class="col-12 text-center py-5"><i class="fas fa-exclamation-triangle fa-3x text-danger mb-3"></i><p>Failed to load images. Please try again.</p></div>';
+                    toast('❌ ' + err.message);
+                });
+        }
+
+        function displayPostImages(images) {
+            const container = document.getElementById('postImagesContainer');
+            container.innerHTML = '';
+
+            if (!images || images.length === 0) {
+                container.innerHTML = '<div class="col-12 text-center py-5"><i class="fas fa-images fa-3x text-muted mb-3"></i><p>No images in this post</p></div>';
+                return;
+            }
+
+            images.forEach(image => {
+                const col = document.createElement('div');
+                col.className = 'col-md-4 col-sm-6 mb-3';
+
+                col.innerHTML = `
             <div class="position-relative image-card">
 
                 <a data-fancybox="post-gallery" href="${image.url}">
@@ -1548,154 +1645,154 @@
             </div>
         `;
 
-        container.appendChild(col);
-    });
+                container.appendChild(col);
+            });
 
-    Fancybox.bind("[data-fancybox='post-gallery']", {});
-}
+            Fancybox.bind("[data-fancybox='post-gallery']", {});
+        }
 
-    // Handle adding new images
-    document.getElementById('modalImageInput')?.addEventListener('change', function() {
-        if (!this.files.length || !currentPostId) {
-            toast('❌ No post selected or no files chosen');
-            return;
-        }
-        
-        // Validate file types
-        const validTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
-        const files = Array.from(this.files);
-        const invalidFiles = files.filter(file => !validTypes.includes(file.type));
-        
-        if (invalidFiles.length > 0) {
-            toast('❌ Please select only image files (JPEG, PNG, GIF, WEBP)');
-            this.value = '';
-            return;
-        }
-        
-        // Show uploading state
-        const uploadBtn = document.querySelector('[onclick="document.getElementById(\'modalImageInput\').click()"]');
-        const originalText = uploadBtn.innerHTML;
-        uploadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading...';
-        uploadBtn.disabled = true;
-        
-        const formData = new FormData();
-        formData.append('post_id', currentPostId);
-        formData.append('_token', csrf);
-        
-        files.forEach(file => {
-            formData.append('images[]', file);
+        // Handle adding new images
+        document.getElementById('modalImageInput')?.addEventListener('change', function() {
+            if (!this.files.length || !currentPostId) {
+                toast('❌ No post selected or no files chosen');
+                return;
+            }
+
+            // Validate file types
+            const validTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+            const files = Array.from(this.files);
+            const invalidFiles = files.filter(file => !validTypes.includes(file.type));
+
+            if (invalidFiles.length > 0) {
+                toast('❌ Please select only image files (JPEG, PNG, GIF, WEBP)');
+                this.value = '';
+                return;
+            }
+
+            // Show uploading state
+            const uploadBtn = document.querySelector('[onclick="document.getElementById(\'modalImageInput\').click()"]');
+            const originalText = uploadBtn.innerHTML;
+            uploadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading...';
+            uploadBtn.disabled = true;
+
+            const formData = new FormData();
+            formData.append('post_id', currentPostId);
+            formData.append('_token', csrf);
+
+            files.forEach(file => {
+                formData.append('images[]', file);
+            });
+
+            fetch('/post/images/add', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(res => {
+                    if (!res.ok) {
+                        throw new Error('Upload failed');
+                    }
+                    return res.json();
+                })
+                .then(data => {
+                    if (data.status) {
+                        toast('✅ Images added successfully');
+                        // Refresh the gallery
+                        openPostGallery(currentPostId);
+                    } else {
+                        throw new Error(data.message || 'Upload failed');
+                    }
+                })
+                .catch(err => {
+                    console.error('Error uploading images:', err);
+                    toast('❌ ' + err.message);
+                })
+                .finally(() => {
+                    // Reset upload button
+                    uploadBtn.innerHTML = originalText;
+                    uploadBtn.disabled = false;
+                    this.value = '';
+                });
         });
-        
-        fetch('/post/images/add', {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest'
-            }
-        })
-        .then(res => {
-            if (!res.ok) {
-                throw new Error('Upload failed');
-            }
-            return res.json();
-        })
-        .then(data => {
-            if (data.status) {
-                toast('✅ Images added successfully');
-                // Refresh the gallery
-                openPostGallery(currentPostId);
-            } else {
-                throw new Error(data.message || 'Upload failed');
-            }
-        })
-        .catch(err => {
-            console.error('Error uploading images:', err);
-            toast('❌ ' + err.message);
-        })
-        .finally(() => {
-            // Reset upload button
-            uploadBtn.innerHTML = originalText;
-            uploadBtn.disabled = false;
-            this.value = '';
-        });
-    });
 
-    // Delete post image
-    window.deletePostImage = function(imageId, event) {
-        if (event) {
-            event.stopPropagation();
-        }
-        
-        if (!confirm('Are you sure you want to delete this image? This action cannot be undone.')) {
-            return;
-        }
-        
-        // Find and disable the delete button to prevent double clicks
-        const deleteBtn = event?.target?.closest('button');
-        if (deleteBtn) {
-            deleteBtn.disabled = true;
-            deleteBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-        }
-        
-        fetch('/post/images/delete', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': csrf,
-                'X-Requested-With': 'XMLHttpRequest'
-            },
-            body: JSON.stringify({
-                image_id: imageId
-            })
-        })
-        .then(res => {
-            if (!res.ok) {
-                throw new Error('Delete failed');
+        // Delete post image
+        window.deletePostImage = function(imageId, event) {
+            if (event) {
+                event.stopPropagation();
             }
-            return res.json();
-        })
-        .then(data => {
-            if (data.status) {
-                toast('✅ Image deleted successfully');
-                // Refresh the gallery
-                openPostGallery(currentPostId);
-            } else {
-                throw new Error(data.message || 'Delete failed');
+
+            if (!confirm('Are you sure you want to delete this image? This action cannot be undone.')) {
+                return;
             }
-        })
-        .catch(err => {
-            console.error('Error deleting image:', err);
-            toast('❌ ' + err.message);
-            // Re-enable the delete button if there's an error
+
+            // Find and disable the delete button to prevent double clicks
+            const deleteBtn = event?.target?.closest('button');
             if (deleteBtn) {
-                deleteBtn.disabled = false;
-                deleteBtn.innerHTML = '<i class="fas fa-trash"></i>';
+                deleteBtn.disabled = true;
+                deleteBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
             }
-        });
-    }
 
-    // Enhanced toast function
-    function toast(message, duration = 3000) {
-        // Check if toast container exists, if not create it
-        let toastContainer = document.querySelector('.toast-container');
-        if (!toastContainer) {
-            toastContainer = document.createElement('div');
-            toastContainer.className = 'toast-container position-fixed bottom-0 end-0 p-3';
-            document.body.appendChild(toastContainer);
+            fetch('/post/images/delete', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrf,
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: JSON.stringify({
+                        image_id: imageId
+                    })
+                })
+                .then(res => {
+                    if (!res.ok) {
+                        throw new Error('Delete failed');
+                    }
+                    return res.json();
+                })
+                .then(data => {
+                    if (data.status) {
+                        toast('✅ Image deleted successfully');
+                        // Refresh the gallery
+                        openPostGallery(currentPostId);
+                    } else {
+                        throw new Error(data.message || 'Delete failed');
+                    }
+                })
+                .catch(err => {
+                    console.error('Error deleting image:', err);
+                    toast('❌ ' + err.message);
+                    // Re-enable the delete button if there's an error
+                    if (deleteBtn) {
+                        deleteBtn.disabled = false;
+                        deleteBtn.innerHTML = '<i class="fas fa-trash"></i>';
+                    }
+                });
         }
-        
-        // Create toast element
-        const toastEl = document.createElement('div');
-        toastEl.className = 'toast show';
-        toastEl.setAttribute('role', 'alert');
-        toastEl.setAttribute('aria-live', 'assertive');
-        toastEl.setAttribute('aria-atomic', 'true');
-        
-        // Determine toast style based on message
-        const isSuccess = message.includes('✅');
-        const isError = message.includes('❌');
-        
-        toastEl.innerHTML = `
+
+        // Enhanced toast function
+        function toast(message, duration = 3000) {
+            // Check if toast container exists, if not create it
+            let toastContainer = document.querySelector('.toast-container');
+            if (!toastContainer) {
+                toastContainer = document.createElement('div');
+                toastContainer.className = 'toast-container position-fixed bottom-0 end-0 p-3';
+                document.body.appendChild(toastContainer);
+            }
+
+            // Create toast element
+            const toastEl = document.createElement('div');
+            toastEl.className = 'toast show';
+            toastEl.setAttribute('role', 'alert');
+            toastEl.setAttribute('aria-live', 'assertive');
+            toastEl.setAttribute('aria-atomic', 'true');
+
+            // Determine toast style based on message
+            const isSuccess = message.includes('✅');
+            const isError = message.includes('❌');
+
+            toastEl.innerHTML = `
             <div class="toast-header ${isSuccess ? 'bg-success text-white' : isError ? 'bg-danger text-white' : ''}">
                 <i class="fas ${isSuccess ? 'fa-check-circle' : isError ? 'fa-exclamation-circle' : 'fa-info-circle'} me-2"></i>
                 <strong class="me-auto">${isSuccess ? 'Success' : isError ? 'Error' : 'Info'}</strong>
@@ -1705,30 +1802,30 @@
                 ${message}
             </div>
         `;
-        
-        toastContainer.appendChild(toastEl);
-        
-        // Initialize Bootstrap toast
-        const toast = new bootstrap.Toast(toastEl, {
-            animation: true,
-            autohide: true,
-            delay: duration
-        });
-        
-        toast.show();
-        
-        // Remove toast after it's hidden
-        toastEl.addEventListener('hidden.bs.toast', function() {
-            this.remove();
-        });
-    }
 
-    // Expose necessary functions to global scope
-    window.openPostGallery = openPostGallery;
-    window.deletePostImage = deletePostImage;
-    window.toast = toast;
-</script>
-<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script>
+            toastContainer.appendChild(toastEl);
+
+            // Initialize Bootstrap toast
+            const toast = new bootstrap.Toast(toastEl, {
+                animation: true,
+                autohide: true,
+                delay: duration
+            });
+
+            toast.show();
+
+            // Remove toast after it's hidden
+            toastEl.addEventListener('hidden.bs.toast', function() {
+                this.remove();
+            });
+        }
+
+        // Expose necessary functions to global scope
+        window.openPostGallery = openPostGallery;
+        window.deletePostImage = deletePostImage;
+        window.toast = toast;
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script>
 </body>
 
 </html>
