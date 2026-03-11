@@ -17,11 +17,15 @@ class User extends Authenticatable
         'email',
         'password',
         'profile_image',
+        'profile_thumbnail', 
         'location_id',
         'description',
         'cover_image',
+        'cover_thumbnail', 
+        'user_images',         
+        'gallery_thumbnails',
         'role_id',
-        'last_login_at' => 'datetime',
+        'last_login_at',
         'phone_no',
     ];
 
@@ -37,6 +41,7 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
     protected static function boot()
     {
         parent::boot();
@@ -48,32 +53,18 @@ class User extends Authenticatable
         static::updating(function ($user) {
             $user->slug = Str::slug($user->name);
         });
-        // parent::boot();
-
-        // static::creating(function ($user) {
-        //     $slug = Str::slug($user->name);
-
-        //     // Ensure unique slug
-        //     $count = User::where('slug', 'LIKE', "{$slug}%")->count();
-
-        //     $user->slug = $count ? "{$slug}-{$count}" : $slug;
-        // });
     }
-    // No need for multiple_images accessor anymore
 
-
-    // Other methods unchanged
-
-
-    // In app/Models/User.php
     public function multipleImages()
     {
         return $this->hasMany(UserMultipleImage::class, 'user_id', 'id');
     }
+
     public function locationRelation()
     {
         return $this->belongsTo(\App\Models\Location::class, 'location');
     }
+
     public function role()
     {
         return $this->belongsTo(Role::class);
@@ -83,14 +74,12 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Location::class);
     }
+
     public function scopeActive($query, $days = 7)
     {
         return $query->where('last_login_at', '>=', now()->subDays($days));
     }
 
-    /**
-     * Scope for inactive users
-     */
     public function scopeInactive($query, $days = 30)
     {
         return $query->where(function ($q) use ($days) {
@@ -98,13 +87,13 @@ class User extends Authenticatable
                 ->orWhereNull('last_login_at');
         });
     }
+
     public function getLastLoginDisplayAttribute()
     {
         if (!$this->last_login_at) {
             return 'Never';
         }
 
-        // Check for invalid MySQL zero date
         if (str_starts_with($this->last_login_at, '0000-00-00')) {
             return 'Never';
         }

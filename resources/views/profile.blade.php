@@ -5,7 +5,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{{ Auth::user()->name }} - Profile Dashboard</title>
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
     <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
 
@@ -843,25 +844,45 @@
         <main class="content">
             <!-- Profile Header -->
             <div class="profile-header">
-                <div class="cover-image" style="background-image: url('{{ Auth::user()->cover_image ? asset(Auth::user()->cover_image) : 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80' }}')">
-                    <div class="cover-overlay">
-                        <button class="btn btn-outline" id="changeCoverBtn">
-                            <i class="fas fa-camera"></i> Change Cover
-                        </button>
-                        <input type="file" id="coverInput" accept="image/*" hidden>
-                    </div>
-                </div>
 
-                <div class="profile-info">
+<a href="{{ Auth::user()->cover_image ? asset(Auth::user()->cover_image) : asset('images/default-cover.jpg') }}" target="_blank">
+
+<div class="cover-image"
+style="background-image: url('{{ Auth::user()->cover_thumbnail 
+    ? asset(Auth::user()->cover_thumbnail) 
+    : (Auth::user()->cover_image ? asset(Auth::user()->cover_image) : asset('images/default-cover.jpg')) }}')">
+
+    <div class="cover-overlay">
+        <button class="btn btn-outline" id="changeCoverBtn">
+            <i class="fas fa-camera"></i> Change Cover
+        </button>
+
+        <input type="file" id="coverInput" accept="image/*" hidden>
+
+    </div>
+
+</div>
+
+</a>
+
+</div>
+                      <div class="profile-info">
                     <input type="file" id="profileInput" accept="image/*" hidden>
 
                     <div style="position: relative; display: inline-block;">
-                        <img id="profileAvatar" src="{{ Auth::user()->profile_image ? asset(Auth::user()->profile_image) : 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->name) . '&background=D0A04F&color=fff' }}"
-                            class="profile-avatar cursor-pointer"
-                            alt="{{ Auth::user()->name }}">
-                        <div class="profile-edit-icon" onclick="document.getElementById('profileInput').click()">
-                            <i class="fas fa-camera"></i>
-                        </div>
+
+<a href="{{ Auth::user()->profile_image ? asset(Auth::user()->profile_image) : 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->name) }}" data-lightbox="profile">
+<img id="profileAvatar"
+src="{{ Auth::user()->profile_thumbnail ? asset(Auth::user()->profile_thumbnail) : (Auth::user()->profile_image ? asset(Auth::user()->profile_image) : 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->name) . '&background=D0A04F&color=fff') }}"
+class="profile-avatar cursor-pointer"
+alt="{{ Auth::user()->name }}">
+</a>
+
+<div class="profile-edit-icon" onclick="document.getElementById('profileInput').click()">
+<i class="fas fa-camera"></i>
+</div>
+
+</div>
                     </div>
 
                     <div class="profile-details">
@@ -1145,23 +1166,93 @@
     <script>
         const csrf = '{{ csrf_token() }}';
 
-        // Profile image upload
-        document.getElementById('profileAvatar').addEventListener('click', () => {
-            document.getElementById('profileInput').click();
+let cropper;
+document.getElementById('profileInput').addEventListener('change', function(e){
+
+    const file = e.target.files[0];
+    if(!file) return;
+
+    const reader = new FileReader();
+
+    reader.onload = function(event){
+
+        const image = document.getElementById('cropImage');
+        image.src = event.target.result;
+
+        document.getElementById('cropModal').style.display = "flex";
+
+        cropper = new Cropper(image,{
+            aspectRatio:1,
+            viewMode:1,
+
+            ready(){
+
+                const canvas = cropper.getCroppedCanvas({
+                    width:500,
+                    height:500
+                });
+
+                canvas.toBlob(function(blob){
+
+                    uploadImage(blob,'profile_image');
+
+                    document.getElementById('cropModal').style.display = "none";
+                    cropper.destroy();
+
+                });
+
+            }
         });
 
-        document.getElementById('profileInput').addEventListener('change', function() {
-            uploadImage(this.files[0], 'profile_image');
-        });
+    };
 
+    reader.readAsDataURL(file);
+
+});
         // Cover image upload
-        document.getElementById('changeCoverBtn').addEventListener('click', () => {
-            document.getElementById('coverInput').click();
+    
+document.getElementById('coverInput').addEventListener('change', function(e){
+
+    const file = e.target.files[0];
+    if(!file) return;
+
+    const reader = new FileReader();
+
+    reader.onload = function(event){
+
+        const image = document.getElementById('cropImage');
+        image.src = event.target.result;
+
+        document.getElementById('cropModal').style.display = "flex";
+
+        cropper = new Cropper(image,{
+            aspectRatio:3/1,   // Cover ratio
+            viewMode:1,
+
+            ready(){
+
+                const canvas = cropper.getCroppedCanvas({
+                    width:1200,
+                    height:400
+                });
+
+                canvas.toBlob(function(blob){
+
+                    uploadImage(blob,'cover_image');
+
+                    document.getElementById('cropModal').style.display = "none";
+                    cropper.destroy();
+
+                });
+
+            }
         });
 
-        document.getElementById('coverInput').addEventListener('change', function() {
-            uploadImage(this.files[0], 'cover_image');
-        });
+    };
+
+    reader.readAsDataURL(file);
+
+});
 
         // Core upload function
         function uploadImage(file, type) {
@@ -1330,6 +1421,36 @@
             return false;
         }
     </script>
+   <!-- Crop Modal -->
+<div id="cropModal" style="
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.8);
+align-items:center;
+justify-content:center;
+z-index:9999;
+">
+
+    <div style="
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    max-width:500px;
+    width:90%;
+    ">
+
+        <h5 style="margin-bottom:10px;">Crop Image</h5>
+
+        <img id="cropImage" style="max-width:100%;">
+
+    </div>
+
+</div>
+
 </body>
 
 </html>

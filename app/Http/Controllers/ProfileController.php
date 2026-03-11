@@ -7,168 +7,139 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Feed;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
-use App\Mail\ProfileUpdateMail;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 
 class ProfileController extends Controller
 {
+
     public function show()
-{
-    $user = Auth::user();
+    {
+        $user = Auth::user();
 
-    $feeds = Feed::with('images')
-                ->where('user_id',$user->id)
-                ->latest()
-                ->get();
+        $feeds = Feed::with('images')
+            ->where('user_id', $user->id)
+            ->latest()
+            ->get();
 
-    return view('profile', compact('user','feeds'));
-}
+        return view('profile', compact('user','feeds'));
+    }
+
+
     public function publicProfile($username)
     {
-        $user = User::where('username', $username)->firstOrFail();
+        $user = User::where('slug', $username)->firstOrFail();
+
         return view('profile', compact('user'));
     }
 
-    public function ajaxGalleryUpload(Request $request)
-    {
-        $request->validate([
-            'gallery_images.*' => 'required|image|max:4096'
-        ]);
 
+    public function settings()
+    {
         $user = auth()->user();
 
-        $dir = public_path('uploads/user_images');
+        $locationName = null;
 
-        if (!file_exists($dir)) {
-            mkdir($dir, 0755, true);
-        }
+        if ($user->location) {
 
-        $images = [];
-
-        foreach ($request->file('gallery_images') as $file) {
-
-            $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-
-            $file->move($dir, $filename);
-
-            $path = 'uploads/user_images/' . $filename;
-
-            // save DB if you have gallery table
-            $user->multipleImages()->create([
-                'image' => $path
-            ]);
-
-            $images[] = [
-                'url' => asset($path)
-            ];
-        }
-
-        return response()->json([
-            'status' => true,
-            'images' => $images
-        ]);
-    }
-
- 
-public function settings()
-{
-    $user = auth()->user();
-    
-    // Fix: Check if location exists and is an object/relationship
-    $locationName = null;
-    
-    // Check if location relation exists and is loaded
-    if ($user->location) {
-        // If it's a relationship, it should be an object
-        if (is_object($user->location)) {
-            $locationName = $user->location->name ?? null;
-        } else {
-            // If it's just an ID, you might need to fetch it manually
             $location = \App\Models\Location::find($user->location);
+
             $locationName = $location->name ?? null;
         }
+
+        return view('settings', compact('user','locationName'));
     }
-    return view('settings', [
-        'user' => $user,
-        'locationName' => $locationName,
-    ]);
-}
 
-public function updatePassword(Request $request)
-{
-    $request->validate([
-        'current_password' => ['required'],
-        'password' => ['required', 'confirmed', 'min:8'],
-    ]);
 
-    if (!Hash::check($request->current_password, auth()->user()->password)) {
-        return back()->withErrors([
-            'current_password' => 'Current password is incorrect',
+    public function updatePassword(Request $request)
+    {
+
+        $request->validate([
+            'current_password' => ['required'],
+            'password' => ['required','confirmed','min:8'],
         ]);
+
+        if (!Hash::check($request->current_password, auth()->user()->password)) {
+
+            return back()->withErrors([
+                'current_password' => 'Current password is incorrect',
+            ]);
+        }
+
+        auth()->user()->update([
+            'password' => Hash::make($request->password),
+        ]);
+
+        return redirect()->route('profile')
+            ->with('success','Password updated successfully');
     }
 
-    auth()->user()->update([
-        'password' => Hash::make($request->password),
-    ]);
 
-    // ✅ redirect + success message
-    return redirect()
-        ->route('profile')
-        ->with('success', 'Password updated successfully');
-}
+
+    /*
+    ==========================
+    GALLERY PAGE
+    ==========================
+    */
 
 public function gallery()
 {
     $user = Auth::user();
-    $images = $user->multipleImages()->latest()->get();
     
-    return view('profile_gallery', compact('user', 'images'));
+    // Get images from the relationship instead of JSON fields
+    $galleryImages = $user->multipleImages()->latest()->get();
+    
+    return view('profile_gallery', compact('user', 'galleryImages'));
 }
 
-    public function ajaxImageUpdate(Request $request)
-    {
-        $user = auth()->user();
 
-        $request->validate([
-            'profile_image' => 'nullable|image|max:2048',
-            'cover_image'   => 'nullable|image|max:4096',
-        ]);
 
-        $type = $request->hasFile('profile_image')
-            ? 'profile_image'
-            : 'cover_image';
+    /*
+    ==========================
+    GALLERY IMAGE UPLOAD
+    ==========================
+    */
+public function ajaxGalleryUpload(Request $request)
+{
+    $request->validate([
+        'gallery_images.*' => 'required|image|max:20480' // 20MB max
+    ]);
 
-        $file = $request->file($type);
+    $user = Auth::user();
 
-        $folder = $type === 'profile_image'
-            ? 'uploads/profiles'
-            : 'uploads/covers';
+    $manager = new ImageManager(new Driver());
 
-        $path = public_path($folder);
+    $imageDir = public_path('uploads/user_images');
+    $thumbDir = public_path('uploads/gallery_thumbnails');
 
-        if (!file_exists($path)) {
-            mkdir($path, 0755, true);
-        }
+    if (!file_exists($imageDir)) mkdir($imageDir, 0755, true);
+    if (!file_exists($thumbDir)) mkdir($thumbDir, 0755, true);
 
-        // delete old
-        if ($user->$type && file_exists(public_path($user->$type))) {
-            unlink(public_path($user->$type));
-        }
-
+    foreach ($request->file('gallery_images') as $file) {
+        // Generate unique filename
         $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
 
-        $file->move($path, $filename);
+        // Save original
+        $file->move($imageDir, $filename);
 
-        $user->$type = $folder . '/' . $filename;
-        $user->save();
+        // Create thumbnail (300x300)
+        $image = $manager->read($imageDir . '/' . $filename);
+        $image->cover(300, 300);
+        $image->save($thumbDir . '/' . $filename);
 
-        return response()->json([
-            'status' => true,
-            'url' => asset($folder . '/' . $filename)
+        // Save both original and thumbnail in DB
+        $user->multipleImages()->create([
+            'image' => 'uploads/user_images/' . $filename,
+            'thumbnail' => 'uploads/gallery_thumbnails/' . $filename,
         ]);
     }
+
+    return response()->json([
+        'status' => true,
+        'message' => 'Images uploaded successfully'
+    ]);
+}
 
     public function edit()
     {
@@ -177,17 +148,26 @@ public function gallery()
         $locationName = null;
 
         if ($user->location) {
+
             $locationName = DB::table('locations')
-                ->where('id', $user->location)
+                ->where('id',$user->location)
                 ->value('name');
         }
 
-        return view('profile_edit', compact('user', 'locationName'));
+        return view('profile_edit', compact('user','locationName'));
     }
 
 
+
+    /*
+    ==========================
+    PROFILE UPDATE
+    ==========================
+    */
+
     public function update(Request $request)
     {
+
         $user = Auth::user();
 
         $validated = $request->validate([
@@ -196,101 +176,148 @@ public function gallery()
             'description' => 'nullable|string',
             'profile_image' => 'nullable|image|max:10480',
             'cover_image' => 'nullable|image|max:40960',
-            'gallery_images.*' => 'nullable|image|max:4096',
         ]);
 
-        $oldUserData = $user->getOriginal();
-
         $user->name = $validated['name'];
+
+
+        /*
+        LOCATION
+        */
+
         if ($request->filled('location_name')) {
+
             $locationId = DB::table('locations')
                 ->where('name', $request->location_name)
                 ->value('id');
 
             if ($locationId) {
+
                 $user->location = $locationId;
             }
         }
 
+
         $user->description = $validated['description'] ?? $user->description;
 
-        // === Profile Image ===
+
+        $manager = new ImageManager(new Driver());
+
+
+        /*
+        PROFILE IMAGE
+        */
+
         if ($request->hasFile('profile_image')) {
+
             if ($user->profile_image && file_exists(public_path($user->profile_image))) {
+
                 unlink(public_path($user->profile_image));
             }
 
+            if ($user->profile_thumbnail && file_exists(public_path($user->profile_thumbnail))) {
+
+                unlink(public_path($user->profile_thumbnail));
+            }
+
             $file = $request->file('profile_image');
-            $filename = time() . '_profile_' . $file->getClientOriginalName();
-            $file->move(public_path('uploads/profiles'), $filename);
-            $user->profile_image = 'uploads/profiles/' . $filename;
+
+            $filename = time().'_profile_'.uniqid().'.'.$file->getClientOriginalExtension();
+
+            $profileDir = public_path('uploads/profiles');
+
+            if (!file_exists($profileDir)) {
+
+                mkdir($profileDir,0755,true);
+            }
+
+            $file->move($profileDir,$filename);
+
+            $user->profile_image = 'uploads/profiles/'.$filename;
+
+
+            /*
+            PROFILE THUMBNAIL
+            */
+
+            $thumbDir = public_path('uploads/profile_thumbnails');
+
+            if (!file_exists($thumbDir)) {
+
+                mkdir($thumbDir,0755,true);
+            }
+
+            $image = $manager->read($profileDir.'/'.$filename);
+
+            $image->cover(150,150);
+
+            $image->save($thumbDir.'/'.$filename);
+
+            $user->profile_thumbnail = 'uploads/profile_thumbnails/'.$filename;
         }
 
-        // === Cover Image ===
+
+
+        /*
+        COVER IMAGE
+        */
+
         if ($request->hasFile('cover_image')) {
+
             if ($user->cover_image && file_exists(public_path($user->cover_image))) {
+
                 unlink(public_path($user->cover_image));
             }
 
+            if ($user->cover_thumbnail && file_exists(public_path($user->cover_thumbnail))) {
+
+                unlink(public_path($user->cover_thumbnail));
+            }
+
             $file = $request->file('cover_image');
-            $filename = time() . '_cover_' . $file->getClientOriginalName();
 
-            $file->move(public_path('uploads/covers'), $filename);
-            $user->cover_image = 'uploads/covers/' . $filename;
+            $filename = time().'_cover_'.uniqid().'.'.$file->getClientOriginalExtension();
+
+            $coverDir = public_path('uploads/covers');
+
+            if (!file_exists($coverDir)) {
+
+                mkdir($coverDir,0755,true);
+            }
+
+            $file->move($coverDir,$filename);
+
+            $user->cover_image = 'uploads/covers/'.$filename;
+
+
+            /*
+            COVER THUMBNAIL
+            */
+
+            $thumbDir = public_path('uploads/cover_thumbnails');
+
+            if (!file_exists($thumbDir)) {
+
+                mkdir($thumbDir,0755,true);
+            }
+
+            $image = $manager->read($coverDir.'/'.$filename);
+
+            $image->cover(600,200);
+
+            $image->save($thumbDir.'/'.$filename);
+
+            $user->cover_thumbnail = 'uploads/cover_thumbnails/'.$filename;
         }
 
 
+        $user->is_approved = 0;
 
-        // === Gallery Images ===
-        if ($request->hasFile('gallery_images')) {
-            $galleryPaths = [];
-
-            // Delete old gallery images if you want to replace them
-            if (!empty($user->gallery_images)) {
-                $oldGallery = is_array($user->gallery_images)
-                    ? $user->gallery_images
-                    : json_decode($user->gallery_images, true);
-                foreach ($oldGallery as $img) {
-                    if (file_exists(public_path($img))) {
-                        unlink(public_path($img));
-                    }
-                }
-            }
-
-            foreach ($request->file('gallery_images') as $file) {
-                $filename = time() . '_gallery_' . $file->getClientOriginalName();
-                $file->move(public_path('uploads/gallery'), $filename);
-                $galleryPaths[] = 'uploads/gallery/' . $filename;
-            }
-
-            $user->gallery_images = json_encode($galleryPaths);
-        }
-        $user->is_approved     = 0;
         $user->save();
 
-        \Log::info('Attempting to send email...');
+        return redirect()->route('profile')
+            ->with('success','Profile updated successfully!');
 
-        try {
-            \Log::info('Creating mail instance...');
-            $mail = new ProfileUpdateMail($user);
-
-            \Log::info('Sending to: impulsedesignersfurniture@gmail.com');
-
-            Mail::to([
-                'impulsedesignersfurniture@gmail.com',
-                'harshamdigitz@gmail.com',
-                'iamshafimc@gmail.com'
-            ])->send($mail);
-
-            \Log::info('✅ Mail send method completed without exception');
-        } catch (\Exception $e) {
-            \Log::error('❌ Mail exception: ' . $e->getMessage());
-            \Log::error('Exception trace: ' . $e->getTraceAsString());
-        }
-
-        \Log::info('=== UPDATE METHOD COMPLETED ===');
-
-
-        return redirect()->route('profile')->with('success', 'Profile updated successfully!');
     }
+
 }

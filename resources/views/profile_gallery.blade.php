@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{{ $user->name }} - Gallery</title>
-
+      
     <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
 
@@ -626,41 +626,41 @@
             </div>
             @endif
 
-            <!-- Gallery Header -->
-            <div class="gallery-header">
-                <h1 class="gallery-title">
-                    <i class="fas fa-images"></i>
-                    My Photos ({{ $images->count() }})
-                </h1>
-                <button class="upload-btn" id="galleryUploadBtn">
-                    <i class="fas fa-upload"></i> Upload Photos
-                </button>
-            </div>
+           <!-- Gallery Header -->
+<div class="gallery-header">
+    <h1 class="gallery-title">
+        <i class="fas fa-images"></i>
+        My Photos ({{ count($galleryImages) }})
+    </h1>
+    <button class="upload-btn" id="galleryUploadBtn">
+        <i class="fas fa-upload"></i> Upload Photos
+    </button>
+</div>
 
-            <!-- Gallery Grid -->
-            @if($images->count() > 0)
-            <div class="gallery-grid" id="galleryGrid">
-                @foreach($images as $index => $image)
-                <a href="{{ asset($image->image) }}" data-lightbox="gallery" data-title="Gallery Image {{ $index + 1 }}" class="gallery-item">
-                    <img src="{{ asset($image->image) }}" alt="Gallery Image">
-                    <div class="gallery-overlay">
-                        <i class="fas fa-search" onclick="event.preventDefault(); lightbox.open({{ $index }});"></i>
-                        <i class="fas fa-trash" onclick="event.preventDefault(); confirmDelete('{{ $image->id }}', '{{ asset($image->image) }}')"></i>
-                    </div>
-                </a>
-                @endforeach
-            </div>
-            @else
-            <div class="empty-gallery">
-                <i class="fas fa-images"></i>
-                <h3>No Photos Yet</h3>
-                <p>Upload your first photo to get started</p>
-                <button class="upload-btn" id="emptyGalleryUploadBtn">
-                    <i class="fas fa-upload"></i> Upload Photos
-                </button>
-            </div>
-            @endif
-
+<!-- Gallery Grid -->
+@if(count($galleryImages) > 0)
+<div class="gallery-grid" id="galleryGrid">
+    @foreach($galleryImages as $index => $image)
+    <div class="gallery-item">
+        <a href="{{ asset($image->image) }}" data-lightbox="gallery" data-title="Gallery Image {{ $index + 1 }}">
+           <img src="{{ asset($image->thumbnail) }}" alt="Gallery Image">
+        </a>
+       <div class="gallery-overlay">
+    <i class="fas fa-search" onclick="this.closest('.gallery-item').querySelector('a').click();"></i>
+</div> 
+    </div>
+    @endforeach
+</div>
+@else
+<div class="empty-gallery">
+    <i class="fas fa-images"></i>
+    <h3>No Photos Yet</h3>
+    <p>Upload your first photo to get started</p>
+    <button class="upload-btn" id="emptyGalleryUploadBtn">
+        <i class="fas fa-upload"></i> Upload Photos
+    </button>
+</div>
+@endif
             <!-- Hidden file input -->
             <input type="file" id="galleryInput" multiple accept="image/*" style="display: none;">
 
@@ -722,55 +722,56 @@
         });
 
         // Upload button click handlers
-        document.getElementById('galleryUploadBtn')?.addEventListener('click', () => {
-            document.getElementById('galleryInput').click();
-        });
+        // Make sure both upload buttons trigger the file input
+document.getElementById('galleryUploadBtn')?.addEventListener('click', () => {
+    document.getElementById('galleryInput').click();
+});
 
-        document.getElementById('emptyGalleryUploadBtn')?.addEventListener('click', () => {
-            document.getElementById('galleryInput').click();
-        });
+document.getElementById('emptyGalleryUploadBtn')?.addEventListener('click', () => {
+    document.getElementById('galleryInput').click();
+});
 
         // Handle file selection - USING YOUR EXISTING ajaxGalleryUpload METHOD
-        document.getElementById('galleryInput').addEventListener('change', function() {
-            const files = this.files;
-            if (!files.length) return;
+      // Handle file selection
+document.getElementById('galleryInput').addEventListener('change', function() {
+    const files = this.files;
+    if (!files.length) return;
 
-            const formData = new FormData();
-            for (let i = 0; i < files.length; i++) {
-                formData.append('gallery_images[]', files[i]);
-            }
-            formData.append('_token', csrf);
+    const formData = new FormData();
+    for (let i = 0; i < files.length; i++) {
+        formData.append('gallery_images[]', files[i]);
+    }
+    formData.append('_token', csrf);
 
-            // Show loading state
-            const uploadBtn = document.getElementById('galleryUploadBtn') || document.getElementById('emptyGalleryUploadBtn');
-            const originalText = uploadBtn.innerHTML;
-            uploadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading...';
-            uploadBtn.disabled = true;
+    // Show loading state
+    const uploadBtn = document.getElementById('galleryUploadBtn') || document.getElementById('emptyGalleryUploadBtn');
+    const originalText = uploadBtn.innerHTML;
+    uploadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading...';
+    uploadBtn.disabled = true;
 
-            // USING YOUR EXISTING ROUTE
-            fetch("{{ route('profile.gallery.upload') }}", {
-                    method: "POST",
-                    body: formData
-                })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.status) {
-                        showToast('Images uploaded successfully!');
-                        // Reload to show new images
-                        setTimeout(() => window.location.reload(), 1000);
-                    } else {
-                        showToast(data.message || 'Upload failed', 'error');
-                        uploadBtn.innerHTML = originalText;
-                        uploadBtn.disabled = false;
-                    }
-                })
-                .catch(err => {
-                    console.error(err);
-                    showToast('Server error', 'error');
-                    uploadBtn.innerHTML = originalText;
-                    uploadBtn.disabled = false;
-                });
-        });
+    fetch("{{ route('profile.gallery.upload') }}", {
+        method: "POST",
+        body: formData
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.status) {
+            showToast('Images uploaded successfully!');
+            // Reload to show new images
+            setTimeout(() => window.location.reload(), 1000);
+        } else {
+            showToast(data.message || 'Upload failed', 'error');
+            uploadBtn.innerHTML = originalText;
+            uploadBtn.disabled = false;
+        }
+    })
+    .catch(err => {
+        console.error(err);
+        showToast('Server error', 'error');
+        uploadBtn.innerHTML = originalText;
+        uploadBtn.disabled = false;
+    });
+});
 
         // Delete functionality
         let deleteImageId = null;
