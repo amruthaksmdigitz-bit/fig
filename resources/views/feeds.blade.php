@@ -5,34 +5,36 @@
     <div class="feed-container"><br><br><br><br><br>
         <!-- Post Form Section - Smaller and Vertical -->
         <div class="post-form-container">
-            <form class="post-form" id="postForm" action="{{ route('feeds.store') }}" method="POST"
-                enctype="multipart/form-data">
-                @csrf
+    <form class="post-form" id="postForm" action="{{ route('feeds.store') }}" method="POST"
+        enctype="multipart/form-data">
+        @csrf
 
-                <div class="form-group">
-                    <label for="postTitle">Post Title</label>
-                    <input type="text" name="title" id="postTitle" placeholder="Enter title..." required>
+        <!-- Unified input area - combines title and image upload -->
+        <div class="unified-input-area">
+            <!-- Title input -->
+            <input type="text" name="title" id="postTitle" placeholder="What's on your mind?" required>
+
+            <!-- Image upload - integrated below -->
+            <div class="image-upload-section">
+                <div class="image-upload-area" onclick="document.getElementById('imageInput').click()">
+                    <i class="fas fa-images"></i>
+                    <span>Add photos</span>
+                    <small>PNG, JPG (max 2MB)</small>
                 </div>
 
-                <div class="image-upload-section">
-                    <div class="image-upload-area" onclick="document.getElementById('imageInput').click()">
-                        <i>📷</i>
-                        <span>Click to upload images</span>
-                        <small>PNG, JPG (max 2MB)</small>
-                    </div>
+                <input type="file" id="imageInput" class="file-input" name="images[]" accept="image/*" multiple hidden>
 
-                    <input type="file" id="imageInput" class="file-input" name="images[]" accept="image/*" multiple
-                        hidden>
-
-                    <div class="image-preview" id="imagePreview"></div>
-                </div>
-
-                <div class="form-actions">
-                    <button type="button" class="btn btn-secondary" onclick="clearForm()">Clear</button>
-                    <button type="submit" class="btn btn-primary">Post</button>
-                </div>
-            </form>
+                <div class="image-preview" id="imagePreview"></div>
+            </div>
         </div>
+
+        <!-- Action buttons -->
+        <div class="form-actions">
+            <button type="button" class="btn btn-secondary" onclick="clearForm()">Clear</button>
+            <button type="submit" class="btn btn-primary">Post</button>
+        </div>
+    </form>
+</div>
 
         <!-- Posts Feed -->
         <div class="feed">
@@ -86,20 +88,28 @@
                     </div>
 
                     @if ($feed->images->count())
-                        <div class="post-image-grid" data-images="{{ $feed->images->count() }}">
-                            @foreach ($feed->images as $index => $image)
-                                <div class="grid-item {{ $index == 3 && $feed->images->count() > 4 ? 'has-overlay' : '' }}"
-                                    onclick="openLightbox({{ $feed->id }}, {{ $index }})">
-                                    <img src="{{ asset('storage/' . $image->image) }}" alt="Post Image">
-                                    @if ($index == 3 && $feed->images->count() > 4)
-                                        <div class="more-images-overlay">
-                                            <span>+{{ $feed->images->count() - 4 }}</span>
-                                        </div>
-                                    @endif
-                                </div>
-                            @endforeach
-                        </div>
-                    @endif
+<div class="post-image-grid" data-images="{{ $feed->images->count() }}">
+
+    @foreach ($feed->images as $index => $image)
+
+        <a data-fancybox="feed-{{ $feed->id }}"
+           href="{{ asset('storage/' . $image->image) }}"
+           class="grid-item {{ $index == 3 && $feed->images->count() > 4 ? 'has-overlay' : '' }}">
+
+            <img src="{{ asset('storage/' . $image->image) }}" alt="Post Image">
+
+            @if ($index == 3 && $feed->images->count() > 4)
+                <div class="more-images-overlay">
+                    <span>+{{ $feed->images->count() - 4 }}</span>
+                </div>
+            @endif
+
+        </a>
+
+    @endforeach
+
+</div>
+@endif
                 </div>
             @endforeach
         </div>

@@ -69,7 +69,35 @@ class ReportController extends Controller
             // Load relationships for email
             $report->load(['feed', 'reporter', 'reportedUser']);
 
+            // ========== SEND EMAIL NOTIFICATIONS ==========
+            
+            // 1. Send to all admins (role_id = 1)
+            try {
+                $admins = User::where('role_id', 1)->get(); // role_id 1 is admin
                 
+                if ($admins->count() > 0) {
+                    foreach ($admins as $admin) {
+                        Mail::to($admin->email)->send(new ReportSubmittedAdmin($report));
+                    }
+                }
+            } catch (\Exception $e) {
+                Log::error('Admin email failed: ' . $e->getMessage());
+            }
+
+            // 2. Send to post owner
+            try {
+                Mail::to($feed->user->email)->send(new ReportSubmittedPostOwner($report));
+            } catch (\Exception $e) {
+                Log::error('Post owner email failed: ' . $e->getMessage());
+            }
+
+            // 3. Send confirmation to reporter
+            try {
+                Mail::to(Auth::user()->email)->send(new ReportConfirmationReporter($report));
+            } catch (\Exception $e) {
+                Log::error('Reporter email failed: ' . $e->getMessage());
+            }
+            
             // ========== END EMAIL NOTIFICATIONS ==========
 
             return response()->json([

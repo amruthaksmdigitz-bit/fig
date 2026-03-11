@@ -327,3 +327,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth','route.access'])->gro
 
     // ===== OPTIONAL: Add middleware for role-based access if needed =====
     // ->middleware(['route.access']) // Uncomment if you have role-based access
+
+Route::post('/profile/image/update',[ProfileController::class,'ajaxImageUpdate'])
+->name('profile.image.update')
+->middleware('auth');

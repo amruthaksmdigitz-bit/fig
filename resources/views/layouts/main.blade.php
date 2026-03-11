@@ -84,6 +84,7 @@
 
     <link rel="stylesheet" href="{{ asset('assets/css/blog.css') }}">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css"/>
     <!-- Custom CSS for dropdown -->
     <style>
         html,
@@ -1197,6 +1198,7 @@
             document.documentElement.style.paddingBottom = '0';
         });
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script>
 </body>
 
 </html>
