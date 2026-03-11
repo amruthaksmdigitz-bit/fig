@@ -382,7 +382,7 @@
             submitBtn.disabled = true;
 
             // Send the report to server
-            fetch('{{ route('reports.store') }}', {
+            fetch('{{ route('report.store') }}', {
                     method: 'POST',
                     headers: {
                         'X-CSRF-TOKEN': '{{ csrf_token() }}',

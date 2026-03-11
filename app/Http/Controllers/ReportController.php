@@ -4,9 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Report;
 use App\Models\Feed;
+use App\Models\User; 
+use App\Mail\ReportSubmittedAdmin; 
+use App\Mail\ReportSubmittedPostOwner;
+use App\Mail\ReportConfirmationReporter; 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Mail; 
+use Illuminate\Support\Facades\Log; 
 
 class ReportController extends Controller
 {
@@ -59,12 +65,19 @@ class ReportController extends Controller
             }
 
             $report = Report::create($reportData);
+            
+            // Load relationships for email
+            $report->load(['feed', 'reporter', 'reportedUser']);
+
+                
+            // ========== END EMAIL NOTIFICATIONS ==========
 
             return response()->json([
                 'success' => true,
                 'message' => 'Report submitted successfully',
                 'data' => $report
             ], 201);
+            
         } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json([
                 'success' => false,
