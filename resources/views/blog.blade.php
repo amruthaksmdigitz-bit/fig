@@ -43,7 +43,24 @@
                 <a href="{{ route('blog.show', $blog->slug) }}" class="blog-card-link" style="text-decoration: none; color: inherit;">
                     <div class="blog-card">
                         @if($blog->image)
-                        <img src="{{ asset($blog->image) }}" alt="{{ $blog->title }}" class="img-fluid">
+                        <!-- Lazy loading blog image -->
+                        <img data-src="{{ asset($blog->image) }}" 
+                             src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1'%3E%3C/svg%3E"
+                             alt="{{ $blog->title }}" 
+                             class="img-fluid lazy-image"
+                             loading="lazy">
+                        <noscript>
+                            <img src="{{ asset($blog->image) }}" alt="{{ $blog->title }}" class="img-fluid">
+                        </noscript>
+                        @else
+                        <!-- Placeholder when no image exists -->
+                        <div class="blog-image-placeholder lazy-bg" 
+                             data-bg="linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)"
+                             style="height: 200px; width: 100%; background: #f0f0f0;">
+                            <div class="d-flex align-items-center justify-content-center h-100">
+                                <i class="bi bi-image text-muted" style="font-size: 3rem;"></i>
+                            </div>
+                        </div>
                         @endif
                         <div class="blog-content">
                             <h3>{{ $blog->title }}</h3>

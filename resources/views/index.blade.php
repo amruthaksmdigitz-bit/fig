@@ -6,8 +6,8 @@
 
 
         </style>
-        <!-- Hero Area Start-->
-        <div class="slider-area hero-overly" style="background-image: url('{{ asset($slider->image) }}');">
+        <!-- Hero Area Start - With lazy background -->
+        <div class="slider-area hero-overly" data-bg="{{ asset($slider->image) }}">
             <div class="single-slider hero-overly slider-height d-flex align-items-center">
                 <div class="container">
                     <div class="row justify-content-center">
@@ -28,11 +28,8 @@
                                 <!-- 🔽 ENHANCED LOCATION SELECT WITH SELECT2 -->
                                 <div class="select-form">
                                     <select name="location" id="homelocation" class="form-control">
-
                                         <option value="">All Locations</option>
-
-
-
+                                        <!-- Your location options will go here -->
                                     </select>
                                 </div>
 
@@ -66,8 +63,19 @@
                             <div class="single-location mb-30">
                                 <a href="{{ route('userdetails.show', $user->slug) }}">
                                     <div class="location-img">
-                                        <img src="{{ asset($user->profile_image) }}" style="height:300px"
-                                            class="img-fluid rounded">
+                                        <!-- Lazy loading image with low-quality placeholder -->
+                                        <img data-src="{{ asset($user->profile_image) }}" 
+                                             src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1'%3E%3C/svg%3E"
+                                             style="height:300px"
+                                             class="img-fluid rounded lazy-image"
+                                             alt="{{ $user->name }}">
+                                        <!-- Fallback for browsers without JavaScript -->
+                                        <noscript>
+                                            <img src="{{ asset($user->profile_image) }}" 
+                                                 style="height:300px" 
+                                                 class="img-fluid rounded" 
+                                                 alt="{{ $user->name }}">
+                                        </noscript>
                                     </div>
                                 </a>
                                 <div class="location-details">
@@ -87,10 +95,9 @@
         </div>
         <!-- Popular Locations End -->
 
-        <!-- Services Area Start -->
+        <!-- Services Area Start - With lazy background -->
         <div class="services-area pt-150 pb-150 section-bg"
-            style="background-image: url('{{ asset('assets/img/gallery/section_bg02.jpg') }}');">
-
+             data-bg="{{ asset('assets/img/gallery/section_bg02.jpg') }}">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12">
@@ -113,7 +120,6 @@
                                     <h5>{{ $howitwork->title }}</h5>
                                     <p>{{ $howitwork->body }}</p>
                                 </div>
-
                             </div>
                         </div>
                     @endforeach
@@ -159,4 +165,7 @@
 
     <!-- Select2 JS -->
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    
+    <!-- Lazy Loading JS (add after jQuery) -->
+    <script src="{{ asset('assets/js/lazy-loading.js') }}"></script>
 @endsection

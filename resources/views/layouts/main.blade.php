@@ -85,6 +85,8 @@
     <link rel="stylesheet" href="{{ asset('assets/css/blog.css') }}">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css"/>
+    <link href="{{ asset('assets/css/lazy-loading.css') }}" rel="stylesheet">
+
     <!-- Custom CSS for dropdown -->
     <style>
         html,
@@ -919,6 +921,7 @@
     <script src="{{ asset('assets/js/plugins.js') }}"></script>
     <script src="{{ asset('assets/js/main.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    
 
     <script>
         $(document).ready(function() {
@@ -1199,6 +1202,8 @@
         });
     </script>
     <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script>
+    <script src="{{ asset('assets/js/lazy-loading.js') }}" defer></script>
+
 </body>
 
 </html>

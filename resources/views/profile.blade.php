@@ -19,6 +19,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css" />
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" />
+    
+    <!-- Lazy Loading CSS -->
+    <link href="{{ asset('assets/css/lazy-loading.css') }}" rel="stylesheet" />
 
     <style>
         :root {
@@ -801,9 +804,16 @@
                     <div class="user-menu">
                         <div class="user-dropdown">
                             <button class="user-btn">
-                                <img src="{{ Auth::user()->profile_image ? asset(Auth::user()->profile_image) : 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->name) . '&background=D0A04F&color=fff' }}"
-                                    class="user-avatar"
-                                    alt="{{ Auth::user()->name }}">
+                                <!-- Lazy loading user avatar -->
+                                <img data-src="{{ Auth::user()->profile_image ? asset(Auth::user()->profile_image) : 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->name) . '&background=D0A04F&color=fff' }}"
+                                     src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1'%3E%3C/svg%3E"
+                                     class="user-avatar lazy-image"
+                                     alt="{{ Auth::user()->name }}">
+                                <noscript>
+                                    <img src="{{ Auth::user()->profile_image ? asset(Auth::user()->profile_image) : 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->name) . '&background=D0A04F&color=fff' }}"
+                                         class="user-avatar"
+                                         alt="{{ Auth::user()->name }}">
+                                </noscript>
 
                                 <div class="user-info">
                                     <div class="user-name">{{ Auth::user()->name }}</div>
@@ -845,24 +855,35 @@
 
         <!-- Content Area -->
         <main class="content">
-            <!-- Profile Header -->
-            <div class="profile-header">
-                <div class="cover-image" style="background-image: url('{{ Auth::user()->cover_image ? asset(Auth::user()->cover_image) : 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80' }}')">
-                    <div class="cover-overlay">
-                        <button class="btn btn-outline" id="changeCoverBtn">
-                            <i class="fas fa-camera"></i> Change Cover
-                        </button>
-                        <input type="file" id="coverInput" accept="image/*" hidden>
-                    </div>
-                </div>
+           <!-- Profile Header -->
+<div class="profile-header">
+    <!-- Lazy loading cover image -->
+    <div class="cover-image lazy-bg" 
+         data-bg="{{ Auth::user()->cover_image ? asset(Auth::user()->cover_image) : 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80' }}">
+        <div class="cover-overlay">
+            <button class="btn btn-outline" id="changeCoverBtn">
+                <i class="fas fa-camera"></i> Change Cover
+            </button>
+            <input type="file" id="coverInput" accept="image/*" hidden>
+        </div>
+    </div>
+    <!-- rest of the code -->
 
                 <div class="profile-info">
                     <input type="file" id="profileInput" accept="image/*" hidden>
 
                     <div style="position: relative; display: inline-block;">
-                        <img id="profileAvatar" src="{{ Auth::user()->profile_image ? asset(Auth::user()->profile_image) : 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->name) . '&background=D0A04F&color=fff' }}"
-                            class="profile-avatar cursor-pointer"
-                            alt="{{ Auth::user()->name }}">
+                        <!-- Lazy loading profile avatar -->
+                        <img id="profileAvatar" 
+                             data-src="{{ Auth::user()->profile_image ? asset(Auth::user()->profile_image) : 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->name) . '&background=D0A04F&color=fff' }}"
+                             src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1'%3E%3C/svg%3E"
+                             class="profile-avatar cursor-pointer lazy-image"
+                             alt="{{ Auth::user()->name }}">
+                        <noscript>
+                            <img src="{{ Auth::user()->profile_image ? asset(Auth::user()->profile_image) : 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->name) . '&background=D0A04F&color=fff' }}"
+                                 class="profile-avatar cursor-pointer"
+                                 alt="{{ Auth::user()->name }}">
+                        </noscript>
                         <div class="profile-edit-icon" onclick="document.getElementById('profileInput').click()">
                             <i class="fas fa-camera"></i>
                         </div>
@@ -943,22 +964,22 @@
                                 <h3 class="post-title">{{ $feed->title }}</h3>
                                 
                                 @if($feed->images && $feed->images->count())
-                                @if($feed->images && $feed->images->count())
-<div class="post-images">
-    @foreach($feed->images->take(3) as $image)
-    <img src="{{ asset('storage/'.$image->image) }}" 
-         class="post-thumbnail cursor-pointer"
-         alt="Post image"
-         onclick="event.stopPropagation(); openPostGallery({{ $feed->id }})">
-    @endforeach
-    @if($feed->images->count() > 3)
-    <div class="post-thumbnail d-flex align-items-center justify-content-center bg-light cursor-pointer"
-         onclick="event.stopPropagation(); openPostGallery({{ $feed->id }})">
-        +{{ $feed->images->count() - 3 }}
-    </div>
-    @endif
-</div>
-@endif
+                                <div class="post-images">
+                                    @foreach($feed->images->take(3) as $image)
+                                    <!-- Lazy loading post thumbnails -->
+                                    <img data-src="{{ asset('storage/'.$image->image) }}" 
+                                         src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1'%3E%3C/svg%3E"
+                                         class="post-thumbnail cursor-pointer lazy-image"
+                                         alt="Post image"
+                                         onclick="event.stopPropagation(); openPostGallery({{ $feed->id }})">
+                                    @endforeach
+                                    @if($feed->images->count() > 3)
+                                    <div class="post-thumbnail d-flex align-items-center justify-content-center bg-light cursor-pointer"
+                                         onclick="event.stopPropagation(); openPostGallery({{ $feed->id }})">
+                                        +{{ $feed->images->count() - 3 }}
+                                    </div>
+                                    @endif
+                                </div>
                                 @endif
                                 
                                 <div class="post-date">
@@ -1067,12 +1088,21 @@
                         <div class="card-body">
                             <div class="d-flex align-items-center">
                                 <div class="flex-shrink-0">
-                                    <img src="{{ Auth::user()->profile_image ? asset(Auth::user()->profile_image) : 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->name) . '&background=D0A04F&color=fff' }}"
-                                        alt="{{ Auth::user()->name }}"
-                                        class="rounded-circle"
-                                        width="50"
-                                        height="50"
-                                        id="modalProfileAvatar">
+                                    <!-- Lazy loading modal profile avatar -->
+                                    <img data-src="{{ Auth::user()->profile_image ? asset(Auth::user()->profile_image) : 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->name) . '&background=D0A04F&color=fff' }}"
+                                         src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1'%3E%3C/svg%3E"
+                                         alt="{{ Auth::user()->name }}"
+                                         class="rounded-circle lazy-image"
+                                         width="50"
+                                         height="50"
+                                         id="modalProfileAvatar">
+                                    <noscript>
+                                        <img src="{{ Auth::user()->profile_image ? asset(Auth::user()->profile_image) : 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->name) . '&background=D0A04F&color=fff' }}"
+                                             alt="{{ Auth::user()->name }}"
+                                             class="rounded-circle"
+                                             width="50"
+                                             height="50">
+                                    </noscript>
                                 </div>
                                 <div class="flex-grow-1 ms-3">
                                     <h6 class="mb-1" id="modalProfileName">{{ Auth::user()->name }}</h6>
@@ -1132,33 +1162,33 @@
     </div>
 
     <!-- Post Images Modal -->
-<div class="modal fade" id="postImagesModal" tabindex="-1" aria-labelledby="postImagesModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="postImagesModalLabel">
-                    <i class="fas fa-images me-2"></i>Post Images
-                </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="mb-3">
-                    <input type="file" id="modalImageInput" multiple accept="image/*" hidden>
-                    <button class="btn btn-primary" onclick="document.getElementById('modalImageInput').click()">
-                        <i class="fas fa-plus-circle"></i> Add Images
-                    </button>
+    <div class="modal fade" id="postImagesModal" tabindex="-1" aria-labelledby="postImagesModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="postImagesModalLabel">
+                        <i class="fas fa-images me-2"></i>Post Images
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                
-                <div id="postImagesContainer" class="row g-3">
-                    <!-- Images will be loaded here dynamically -->
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <input type="file" id="modalImageInput" multiple accept="image/*" hidden>
+                        <button class="btn btn-primary" onclick="document.getElementById('modalImageInput').click()">
+                            <i class="fas fa-plus-circle"></i> Add Images
+                        </button>
+                    </div>
+                    
+                    <div id="postImagesContainer" class="row g-3">
+                        <!-- Images will be loaded here dynamically -->
+                    </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
     <!-- Toast Notification -->
     <div class="toast-container position-fixed bottom-0 end-0 p-3">
@@ -1178,6 +1208,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Lazy Loading JS -->
+    <script src="{{ asset('assets/js/lazy-loading.js') }}"></script>
     
     <script>
         const csrf = '{{ csrf_token() }}';
@@ -1232,8 +1264,6 @@
                 toast('Server error');
             });
         }
-
-
 
         // Simple toast
         function toast(msg) {
@@ -1369,6 +1399,7 @@
             return false;
         }
     </script>
+    
     <script>
     // Post images functionality
     let currentPostId = null;
@@ -1516,43 +1547,45 @@
     }
 
     function displayPostImages(images) {
-    const container = document.getElementById('postImagesContainer');
-    container.innerHTML = '';
+        const container = document.getElementById('postImagesContainer');
+        container.innerHTML = '';
 
-    if (!images || images.length === 0) {
-        container.innerHTML = '<div class="col-12 text-center py-5"><i class="fas fa-images fa-3x text-muted mb-3"></i><p>No images in this post</p></div>';
-        return;
-    }
+        if (!images || images.length === 0) {
+            container.innerHTML = '<div class="col-12 text-center py-5"><i class="fas fa-images fa-3x text-muted mb-3"></i><p>No images in this post</p></div>';
+            return;
+        }
 
-    images.forEach(image => {
-        const col = document.createElement('div');
-        col.className = 'col-md-4 col-sm-6 mb-3';
+        images.forEach(image => {
+            const col = document.createElement('div');
+            col.className = 'col-md-4 col-sm-6 mb-3';
 
-        col.innerHTML = `
-            <div class="position-relative image-card">
-
-                <a data-fancybox="post-gallery" href="${image.url}">
-                    <img src="${image.url}" 
-                         class="img-fluid rounded shadow-sm"
-                         style="width:100%; height:150px; object-fit:cover; cursor:pointer"
-                         alt="Post image">
-                </a>
-
-                <div class="position-absolute top-0 end-0 m-2">
-                    <button class="btn btn-sm btn-danger rounded-circle"
-                            onclick="deletePostImage(${image.id}, event)">
-                        <i class="fas fa-trash"></i>
-                    </button>
+            col.innerHTML = `
+                <div class="position-relative image-card">
+                    <a data-fancybox="post-gallery" href="${image.url}">
+                        <!-- Using regular src for modal images (they load after user interaction) -->
+                        <img src="${image.url}" 
+                             class="img-fluid rounded shadow-sm"
+                             style="width:100%; height:150px; object-fit:cover; cursor:pointer"
+                             alt="Post image"
+                             loading="lazy">
+                    </a>
+                    <div class="position-absolute top-0 end-0 m-2">
+                        <button class="btn btn-sm btn-danger rounded-circle"
+                                onclick="deletePostImage(${image.id}, event)">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
                 </div>
+            `;
 
-            </div>
-        `;
+            container.appendChild(col);
+        });
 
-        container.appendChild(col);
-    });
-
-    Fancybox.bind("[data-fancybox='post-gallery']", {});
-}
+        // Initialize Fancybox for the new images
+        if (typeof Fancybox !== 'undefined') {
+            Fancybox.bind("[data-fancybox='post-gallery']", {});
+        }
+    }
 
     // Handle adding new images
     document.getElementById('modalImageInput')?.addEventListener('change', function() {
@@ -1727,8 +1760,9 @@
     window.openPostGallery = openPostGallery;
     window.deletePostImage = deletePostImage;
     window.toast = toast;
-</script>
-<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script>
+    </script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script>
 </body>
 
 </html>

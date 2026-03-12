@@ -86,35 +86,41 @@
                     </div>
 
                     @if ($feed->images->count())
-<div class="post-image-grid" data-images="{{ $feed->images->count() }}">
+                        <div class="post-image-grid" data-images="{{ $feed->images->count() }}">
+                            @foreach ($feed->images as $index => $image)
+                                <a data-fancybox="feed-{{ $feed->id }}"
+                                   href="{{ asset('storage/' . $image->image) }}"
+                                   class="grid-item {{ $index == 3 && $feed->images->count() > 4 ? 'has-overlay' : '' }}">
+                                    
+                                    <!-- Lazy loading image with Fancybox compatibility -->
+                                    <img data-src="{{ asset('storage/' . $image->image) }}" 
+                                         src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1'%3E%3C/svg%3E"
+                                         class="lazy-image"
+                                         alt="Post Image"
+                                         data-fancybox="feed-{{ $feed->id }}-img"
+                                         data-src-fancybox="{{ asset('storage/' . $image->image) }}">
 
-    @foreach ($feed->images as $index => $image)
+                                    @if ($index == 3 && $feed->images->count() > 4)
+                                        <div class="more-images-overlay">
+                                            <span>+{{ $feed->images->count() - 4 }}</span>
+                                        </div>
+                                    @endif
 
-        <a data-fancybox="feed-{{ $feed->id }}"
-           href="{{ asset('storage/' . $image->image) }}"
-           class="grid-item {{ $index == 3 && $feed->images->count() > 4 ? 'has-overlay' : '' }}">
-
-            <img src="{{ asset('storage/' . $image->image) }}" alt="Post Image">
-
-            @if ($index == 3 && $feed->images->count() > 4)
-                <div class="more-images-overlay">
-                    <span>+{{ $feed->images->count() - 4 }}</span>
-                </div>
-            @endif
-
-        </a>
-
-    @endforeach
-
-</div>
-@endif
+                                    <!-- Fallback for browsers without JavaScript -->
+                                    <noscript>
+                                        <img src="{{ asset('storage/' . $image->image) }}" alt="Post Image">
+                                    </noscript>
+                                </a>
+                            @endforeach
+                        </div>
+                    @endif
                 </div>
             @endforeach
         </div>
     </div>
 
-    <!-- Lightbox Modal -->
-    <div id="lightboxModal" class="lightbox-modal" onclick="closeLightboxOnOutsideClick(event)">
+    <!-- Lightbox Modal (keeping for backward compatibility) -->
+    <div id="lightboxModal" class="lightbox-modal" onclick="closeLightboxOnOutsideClick(event)" style="display: none;">
         <div class="lightbox-content">
             <div class="lightbox-image-container" id="lightboxImageContainer">
                 <img id="lightboxImage" src="" alt="Lightbox Image">
@@ -204,7 +210,7 @@
             preview.innerHTML = "";
         }
 
-        // Lightbox functionality
+        // Lightbox functionality (keeping for backward compatibility)
         let currentFeedId = null;
         let currentImageIndex = 0;
         let feedImages = {};
@@ -223,16 +229,15 @@
             currentImageIndex = imageIndex;
             updateLightboxImage();
             document.getElementById('lightboxModal').style.display = 'flex';
-            document.body.style.overflow = 'hidden'; // Prevent scrolling
+            document.body.style.overflow = 'hidden';
         }
 
         function closeLightbox() {
             document.getElementById('lightboxModal').style.display = 'none';
-            document.body.style.overflow = 'auto'; // Restore scrolling
+            document.body.style.overflow = 'auto';
         }
 
         function closeLightboxOnOutsideClick(event) {
-            // Close only if clicking on the modal background (not on the image container or buttons)
             if (event.target === document.getElementById('lightboxModal')) {
                 closeLightbox();
             }
@@ -429,6 +434,18 @@
                     submitBtn.textContent = originalText;
                     submitBtn.disabled = false;
                 });
+        }
+
+        // Re-initialize Fancybox for lazy-loaded images
+        document.addEventListener('lazyImagesLoaded', function() {
+            if (typeof Fancybox !== 'undefined') {
+                Fancybox.bind('[data-fancybox]');
+            }
+        });
+
+        // Also run after images are loaded
+        if (typeof Fancybox !== 'undefined') {
+            Fancybox.bind('[data-fancybox]');
         }
     </script>
 @endsection
