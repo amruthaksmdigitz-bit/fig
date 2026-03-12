@@ -34,8 +34,8 @@ use App\Http\Controllers\FeedController;
 use App\Models\Location;
 use Illuminate\Support\Str;
 use App\Http\Controllers\Admin\FeedsController;
+use App\Http\Controllers\Admin\AdminReportController;
 use App\Http\Controllers\ReportController;
-
 
 Route::get('/generate-location-slugs', function () {
 
@@ -238,25 +238,40 @@ Route::prefix('admin')->middleware('auth')->name('admin.')->group(function () {
 
 
 
-Route::prefix('admin')->group(function () {
+// Route::prefix('admin')->group(function () {
 
-    Route::get('/feeds', [FeedController::class, 'index'])->name('admin.feeds.index');
+//     Route::get('/feeds', [FeedController::class, 'index'])->name('admin.feeds.index');
 
-    Route::delete('/feeds/{id}', [FeedController::class, 'destroy'])->name('admin.feeds.delete');
-});
+//     Route::delete('/feeds/{id}', [FeedController::class, 'destroy'])->name('admin.feeds.delete');
+// });
 
-Route::prefix('admin')->group(function () {
+// Route::prefix('admin')->group(function () {
 
-    Route::get('/feeds', [FeedsController::class, 'index'])->name('admin.feeds.index');
+//     Route::get('/feeds', [FeedsController::class, 'index'])->name('admin.feeds.index');
 
-    Route::get('/admin/feeds/{id}', [FeedsController::class, 'show'])
-        ->name('admin.feeds.show');
+//     Route::get('/admin/feeds/{id}', [FeedsController::class, 'show'])
+//         ->name('admin.feeds.show');
 
-    Route::delete('/feeds/{id}', [FeedsController::class,'destroy'])->name('admin.feeds.delete');
+//     Route::delete('/feeds/{id}', [FeedsController::class, 'destroy'])->name('admin.feeds.delete');
 
-   Route::delete('/admin/feed-images/{id}', [FeedsController::class,'deleteImage'])
-    ->name('admin.feed-images.delete');
+//     Route::delete('/admin/feed-images/{id}', [FeedsController::class, 'deleteImage'])
+//         ->name('admin.feed-images.delete');
+// });
 
+
+Route::prefix('admin')->middleware(['auth'])->name('admin.')->group(function () {
+
+    Route::prefix('feeds')->name('feeds.')->group(function () {
+
+        Route::get('/', [FeedsController::class, 'index'])->name('index');
+
+        Route::get('/{id}', [FeedsController::class, 'show'])->name('show');
+
+        Route::delete('/{id}', [FeedsController::class, 'destroy'])->name('delete');
+    });
+
+    Route::delete('/feed-images/{id}', [FeedsController::class, 'deleteImage'])
+        ->name('feed-images.delete');
 });
 
 
@@ -264,8 +279,53 @@ Route::prefix('admin')->group(function () {
 //Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::middleware(['auth'])->group(function () {
-    Route::post('/reports', [ReportController::class, 'store'])->name('reports.store');
+    Route::post('/report', [ReportController::class, 'store'])->name('report.store');
 });
+
+
+// ==================== ADMIN ROUTES ====================
+Route::prefix('admin')->middleware(['auth','route.access'])->name('admin.')->group(function () {
+
+    // ===== FEEDS MANAGEMENT =====
+    Route::prefix('feeds')->name('feeds.')->group(function () {
+        Route::get('/', [App\Http\Controllers\Admin\FeedsController::class, 'index'])->name('index');
+        Route::get('/{id}', [App\Http\Controllers\Admin\FeedsController::class, 'show'])->name('show');
+        Route::delete('/{id}', [App\Http\Controllers\Admin\FeedsController::class, 'destroy'])->name('delete');
+    });
+
+    // ===== FEED IMAGES =====
+    Route::delete('/feed-images/{id}', [App\Http\Controllers\Admin\FeedsController::class, 'deleteImage'])
+        ->name('feed-images.delete');
+});
+
+
+Route::prefix('admin')->name('admin.')->middleware(['auth','route.access'])->group(function () {
+
+    Route::prefix('reports')->name('reports.')->group(function () {
+
+        Route::get('/', [AdminReportController::class, 'index'])->name('index');
+
+        Route::get('/{id}', [AdminReportController::class, 'show'])->name('show');
+
+        Route::put('/{id}', [AdminReportController::class, 'update'])->name('update');
+
+        Route::delete('/{id}', [AdminReportController::class, 'destroy'])->name('destroy');
+
+        Route::delete('/delete-post/{id}', [AdminReportController::class, 'deletePost'])
+            ->name('delete-post');
+
+        Route::post('/hide-post/{id}', [AdminReportController::class, 'hidePost'])
+            ->name('hide-post');
+
+        Route::post('/dismiss/{id}', [AdminReportController::class, 'dismissReport'])
+            ->name('dismiss');
+
+    });
+
+});
+
+    // ===== OPTIONAL: Add middleware for role-based access if needed =====
+    // ->middleware(['route.access']) // Uncomment if you have role-based access
 
 Route::post('/profile/image/update',[ProfileController::class,'ajaxImageUpdate'])
 ->name('profile.image.update')
