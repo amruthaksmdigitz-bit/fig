@@ -155,17 +155,95 @@
         </div>
         <!-- Categories Area End -->
 
-    </main>
+        </main>
 
-    <!-- jQuery FIRST, then Select2 CSS and JS -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <!-- Select2 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<div class="feeds-section section-padding30" style="background-color: #f9f9f9;">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="section-tittle text-center mb-80">
+                    <span style="font-size:35px">Community Posts</span>
+                    <h2 style="font-size:20px">What our community is sharing</h2>
+                </div>
+            </div>
+        </div>
 
-    <!-- Select2 JS -->
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    
-    <!-- Lazy Loading JS (add after jQuery) -->
-    <script src="{{ asset('assets/js/lazy-loading.js') }}"></script>
+        <div class="row">
+            @forelse ($feeds as $feed)
+                <div class="col-lg-4 col-md-6 mb-30">
+                    <div class="post-card" id="post-{{ $feed->id }}">
+                        <div class="post-header">
+                            <div class="post-author-avatar">
+                                {{ strtoupper(substr($feed->user->name, 0, 2)) }}
+                            </div>
+                            <div class="post-author-info">
+                                <div class="post-author-name">
+                                    {{ $feed->user->name }}
+                                </div>
+                                <div class="post-time">
+                                    {{ $feed->created_at->diffForHumans() }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="post-title">
+                            {{ $feed->title }}
+                        </div>
+
+                        @if ($feed->images->count())
+                            <div class="post-image-grid" data-images="{{ $feed->images->count() }}">
+                                @foreach ($feed->images as $index => $image)
+                                    <a data-fancybox="home-feed-{{ $feed->id }}"
+                                       href="{{ asset('storage/' . $image->image) }}"
+                                       class="grid-item {{ $index == 3 && $feed->images->count() > 4 ? 'has-overlay' : '' }}">
+                                        <img src="{{ asset('storage/' . $image->image) }}" alt="Post Image">
+                                        @if ($index == 3 && $feed->images->count() > 4)
+                                            <div class="more-images-overlay">
+                                                <span>+{{ $feed->images->count() - 4 }}</span>
+                                            </div>
+                                        @endif
+                                    </a>
+                                @endforeach
+                            </div>
+                        @endif
+                    </div>
+                </div>
+            @empty
+                <div class="col-12 text-center">
+                    <p>No posts yet. Be the first to share something!</p>
+                </div>
+            @endforelse
+        </div>
+        
+        @if($feeds->count() > 0)
+            <div class="row mt-50">
+                <div class="col-12 text-center">
+                    <a href="{{ route('feeds') }}" class="loadmoreprofiles">View All Community Posts</a>
+                </div>
+            </div>
+        @endif
+    </div>
+</div>
+<!-- Community Posts Section End -->
+
+<!-- Add Fancybox CSS and JS for image gallery -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css" />
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+
+<!-- jQuery FIRST, then Select2 CSS and JS -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Select2 CSS -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+<!-- Select2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<script>
+    // Initialize Fancybox
+    Fancybox.bind('[data-fancybox]', {
+        // Your options here
+    });
+</script>
 @endsection

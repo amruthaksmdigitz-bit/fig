@@ -8,10 +8,11 @@ class UserMultipleImage extends Model
 {
     protected $table = 'user_multipleimages';
 
-    protected $fillable = ['user_id', 'image'];
+    // Include 'thumbnail' here
+    protected $fillable = ['user_id', 'image', 'thumbnail'];
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(\App\Models\User::class);
     }
 }

@@ -117,20 +117,50 @@ class FeedController extends Controller
     }
 
     public function destroy($feedId)
-    {
-        $feed = Feed::findOrFail($feedId);
+{
+    $feed = Feed::findOrFail($feedId);
 
-        if ($feed->user_id != auth()->id()) {
-            return back()->with('error', 'Unauthorized action');
+    if ($feed->user_id != auth()->id()) {
+        if (request()->wantsJson() || request()->ajax()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Unauthorized action'
+            ], 403);
         }
+        return back()->with('error', 'Unauthorized action');
+    }
 
+    try {
+        // Delete images from storage
         foreach ($feed->images as $image) {
             Storage::disk('public')->delete($image->image);
         }
 
+        // Delete image records
         $feed->images()->delete();
+        
+        // Delete the post
         $feed->delete();
 
+        // Return JSON response for AJAX requests
+        if (request()->wantsJson() || request()->ajax()) {
+            return response()->json([
+                'status' => true,
+                'message' => 'Post deleted successfully'
+            ]);
+        }
+
         return back()->with('success', 'Post deleted successfully');
+        
+    } catch (\Exception $e) {
+        if (request()->wantsJson() || request()->ajax()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Failed to delete post: ' . $e->getMessage()
+            ], 500);
+        }
+        
+        return back()->with('error', 'Failed to delete post');
     }
+}
 }

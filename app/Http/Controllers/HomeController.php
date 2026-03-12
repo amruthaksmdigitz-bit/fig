@@ -10,6 +10,7 @@ use App\Models\ProductCategory;
 use App\Models\Product;
 use App\Models\User;
 use App\Models\Location;
+use App\Models\Feed;
 
 class HomeController extends Controller
 {
@@ -101,7 +102,13 @@ class HomeController extends Controller
 		$catid = $category->id;
 		$blog = Post::where('post_category_id', $catid)->get();
 
+		$feeds = Feed::with('user', 'images')
+        ->latest()
+        ->limit(6)
+        ->get();
+
 		return view('index', [
+			'feeds'=>$feeds,
 			'slider' => $slider,
 			'blog' => $blog,
 			'sliderbanner' => $sliderbanner,
