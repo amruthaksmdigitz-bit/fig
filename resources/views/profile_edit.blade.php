@@ -638,41 +638,6 @@
                         <span class="invalid-feedback">{{ $message }}</span>
                         @enderror
                     </div>
-
-                    <!-- Cover Image -->
-                    <div class="mb-3">
-                        <label for="cover_image" class="form-label">Cover Image</label>
-                        <input type="file" id="cover_image" name="cover_image" class="form-control @error('cover_image') is-invalid @enderror" accept="image/*">
-                        @error('cover_image')
-                        <span class="invalid-feedback">{{ $message }}</span>
-                        @enderror
-                        @if($user->cover_image)
-                        <div class="image-preview">
-                            <div class="preview-label">
-                                <i class="fas fa-image"></i> Current Cover Image
-                            </div>
-                            <img src="{{ asset($user->cover_image) }}" alt="Cover Image" class="img-fluid rounded" style="max-height: 200px; width: 100%; object-fit: cover;">
-                        </div>
-                        @endif
-                    </div>
-
-                    <!-- Profile Image -->
-                    <div class="mb-3">
-                        <label for="profile_image" class="form-label">Profile Image</label>
-                        <input type="file" id="profile_image" name="profile_image" class="form-control @error('profile_image') is-invalid @enderror" accept="image/*">
-                        @error('profile_image')
-                        <span class="invalid-feedback">{{ $message }}</span>
-                        @enderror
-                        @if($user->profile_image)
-                        <div class="image-preview">
-                            <div class="preview-label">
-                                <i class="fas fa-user-circle"></i> Current Profile Image
-                            </div>
-                            <img src="{{ asset($user->profile_image) }}" alt="Profile Image" class="rounded-circle" width="100" height="100" style="object-fit: cover;">
-                        </div>
-                        @endif
-                    </div>
-
                     <!-- Save Buttons -->
                     <div class="d-flex gap-2">
                         <button type="submit" class="btn btn-primary">

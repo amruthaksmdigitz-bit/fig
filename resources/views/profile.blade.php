@@ -9,11 +9,14 @@
     <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
 
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" rel="stylesheet">
+
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
 
     <!-- Lightbox for gallery -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css" />
@@ -78,6 +81,7 @@
             display: flex;
             flex-direction: column;
             box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
         }
 
         .sidebar-header {
@@ -191,6 +195,10 @@
             position: relative;
         }
 
+        .user-dropdown {
+            position: relative;
+        }
+
         .user-btn {
             display: flex;
             align-items: center;
@@ -234,7 +242,7 @@
             position: absolute;
             right: 0;
             top: calc(100% + 0.5rem);
-            min-width: 200px;
+            min-width: 220px;
             background: white;
             border-radius: var(--radius-md);
             border: 1px solid rgba(208, 160, 79, 0.2);
@@ -243,36 +251,97 @@
             opacity: 0;
             visibility: hidden;
             transform: translateY(-10px);
-            transition: var(--transition);
-            z-index: 100;
+            transition: all 0.3s ease;
+            z-index: 1000;
         }
 
-        .user-menu:hover .dropdown-menu {
+        .dropdown-menu.show {
             opacity: 1;
             visibility: visible;
             transform: translateY(0);
         }
 
-        .dropdown-item {
+        .dropdown-menu a,
+        .dropdown-menu button {
             display: flex;
             align-items: center;
             gap: 0.75rem;
+            width: 100%;
             padding: 0.75rem 1rem;
+            border: none;
+            background: none;
             color: var(--gray-700);
             text-decoration: none;
+            cursor: pointer;
+            font-size: 0.875rem;
             border-radius: var(--radius-sm);
             transition: var(--transition);
-            font-size: 0.875rem;
         }
 
-        .dropdown-item:hover {
+        .dropdown-menu a:hover,
+        .dropdown-menu button:hover {
             background-color: rgba(208, 160, 79, 0.1);
             color: var(--primary-color);
         }
 
-        .dropdown-item i {
-            width: 16px;
+        .dropdown-menu a i,
+        .dropdown-menu button i {
+            width: 18px;
             color: var(--primary-color);
+        }
+
+        .dropdown-divider {
+            height: 1px;
+            background-color: var(--gray-200);
+            margin: 0.5rem 0;
+        }
+
+        #dropdownArrow {
+            transition: transform 0.3s ease;
+        }
+
+        .cover-edit-icon {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--primary-color);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-md);
+            cursor: pointer;
+            transition: var(--transition);
+            border: 2px solid white;
+            z-index: 10;
+        }
+
+        .cover-edit-icon:hover {
+            transform: scale(1.1);
+            background: var(--primary-dark);
+        }
+
+        .cover-image {
+            cursor: pointer;
+            position: relative;
+        }
+
+        .cover-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .cover-image:hover .cover-overlay {
+            opacity: 1;
         }
 
         /* Content Area */
@@ -300,23 +369,6 @@
             background-position: center;
         }
 
-        .cover-overlay {
-            position: absolute;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            transition: var(--transition);
-        }
-
-        .cover-image:hover .cover-overlay {
-            opacity: 1;
-        }
-
-
-        /* Profile Header Responsive Fixes */
         .profile-info {
             padding: 2rem;
             position: relative;
@@ -324,11 +376,12 @@
             align-items: center;
             gap: 2rem;
             flex-wrap: wrap;
-            /* Added for mobile */
         }
 
         .profile-image-wrapper {
             flex-shrink: 0;
+            position: relative;
+            display: inline-block;
         }
 
         .profile-avatar {
@@ -340,10 +393,30 @@
             box-shadow: var(--shadow-lg);
         }
 
+        .profile-edit-icon {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: var(--primary-color);
+            color: white;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-md);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .profile-edit-icon:hover {
+            transform: scale(1.1);
+        }
+
         .profile-details {
             flex: 1;
             min-width: 280px;
-            /* Prevents content from squishing too much */
         }
 
         .profile-name {
@@ -353,15 +426,14 @@
             margin-bottom: 0.5rem;
         }
 
-        /* Profile meta with icons - make it wrap nicely */
         .profile-meta {
             display: flex;
-            flex-wrap: wrap;
             align-items: center;
             gap: 1.5rem;
             color: var(--gray-600);
             margin-bottom: 1rem;
             font-size: 0.875rem;
+            flex-wrap: wrap;
         }
 
         .profile-meta-item {
@@ -380,13 +452,11 @@
             gap: 2rem;
             margin-bottom: 1rem;
             flex-wrap: wrap;
-            /* Added for mobile */
         }
 
         .stat {
             text-align: center;
             min-width: 80px;
-            /* Ensures stats don't get too small */
         }
 
         .stat-value {
@@ -404,292 +474,6 @@
             display: flex;
             gap: 0.75rem;
             flex-wrap: wrap;
-            /* Added for mobile */
-        }
-
-        /* Mobile Responsive Breakpoints */
-        @media (max-width: 992px) {
-            .profile-info {
-                gap: 1.5rem;
-            }
-
-            .profile-avatar {
-                width: 100px;
-                height: 100px;
-            }
-
-            .profile-name {
-                font-size: 1.5rem;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .profile-info {
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
-                padding: 1.5rem;
-            }
-
-            .profile-image-wrapper {
-                margin-bottom: 0.5rem;
-            }
-
-            .profile-avatar {
-                width: 120px;
-                height: 120px;
-            }
-
-            .profile-details {
-                width: 100%;
-                min-width: auto;
-            }
-
-            .profile-meta {
-                justify-content: center;
-                gap: 1rem;
-            }
-
-            .profile-meta-item {
-                justify-content: center;
-            }
-
-            .profile-stats {
-                justify-content: center;
-                gap: 1.5rem;
-            }
-
-            .profile-actions {
-                justify-content: center;
-            }
-
-            .btn {
-                flex: 1 1 auto;
-                min-width: 140px;
-            }
-        }
-
-        @media (max-width: 576px) {
-            .profile-avatar {
-                width: 100px;
-                height: 100px;
-            }
-
-            .profile-name {
-                font-size: 1.35rem;
-            }
-
-            .profile-meta {
-                flex-direction: column;
-                gap: 0.75rem;
-                align-items: flex-start;
-                width: 100%;
-            }
-
-            .profile-meta-item {
-                width: 100%;
-                justify-content: flex-start;
-            }
-
-            .profile-stats {
-                width: 100%;
-                justify-content: space-around;
-            }
-
-            .stat {
-                min-width: 60px;
-            }
-
-            .profile-actions {
-                width: 100%;
-                flex-direction: column;
-            }
-
-            .btn {
-                width: 100%;
-            }
-        }
-
-        /* Fix for very small screens */
-        @media (max-width: 360px) {
-            .profile-meta {
-                align-items: flex-start;
-            }
-
-            .profile-meta-item {
-                font-size: 0.8rem;
-            }
-
-            .stat-value {
-                font-size: 1rem;
-            }
-
-            .stat-label {
-                font-size: 0.75rem;
-            }
-        }
-
-        /* Improve post images responsiveness */
-        .post-images {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        @media (max-width: 768px) {
-            .post-images {
-                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-            }
-        }
-
-        @media (max-width: 576px) {
-            .post-images {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        /* Fix for content grid */
-        .content-grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 1.5rem;
-        }
-
-        @media (max-width: 992px) {
-            .content-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Fix for sidebar on mobile */
-        @media (max-width: 768px) {
-            .sidebar {
-                transform: translateX(-100%);
-                transition: transform 0.3s ease;
-                z-index: 1000;
-            }
-
-            .sidebar.active {
-                transform: translateX(0);
-            }
-
-            .main-content {
-                margin-left: 0 !important;
-            }
-
-            /* Add mobile menu toggle button */
-            .mobile-menu-toggle {
-                display: block;
-                position: fixed;
-                bottom: 20px;
-                right: 20px;
-                width: 50px;
-                height: 50px;
-                border-radius: 50%;
-                background: var(--primary-color);
-                color: white;
-                border: none;
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-                z-index: 1001;
-                cursor: pointer;
-            }
-        }
-
-        /* Hide mobile menu toggle on desktop */
-        .mobile-menu-toggle {
-            display: none;
-        }
-
-        /* Fix for header on mobile */
-        @media (max-width: 768px) {
-            .header {
-                padding: 1rem;
-            }
-
-            .header-content {
-                flex-direction: column;
-                gap: 1rem;
-                align-items: flex-start;
-            }
-
-            .page-title h1 {
-                font-size: 1.25rem;
-            }
-
-            .page-title p {
-                font-size: 0.8rem;
-            }
-
-            .user-btn .user-info {
-                display: none;
-            }
-
-            .user-avatar {
-                width: 35px;
-                height: 35px;
-            }
-        }
-
-        /* Fix for cards on mobile */
-        @media (max-width: 576px) {
-            .card {
-                padding: 1rem;
-            }
-
-            .card-title {
-                font-size: 1rem;
-            }
-
-            .about-content {
-                font-size: 0.9rem;
-            }
-
-            .contact-item {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 0.5rem;
-            }
-
-            .contact-icon {
-                width: 35px;
-                height: 35px;
-            }
-
-            .contact-details h4 {
-                font-size: 0.8rem;
-            }
-
-            .contact-details p {
-                font-size: 0.8rem;
-            }
-        }
-
-        /* Fix for modal on mobile */
-        @media (max-width: 576px) {
-            .modal-dialog {
-                margin: 0.5rem;
-            }
-
-            .modal-body .row {
-                margin: 0 -0.25rem;
-            }
-
-            .modal-body .col-4 {
-                padding: 0 0.25rem;
-            }
-
-            .modal-body .btn {
-                padding: 1rem 0.5rem;
-            }
-
-            .modal-body .btn i {
-                font-size: 1.25rem;
-            }
-
-            .modal-body .btn span {
-                font-size: 0.7rem;
-            }
         }
 
         .btn {
@@ -780,129 +564,110 @@
         }
 
         /* Posts Section */
-        /* Enhanced Posts Styling */
         .posts-list {
             display: flex;
             flex-direction: column;
-            gap: 2rem;
-            padding: 1.5rem;
+            gap: 1.5rem;
         }
 
         .post-item {
-            background: white;
-            border-radius: 20px;
-            padding: 1.5rem;
-            transition: all 0.3s ease;
-            border: 1px solid #f0f2f5;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+            padding: 1rem;
+            background: var(--gray-50);
+            border-radius: var(--radius);
+            transition: var(--transition);
+            cursor: pointer;
         }
 
         .post-item:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.15);
-            border-color: transparent;
+            background: white;
+            box-shadow: var(--shadow-sm);
         }
 
-        .post-title {
-            font-size: 1.35rem !important;
-            font-weight: 600;
-            color: #1a2639;
-            margin-bottom: 1rem !important;
-            line-height: 1.4;
-            letter-spacing: -0.01em;
-        }
-
-        .post-images {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 1rem;
+        .post-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 1rem;
         }
 
-        .post-images img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            border-radius: 16px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-            transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
-        }
-
-        .post-images img:hover {
-            transform: scale(1.03);
-            box-shadow: 0 15px 30px rgba(24, 119, 242, 0.2);
-        }
-
-        .post-images .bg-light {
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            border: 2px dashed #adb5bd;
-            font-size: 1.3rem;
+        .post-title {
+            font-size: 1.35rem;
             font-weight: 600;
-            color: #1877f2;
-            height: 200px;
-            border-radius: 16px;
-            transition: all 0.3s ease;
+            color: var(--gray-800);
+            margin: 0;
         }
 
-        .post-images .bg-light:hover {
-            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
-            border-color: #1877f2;
-            color: #0d47a1;
-            transform: scale(1.02);
+        .post-menu-container {
+            position: relative;
         }
 
-        .post-date {
+        .post-menu-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
-            gap: 0.75rem;
-            color: #64748b;
+            justify-content: center;
+            color: #6b7280;
+            transition: all 0.2s;
+        }
+
+        .post-menu-btn:hover {
+            background-color: #f3f4f6;
+            color: #dc2626;
+        }
+
+        .post-dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            min-width: 180px;
+            z-index: 1000;
+            margin-top: 8px;
+            overflow: hidden;
+            animation: slideDown 0.2s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            cursor: pointer;
+            transition: all 0.2s;
             font-size: 0.95rem;
-            margin-top: 1.25rem;
-            padding-top: 1.25rem;
-            border-top: 2px solid #f1f5f9;
         }
 
-        .post-date i {
-            color: #1877f2;
-            font-size: 0.9rem;
+        .menu-item.delete-item {
+            color: #dc2626;
         }
 
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .post-item {
-                padding: 1rem;
-            }
-
-            .post-title {
-                font-size: 1.2rem !important;
-            }
-
-            .post-images {
-                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-                gap: 0.75rem;
-            }
-
-            .post-images img,
-            .post-images .bg-light {
-                height: 140px;
-            }
-
-            .post-images .bg-light {
-                font-size: 1.1rem;
-            }
+        .menu-item.delete-item:hover {
+            background-color: #fef2f2;
         }
 
-        @media (max-width: 480px) {
-            .post-images {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .post-images img,
-            .post-images .bg-light {
-                height: 120px;
-            }
+        .post-images {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin: 0.75rem 0;
         }
-
 
         .post-thumbnail {
             width: 60px;
@@ -910,6 +675,20 @@
             border-radius: var(--radius-sm);
             object-fit: cover;
             border: 1px solid var(--gray-200);
+            cursor: pointer;
+        }
+
+        .post-date {
+            font-size: 0.75rem;
+            color: var(--gray-500);
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .post-date i {
+            color: var(--primary-color);
+            font-size: 0.625rem;
         }
 
         .empty-posts {
@@ -960,327 +739,94 @@
             color: var(--gray-600);
         }
 
-        /* Upload button styling */
-        .upload-btn {
+        /* Crop Modals */
+        .cover-crop-container,
+        .profile-crop-container {
+            width: 100%;
+            height: 400px;
+            overflow: hidden;
+            background: #f0f0f0;
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .cover-crop-container img,
+        .profile-crop-container img {
+            max-width: 100%;
+            display: block;
+        }
+
+        .cropper-view-box,
+        .cropper-face {
+            border-radius: 8px;
+        }
+
+        .cropper-view-box {
+            outline: 2px solid var(--primary-color);
+            outline-color: rgba(208, 160, 79, 0.75);
+        }
+
+        .cropper-line {
             background-color: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: var(--radius);
-            font-weight: 500;
-            transition: var(--transition);
+        }
+
+        .cropper-point {
+            background-color: var(--primary-color);
+            width: 8px;
+            height: 8px;
+        }
+
+        .crop-controls .btn {
+            width: 40px;
+            height: 40px;
+            padding: 0;
             display: inline-flex;
             align-items: center;
-            gap: 0.5rem;
-            font-size: 0.875rem;
-        }
-
-        .upload-btn:hover {
-            background-color: var(--primary-dark);
-            transform: translateY(-1px);
-        }
-
-        .profile-edit-icon {
-            position: absolute;
-            bottom: 10px;
-            right: 10px;
-            background: var(--primary-color);
-            color: white;
-            width: 34px;
-            height: 34px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
             justify-content: center;
-            box-shadow: var(--shadow-md);
-            cursor: pointer;
-            transition: var(--transition);
+            border-radius: 50%;
+            transition: all 0.2s;
         }
 
-        .profile-edit-icon:hover {
+        .crop-controls .btn:hover {
+            background-color: var(--primary-color);
+            color: white;
             transform: scale(1.1);
         }
 
-        /* Dropdown Menu - Updated for mobile */
-        .user-dropdown {
-            position: relative;
+        .aspect-ratio-controls .btn.active,
+        .size-presets .btn.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
         }
 
-        .dropdown-menu {
-            position: absolute;
-            top: calc(100% + 0.5rem);
-            right: 0;
-            min-width: 220px;
-            background: white;
-            border-radius: var(--radius-md);
+        .preview-section {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
             border: 1px solid rgba(208, 160, 79, 0.2);
-            box-shadow: var(--shadow-lg);
-            padding: 0.5rem;
-            z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(-10px);
-            transition: all 0.3s ease;
-        }
-
-        .dropdown-menu.show {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-
-        .dropdown-menu a,
-        .dropdown-menu button {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            width: 100%;
-            padding: 0.75rem 1rem;
-            border: none;
-            background: none;
-            color: var(--gray-700);
-            text-decoration: none;
-            cursor: pointer;
-            font-size: 0.875rem;
-            border-radius: var(--radius-sm);
-            transition: var(--transition);
-        }
-
-        .dropdown-menu a:hover,
-        .dropdown-menu button:hover {
-            background-color: rgba(208, 160, 79, 0.1);
-            color: var(--primary-color);
-        }
-
-        .dropdown-menu a i,
-        .dropdown-menu button i {
-            width: 18px;
-            color: var(--primary-color);
-        }
-
-        .dropdown-divider {
-            height: 1px;
-            background-color: var(--gray-200);
-            margin: 0.5rem 0;
-        }
-
-        /* Arrow rotation when open */
-        #dropdownArrow {
-            transition: transform 0.3s ease;
-        }
-
-        #dropdownArrow.rotated {
-            transform: rotate(180deg);
-        }
-
-        /* Mobile adjustments */
-        @media (max-width: 768px) {
-            .dropdown-menu {
-                position: fixed;
-                top: auto;
-                bottom: 80px;
-                right: 20px;
-                left: 20px;
-                width: auto;
-                max-width: 300px;
-                margin: 0 auto;
-            }
-        }
-
-        /* Responsive */
-        @media (max-width: 1024px) {
-            .sidebar {
-                width: 80px;
-                padding: 1.5rem 0.5rem;
-            }
-
-            .sidebar-brand span,
-            .nav-link span {
-                display: none;
-            }
-
-            .sidebar-brand i,
-            .nav-link i {
-                font-size: 1.25rem;
-            }
-
-            .main-content {
-                margin-left: 80px;
-            }
-
-            .content-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
-                gap: 1rem;
-                align-items: flex-start;
-            }
-
-            .content {
-                padding: 1rem;
-            }
-
-            .profile-avatar {
-                position: relative;
-                top: 0;
-                left: 0;
-                margin-bottom: 1rem;
-            }
-
-            .profile-details {
-                margin-left: 0;
-            }
-
-            .profile-stats {
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-
-            .profile-actions {
-                flex-wrap: wrap;
-            }
-
-            .user-btn .user-info {
-                display: none;
-            }
-        }
-
-        /* Mobile Menu Toggle Button - Make it visible on mobile */
-        .mobile-menu-toggle {
-            display: none;
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            box-shadow: 0 4px 15px rgba(208, 160, 79, 0.4);
-            z-index: 1001;
-            cursor: pointer;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            transition: all 0.3s ease;
-        }
-
-        .mobile-menu-toggle:hover {
-            background: var(--primary-dark);
-            transform: scale(1.1);
-            box-shadow: 0 6px 20px rgba(208, 160, 79, 0.5);
-        }
-
-        .mobile-menu-toggle:active {
-            transform: scale(0.95);
-        }
-
-        /* Show on mobile */
-        @media (max-width: 768px) {
-            .mobile-menu-toggle {
-                display: flex;
-            }
-        }
-
-        /* Sidebar overlay for mobile */
-        .sidebar-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 999;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .sidebar-overlay.active {
-            opacity: 1;
-        }
-
-        @media (max-width: 768px) {
-            .sidebar-overlay.active {
-                display: block;
-            }
-        }
-
-        /* Post Three Dots Menu Styles */
-        .post-menu-container {
-            position: relative;
-        }
-
-        .post-menu-btn {
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 8px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #6b7280;
-            transition: all 0.2s;
-        }
-
-        .post-menu-btn:hover {
-            background-color: #f3f4f6;
-            color: #dc2626;
-        }
-
-        .post-dropdown-menu {
-            position: absolute;
-            top: 100%;
-            right: 0;
-            background: white;
             border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-            min-width: 180px;
-            z-index: 1000;
-            margin-top: 8px;
+        }
+
+        .preview-circle {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
             overflow: hidden;
-            animation: slideDown 0.2s ease;
+            border: 2px solid var(--primary-color);
         }
 
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .preview-square {
+            width: 60px;
+            height: 60px;
+            overflow: hidden;
+            border-radius: 8px;
+            border: 2px solid var(--primary-color);
         }
 
-        .menu-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 16px;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-size: 0.95rem;
-        }
-
-        .menu-item.delete-item {
-            color: #dc2626;
-        }
-
-        .menu-item.delete-item:hover {
-            background-color: #fef2f2;
-        }
-
-        .menu-item svg {
-            width: 18px;
-            height: 18px;
+        .preview-circle img,
+        .preview-square img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         /* Delete Confirmation Modal */
@@ -1314,13 +860,8 @@
         }
 
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-
-            to {
-                opacity: 1;
-            }
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         @keyframes scaleIn {
@@ -1328,7 +869,6 @@
                 transform: scale(0.9);
                 opacity: 0;
             }
-
             to {
                 transform: scale(1);
                 opacity: 1;
@@ -1405,8 +945,208 @@
             box-shadow: none;
         }
 
-        /* Mobile responsiveness for modal */
-        @media (max-width: 640px) {
+        /* Toast */
+        .toast-container {
+            z-index: 99999;
+        }
+
+        /* Mobile Menu Toggle */
+        .mobile-menu-toggle {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            box-shadow: 0 4px 15px rgba(208, 160, 79, 0.4);
+            z-index: 1001;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-menu-toggle:hover {
+            background: var(--primary-dark);
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(208, 160, 79, 0.5);
+        }
+
+        .mobile-menu-toggle:active {
+            transform: scale(0.95);
+        }
+
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .sidebar-overlay.active {
+            opacity: 1;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 80px;
+                padding: 1.5rem 0.5rem;
+            }
+
+            .sidebar-brand span,
+            .nav-link span {
+                display: none;
+            }
+
+            .sidebar-brand i,
+            .nav-link i {
+                font-size: 1.25rem;
+            }
+
+            .main-content {
+                margin-left: 80px;
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                width: 260px;
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .sidebar-brand span,
+            .nav-link span {
+                display: inline;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .mobile-menu-toggle {
+                display: flex;
+            }
+
+            .sidebar-overlay.active {
+                display: block;
+            }
+
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+
+            .page-title h1 {
+                font-size: 1.25rem;
+            }
+
+            .content {
+                padding: 1rem;
+            }
+
+            .profile-info {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                padding: 1.5rem;
+            }
+
+            .profile-image-wrapper {
+                margin-bottom: 0.5rem;
+            }
+
+            .profile-avatar {
+                width: 120px;
+                height: 120px;
+            }
+
+            .profile-details {
+                width: 100%;
+                min-width: auto;
+            }
+
+            .profile-meta {
+                justify-content: center;
+            }
+
+            .profile-meta-item {
+                justify-content: center;
+            }
+
+            .profile-stats {
+                justify-content: center;
+            }
+
+            .profile-actions {
+                justify-content: center;
+            }
+
+            .user-btn .user-info {
+                display: none;
+            }
+
+            .cover-crop-container,
+            .profile-crop-container {
+                height: 300px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .profile-meta {
+                flex-direction: column;
+                gap: 0.75rem;
+                align-items: flex-start;
+                width: 100%;
+            }
+
+            .profile-meta-item {
+                width: 100%;
+                justify-content: flex-start;
+            }
+
+            .profile-stats {
+                width: 100%;
+                justify-content: space-around;
+            }
+
+            .stat {
+                min-width: 60px;
+            }
+
+            .profile-actions {
+                width: 100%;
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .post-images {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
             .delete-modal-content {
                 padding: 1.5rem;
             }
@@ -1423,6 +1163,26 @@
 
             .delete-modal-actions {
                 flex-direction: column;
+            }
+
+            .crop-controls .btn {
+                width: 32px;
+                height: 32px;
+                font-size: 12px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .profile-meta-item {
+                font-size: 0.8rem;
+            }
+
+            .stat-value {
+                font-size: 1rem;
+            }
+
+            .stat-label {
+                font-size: 0.75rem;
             }
         }
     </style>
@@ -1446,20 +1206,22 @@
                 </a>
             </div>
             <div class="nav-item">
-                <a href="{{ route('profile.edit') }}" class="nav-link {{ request()->routeIs('profile.edit') ? 'active' : '' }}">
+                <a href="{{ route('profile.edit') }}"
+                    class="nav-link {{ request()->routeIs('profile.edit') ? 'active' : '' }}">
                     <i class="fas fa-user-edit"></i>
                     <span>Edit Profile</span>
                 </a>
             </div>
-            <!-- Gallery Menu Item -->
             <div class="nav-item">
-                <a href="{{ route('profile.gallery') }}" class="nav-link {{ request()->routeIs('profile.gallery') ? 'active' : '' }}">
+                <a href="{{ route('profile.gallery') }}"
+                    class="nav-link {{ request()->routeIs('profile.gallery') ? 'active' : '' }}">
                     <i class="fas fa-images"></i>
                     <span>Gallery</span>
                 </a>
             </div>
             <div class="nav-item">
-                <a href="{{ route('profile.settings') }}" class="nav-link {{ request()->routeIs('profile.settings') ? 'active' : '' }}">
+                <a href="{{ route('profile.settings') }}"
+                    class="nav-link {{ request()->routeIs('profile.settings') ? 'active' : '' }}">
                     <i class="fas fa-cog"></i>
                     <span>Settings</span>
                 </a>
@@ -1470,7 +1232,8 @@
             <div class="nav-item">
                 <form action="{{ route('logout') }}" method="POST">
                     @csrf
-                    <button type="submit" class="nav-link" style="width: 100%; text-align: left; background: none; border: none; cursor: pointer;">
+                    <button type="submit" class="nav-link"
+                        style="width: 100%; text-align: left; background: none; border: none; cursor: pointer;">
                         <i class="fas fa-sign-out-alt"></i>
                         <span>Logout</span>
                     </button>
@@ -1478,18 +1241,23 @@
             </div>
         </nav>
     </div>
+
     <!-- Mobile Menu Toggle Button -->
     <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
         <i class="fas fa-bars"></i>
     </button>
+
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" onclick="closeMobileMenu()"></div>
+
     <!-- Main Content -->
     <div class="main-content">
 
         @if (session('success'))
-        <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
-            {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
+            <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
         @endif
 
         <!-- Header -->
@@ -1504,7 +1272,8 @@
                     <div class="user-menu">
                         <div class="user-dropdown">
                             <button class="user-btn" onclick="toggleUserDropdown(event)" id="userMenuButton">
-                                <img src="{{ Auth::user()->profile_image ? asset(Auth::user()->profile_image) : 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->name) . '&background=D0A04F&color=fff' }}" class="user-avatar" alt="{{ Auth::user()->name }}">
+                                <img src="{{ Auth::user()->profile_image ? asset(Auth::user()->profile_image) : 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->name) . '&background=D0A04F&color=fff' }}"
+                                    class="user-avatar" alt="{{ Auth::user()->name }}">
 
                                 <div class="user-info">
                                     <div class="user-name">{{ Auth::user()->name }}</div>
@@ -1548,44 +1317,49 @@
         <main class="content">
             <!-- Profile Header -->
             <div class="profile-header">
-                <div class="cover-image" style="background-image: url('{{ Auth::user()->cover_image ? asset(Auth::user()->cover_image) : 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80' }}')">
+                <div class="cover-image"
+                    style="background-image: url('{{ Auth::user()->cover_image ? asset(Auth::user()->cover_image) : 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80' }}'); cursor: pointer; position: relative;"
+                    id="coverImageContainer" onclick="openOriginalCoverImage()"
+                    data-original="{{ Auth::user()->cover_image ? asset(Auth::user()->cover_image) : '' }}">
+
                     <div class="cover-overlay">
-                        <button class="btn btn-outline" id="changeCoverBtn">
-                            <i class="fas fa-camera"></i> Change Cover
-                        </button>
+                        <div class="cover-edit-icon"
+                            onclick="event.stopPropagation(); document.getElementById('coverInput').click()"
+                            title="Change Cover Image">
+                            <i class="fas fa-pencil-alt"></i>
+                        </div>
                         <input type="file" id="coverInput" accept="image/*" hidden>
                     </div>
                 </div>
 
-                <!-- Replace your entire profile-info div with this corrected structure -->
                 <div class="profile-info">
                     <input type="file" id="profileInput" accept="image/*" hidden>
 
-                    <!-- Profile image and edit icon container -->
                     <div class="profile-image-wrapper">
-                        <div style="position: relative; display: inline-block;">
-                            <img id="profileAvatar" src="{{ Auth::user()->profile_image ? asset(Auth::user()->profile_image) : 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->name) . '&background=D0A04F&color=fff' }}" class="profile-avatar cursor-pointer" alt="{{ Auth::user()->name }}">
-                            <div class="profile-edit-icon" onclick="document.getElementById('profileInput').click()">
-                                <i class="fas fa-camera"></i>
-                            </div>
+                        <img id="profileAvatar"
+                            src="{{ Auth::user()->profile_thumbnail ? asset(Auth::user()->profile_thumbnail) : (Auth::user()->profile_image ? asset(Auth::user()->profile_image) : 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->name) . '&background=D0A04F&color=fff') }}"
+                            class="profile-avatar" alt="{{ Auth::user()->name }}"
+                            onclick="openOriginalProfileImage()" style="cursor: pointer;"
+                            data-original="{{ Auth::user()->profile_image ? asset(Auth::user()->profile_image) : '' }}">
+
+                        <div class="profile-edit-icon" onclick="document.getElementById('profileInput').click()" title="Change Profile Picture">
+                            <i class="fas fa-pencil-alt"></i>
                         </div>
                     </div>
 
-                    <!-- Profile details container - aligned with image -->
                     <div class="profile-details">
                         <h1 class="profile-name">{{ Auth::user()->name }}</h1>
 
-                        <!-- Profile meta with icons and text properly aligned -->
                         <div class="profile-meta">
                             <div class="profile-meta-item">
                                 <i class="fas fa-briefcase"></i>
                                 <span>{{ Auth::user()->profession ?? 'Professional' }}</span>
                             </div>
-                            @if(Auth::user()->locationRelation)
-                            <div class="profile-meta-item">
-                                <i class="fas fa-map-marker-alt"></i>
-                                <span>{{ Auth::user()->locationRelation->name }}</span>
-                            </div>
+                            @if (Auth::user()->locationRelation)
+                                <div class="profile-meta-item">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>{{ Auth::user()->locationRelation->name }}</span>
+                                </div>
                             @endif
                             <div class="profile-meta-item">
                                 <i class="fas fa-envelope"></i>
@@ -1599,7 +1373,8 @@
                                 <div class="stat-label">Posts</div>
                             </div>
                             <div class="stat">
-                                <div class="stat-value">{{ Auth::user()->multipleImages ? count(Auth::user()->multipleImages) : 0 }}</div>
+                                <div class="stat-value">
+                                    {{ Auth::user()->multipleImages ? count(Auth::user()->multipleImages) : 0 }}</div>
                                 <div class="stat-label">Photos</div>
                             </div>
                         </div>
@@ -1608,7 +1383,9 @@
                             <a href="{{ route('profile.edit') }}" class="btn btn-primary">
                                 <i class="fas fa-edit"></i> Edit Profile
                             </a>
-                            <button class="btn btn-outline" id="shareProfileBtn" data-bs-toggle="modal" data-bs-target="#shareModal">
+
+                            <button class="btn btn-outline" id="shareProfileBtn" data-bs-toggle="modal"
+                                data-bs-target="#shareModal">
                                 <i class="fas fa-share-alt"></i> Share
                             </button>
                         </div>
@@ -1628,11 +1405,11 @@
                             </h2>
                         </div>
                         <div class="about-content">
-                            <p>{{ Auth::user()->description ?? 'No description available. Add a description to tell people more about yourself.' }}</p>
+                            <p>{{ Auth::user()->description ?? 'No description available. Add a description to tell people more about yourself.' }}
+                            </p>
                         </div>
                     </div>
 
-                    <!-- My Posts Section (Under About) -->
                     <!-- My Posts Section -->
                     <div class="card">
                         <div class="card-header">
@@ -1643,61 +1420,58 @@
 
                         <div class="posts-list">
                             @forelse($feeds as $feed)
-                            <div class="post-item" data-post-id="{{ $feed->id }}">
-                                <!-- Post Header with Three Dots Menu -->
-                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                                    <h3 class="post-title" style="font-size: 1.35rem; margin: 0;">{{ $feed->title }}</h3>
+                                <div class="post-item" data-post-id="{{ $feed->id }}">
+                                    <div class="post-header">
+                                        <h3 class="post-title">{{ $feed->title }}</h3>
 
-                                    <!-- Three Dots Menu -->
-                                    <div class="post-menu-container" style="position: relative;">
-                                        <button class="post-menu-btn" onclick="togglePostMenu({{ $feed->id }}, event)" style="background: none; border: none; cursor: pointer; padding: 8px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #6b7280; transition: all 0.2s;">
-                                            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
-                                                <circle cx="10" cy="4" r="2" />
-                                                <circle cx="10" cy="10" r="2" />
-                                                <circle cx="10" cy="16" r="2" />
-                                            </svg>
-                                        </button>
-
-                                        <!-- Dropdown Menu -->
-                                        <div class="post-dropdown-menu" id="post-menu-{{ $feed->id }}" style="display: none; position: absolute; top: 100%; right: 0; background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); min-width: 160px; z-index: 100; margin-top: 5px; overflow: hidden;">
-                                            <div class="menu-item delete-item" onclick="confirmDeletePost({{ $feed->id }}, event)" style="display: flex; align-items: center; gap: 10px; padding: 12px 16px; cursor: pointer; transition: background-color 0.2s; color: #dc2626;">
-                                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                    <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2" />
-                                                    <line x1="10" y1="11" x2="10" y2="17" />
-                                                    <line x1="14" y1="11" x2="14" y2="17" />
+                                        <div class="post-menu-container">
+                                            <button class="post-menu-btn" onclick="togglePostMenu({{ $feed->id }}, event)">
+                                                <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                                                    <circle cx="10" cy="4" r="2" />
+                                                    <circle cx="10" cy="10" r="2" />
+                                                    <circle cx="10" cy="16" r="2" />
                                                 </svg>
-                                                <span style="font-size: 0.9rem; font-weight: 500;">Delete Post</span>
+                                            </button>
+
+                                            <div class="post-dropdown-menu" id="post-menu-{{ $feed->id }}" style="display: none;">
+                                                <div class="menu-item delete-item" onclick="confirmDeletePost({{ $feed->id }}, event)">
+                                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                        <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2" />
+                                                        <line x1="10" y1="11" x2="10" y2="17" />
+                                                        <line x1="14" y1="11" x2="14" y2="17" />
+                                                    </svg>
+                                                    <span>Delete Post</span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                @if($feed->images && $feed->images->count())
-                                <div class="post-images" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1rem; margin-bottom: 1rem;">
-                                    @foreach($feed->images->take(4) as $image)
-                                    <div class="position-relative" style="aspect-ratio: 1; overflow: hidden; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-                                        <img src="{{ asset('storage/'.$image->image) }}" class="w-100 h-100" style="object-fit: cover; cursor: pointer; transition: transform 0.3s;" alt="Post image" onclick="event.stopPropagation(); openPostGallery({{ $feed->id }})" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
-                                    </div>
-                                    @endforeach
-
-                                    @if($feed->images->count() > 4)
-                                    <div class="position-relative d-flex align-items-center justify-content-center bg-light" style="aspect-ratio: 1; border-radius: 12px; cursor: pointer; font-size: 1.5rem; font-weight: 600; color: #1877f2; border: 2px dashed #dee2e6;" onclick="event.stopPropagation(); openPostGallery({{ $feed->id }})" onmouseover="this.style.backgroundColor='#e7f0ff'" onmouseout="this.style.backgroundColor='#f8f9fa'">
-                                        +{{ $feed->images->count() - 4 }} more
-                                    </div>
+                                    @if ($feed->images && $feed->images->count())
+                                        <div class="post-images">
+                                            @foreach ($feed->images->take(3) as $image)
+                                                <img src="{{ asset('storage/' . $image->image) }}"
+                                                    class="post-thumbnail" alt="Post image"
+                                                    onclick="event.stopPropagation(); openPostGallery({{ $feed->id }})">
+                                            @endforeach
+                                            @if ($feed->images->count() > 3)
+                                                <div class="post-thumbnail d-flex align-items-center justify-content-center bg-light"
+                                                    onclick="event.stopPropagation(); openPostGallery({{ $feed->id }})">
+                                                    +{{ $feed->images->count() - 3 }}
+                                                </div>
+                                            @endif
+                                        </div>
                                     @endif
-                                </div>
-                                @endif
 
-                                <div class="post-date" style="display: flex; align-items: center; gap: 0.5rem; color: #6c757d; font-size: 0.95rem; margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid #e9ecef;">
-                                    <i class="fas fa-clock"></i>
-                                    {{ $feed->created_at->diffForHumans() }}
+                                    <div class="post-date">
+                                        <i class="fas fa-clock"></i>
+                                        {{ $feed->created_at->diffForHumans() }}
+                                    </div>
                                 </div>
-                            </div>
                             @empty
-                            <div class="empty-posts" style="text-align: center; padding: 3rem 1rem;">
-                                <i class="fas fa-images" style="font-size: 3rem; color: #dee2e6; margin-bottom: 1rem;"></i>
-                                <p style="font-size: 1.1rem; color: #6c757d;">No posts yet. Create your first post!</p>
-                            </div>
+                                <div class="empty-posts">
+                                    <i class="fas fa-images"></i>
+                                    <p>No posts yet. Create your first post!</p>
+                                </div>
                             @endforelse
                         </div>
                     </div>
@@ -1723,59 +1497,58 @@
                                 </div>
                             </div>
 
-                            @if(Auth::user()->phone)
-                            <div class="contact-item">
-                                <div class="contact-icon">
-                                    <i class="fas fa-phone"></i>
+                            @if (Auth::user()->phone)
+                                <div class="contact-item">
+                                    <div class="contact-icon">
+                                        <i class="fas fa-phone"></i>
+                                    </div>
+                                    <div class="contact-details">
+                                        <h4>Phone</h4>
+                                        <p>{{ Auth::user()->phone }}</p>
+                                    </div>
                                 </div>
-                                <div class="contact-details">
-                                    <h4>Phone</h4>
-                                    <p>{{ Auth::user()->phone }}</p>
-                                </div>
-                            </div>
                             @endif
 
-                            @if(Auth::user()->locationRelation)
-                            <div class="contact-item">
-                                <div class="contact-icon">
-                                    <i class="fas fa-map-marker-alt"></i>
+                            @if (Auth::user()->locationRelation)
+                                <div class="contact-item">
+                                    <div class="contact-icon">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                    </div>
+                                    <div class="contact-details">
+                                        <h4>Location</h4>
+                                        <p>{{ Auth::user()->locationRelation->name }}</p>
+                                    </div>
                                 </div>
-                                <div class="contact-details">
-                                    <h4>Location</h4>
-                                    <p>{{ Auth::user()->locationRelation->name }}</p>
-                                </div>
-                            </div>
                             @endif
 
-                            @if(Auth::user()->website)
-                            <div class="contact-item">
-                                <div class="contact-icon">
-                                    <i class="fas fa-globe"></i>
+                            @if (Auth::user()->website)
+                                <div class="contact-item">
+                                    <div class="contact-icon">
+                                        <i class="fas fa-globe"></i>
+                                    </div>
+                                    <div class="contact-details">
+                                        <h4>Website</h4>
+                                        <p>{{ Auth::user()->website }}</p>
+                                    </div>
                                 </div>
-                                <div class="contact-details">
-                                    <h4>Website</h4>
-                                    <p>{{ Auth::user()->website }}</p>
-                                </div>
-                            </div>
                             @endif
 
-                            @if(Auth::user()->profession)
-                            <div class="contact-item">
-                                <div class="contact-icon">
-                                    <i class="fas fa-briefcase"></i>
+                            @if (Auth::user()->profession)
+                                <div class="contact-item">
+                                    <div class="contact-icon">
+                                        <i class="fas fa-briefcase"></i>
+                                    </div>
+                                    <div class="contact-details">
+                                        <h4>Profession</h4>
+                                        <p>{{ Auth::user()->profession }}</p>
+                                    </div>
                                 </div>
-                                <div class="contact-details">
-                                    <h4>Profession</h4>
-                                    <p>{{ Auth::user()->profession }}</p>
-                                </div>
-                            </div>
                             @endif
                         </div>
                     </div>
                 </div>
             </div>
         </main>
-        <input type="file" id="galleryInput" multiple accept="image/*" hidden>
     </div>
 
     <!-- Share Modal -->
@@ -1789,57 +1562,61 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <!-- Profile Preview -->
                     <div class="card mb-4 border-0 bg-light">
                         <div class="card-body">
                             <div class="d-flex align-items-center">
                                 <div class="flex-shrink-0">
-                                    <img src="{{ Auth::user()->profile_image ? asset(Auth::user()->profile_image) : 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->name) . '&background=D0A04F&color=fff' }}" alt="{{ Auth::user()->name }}" class="rounded-circle" width="50" height="50" id="modalProfileAvatar">
+                                    <img src="{{ Auth::user()->profile_image ? asset(Auth::user()->profile_image) : 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->name) . '&background=D0A04F&color=fff' }}"
+                                        alt="{{ Auth::user()->name }}" class="rounded-circle" width="50"
+                                        height="50" id="modalProfileAvatar">
                                 </div>
                                 <div class="flex-grow-1 ms-3">
                                     <h6 class="mb-1" id="modalProfileName">{{ Auth::user()->name }}</h6>
-                                    <p class="mb-0 text-muted small" id="modalProfileEmail">{{ Auth::user()->email }}</p>
+                                    <p class="mb-0 text-muted small" id="modalProfileEmail">{{ Auth::user()->email }}
+                                    </p>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Share Via Label -->
                     <p class="text-muted mb-3">Share via:</p>
 
-                    <!-- Social Media Grid -->
                     <div class="row g-2 mb-3">
                         <div class="col-4 col-md-3">
-                            <button onclick="shareOnFacebook()" class="btn btn-outline-primary w-100 py-3" data-bs-dismiss="modal">
+                            <button onclick="shareOnFacebook()" class="btn btn-outline-primary w-100 py-3"
+                                data-bs-dismiss="modal">
                                 <i class="fab fa-facebook-f fa-lg mb-2 d-block"></i>
                                 <span class="small">Facebook</span>
                             </button>
                         </div>
                         <div class="col-4 col-md-3">
-                            <button onclick="shareOnTwitter()" class="btn btn-outline-dark w-100 py-3" data-bs-dismiss="modal">
+                            <button onclick="shareOnTwitter()" class="btn btn-outline-dark w-100 py-3"
+                                data-bs-dismiss="modal">
                                 <i class="fab fa-twitter fa-lg mb-2 d-block"></i>
                                 <span class="small">Twitter</span>
                             </button>
                         </div>
                         <div class="col-4 col-md-3">
-                            <button onclick="shareOnLinkedIn()" class="btn btn-outline-info w-100 py-3" data-bs-dismiss="modal">
+                            <button onclick="shareOnLinkedIn()" class="btn btn-outline-info w-100 py-3"
+                                data-bs-dismiss="modal">
                                 <i class="fab fa-linkedin-in fa-lg mb-2 d-block"></i>
                                 <span class="small">LinkedIn</span>
                             </button>
                         </div>
                         <div class="col-4 col-md-3">
-                            <button onclick="shareOnWhatsApp()" class="btn btn-outline-success w-100 py-3" data-bs-dismiss="modal">
+                            <button onclick="shareOnWhatsApp()" class="btn btn-outline-success w-100 py-3"
+                                data-bs-dismiss="modal">
                                 <i class="fab fa-whatsapp fa-lg mb-2 d-block"></i>
                                 <span class="small">WhatsApp</span>
                             </button>
                         </div>
                     </div>
 
-                    <!-- Direct Link Input -->
                     <div class="mt-4">
                         <label class="form-label text-muted small mb-2">Or copy direct link:</label>
                         <div class="input-group">
-                            <input type="text" class="form-control" id="profileLinkInput" value="" readonly>
+                            <input type="text" class="form-control" id="profileLinkInput" value=""
+                                readonly>
                             <button class="btn btn-outline-primary" type="button" onclick="copyProfileLink()">
                                 <i class="fas fa-copy"></i>
                             </button>
@@ -1854,7 +1631,8 @@
     </div>
 
     <!-- Post Images Modal -->
-    <div class="modal fade" id="postImagesModal" tabindex="-1" aria-labelledby="postImagesModalLabel" aria-hidden="true">
+    <div class="modal fade" id="postImagesModal" tabindex="-1" aria-labelledby="postImagesModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -1882,6 +1660,191 @@
         </div>
     </div>
 
+    <!-- Cover Image Crop Modal -->
+    <div class="modal fade" id="coverCropModal" tabindex="-1" aria-labelledby="coverCropModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="coverCropModalLabel">
+                        <i class="fas fa-crop me-2"></i>Adjust Cover Image
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="cover-crop-container">
+                        <img id="coverCropImage" src="" alt="Cover image to crop"
+                            style="max-width: 100%; display: block;">
+                    </div>
+
+                    <div class="crop-controls mt-3 d-flex justify-content-center gap-2 flex-wrap">
+                        <button type="button" class="btn btn-sm btn-outline-secondary"
+                            onclick="coverCropper.zoom(0.1)">
+                            <i class="fas fa-search-plus"></i>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary"
+                            onclick="coverCropper.zoom(-0.1)">
+                            <i class="fas fa-search-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary"
+                            onclick="coverCropper.move(-10, 0)">
+                            <i class="fas fa-arrow-left"></i>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary"
+                            onclick="coverCropper.move(10, 0)">
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary"
+                            onclick="coverCropper.move(0, -10)">
+                            <i class="fas fa-arrow-up"></i>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary"
+                            onclick="coverCropper.move(0, 10)">
+                            <i class="fas fa-arrow-down"></i>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary"
+                            onclick="coverCropper.reset()">
+                            <i class="fas fa-undo"></i>
+                        </button>
+                    </div>
+
+                    <div class="aspect-ratio-controls mt-3">
+                        <label class="form-label text-muted small">Aspect Ratio:</label>
+                        <div class="d-flex gap-2 flex-wrap">
+                            <button type="button" class="btn btn-sm btn-outline-primary active"
+                                onclick="setCoverAspectRatio(16/5)">
+                                16:5 (Current)
+                            </button>
+                            <button type="button" class="btn btn-sm btn-outline-primary"
+                                onclick="setCoverAspectRatio(16/9)">
+                                16:9
+                            </button>
+                            <button type="button" class="btn btn-sm btn-outline-primary"
+                                onclick="setCoverAspectRatio(3/1)">
+                                3:1
+                            </button>
+                            <button type="button" class="btn btn-sm btn-outline-primary"
+                                onclick="setCoverAspectRatio(4/1)">
+                                4:1
+                            </button>
+                            <button type="button" class="btn btn-sm btn-outline-primary"
+                                onclick="setCoverAspectRatio(NaN)">
+                                Free
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-2"></i>Cancel
+                    </button>
+                    <button type="button" class="btn btn-primary" id="saveCoverBtn">
+                        <i class="fas fa-check me-2"></i>Save Cover
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Picture Crop Modal -->
+    <div class="modal fade" id="profileCropModal" tabindex="-1" aria-labelledby="profileCropModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-md modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="profileCropModalLabel">
+                        <i class="fas fa-crop me-2"></i>Adjust Profile Picture
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="profile-crop-container">
+                        <img id="profileCropImage" src="" alt="Profile image to crop"
+                            style="max-width: 100%; display: block;">
+                    </div>
+
+                    <div class="crop-controls mt-3 d-flex justify-content-center gap-2 flex-wrap">
+                        <button type="button" class="btn btn-sm btn-outline-secondary"
+                            onclick="profileCropper.zoom(0.1)">
+                            <i class="fas fa-search-plus"></i>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary"
+                            onclick="profileCropper.zoom(-0.1)">
+                            <i class="fas fa-search-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary"
+                            onclick="profileCropper.move(-10, 0)">
+                            <i class="fas fa-arrow-left"></i>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary"
+                            onclick="profileCropper.move(10, 0)">
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary"
+                            onclick="profileCropper.move(0, -10)">
+                            <i class="fas fa-arrow-up"></i>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary"
+                            onclick="profileCropper.move(0, 10)">
+                            <i class="fas fa-arrow-down"></i>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary"
+                            onclick="profileCropper.rotate(-90)">
+                            <i class="fas fa-undo-alt"></i>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary"
+                            onclick="profileCropper.rotate(90)">
+                            <i class="fas fa-redo-alt"></i>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary"
+                            onclick="profileCropper.reset()">
+                            <i class="fas fa-undo"></i>
+                        </button>
+                    </div>
+
+                    <div class="size-presets mt-3">
+                        <label class="form-label text-muted small">Size Presets:</label>
+                        <div class="d-flex gap-2 flex-wrap">
+                            <button type="button" class="btn btn-sm btn-outline-primary"
+                                onclick="setProfileSize(300, 300, this)">
+                                <i class="fas fa-image me-1"></i>Small (300x300)
+                            </button>
+                            <button type="button" class="btn btn-sm btn-outline-primary active"
+                                onclick="setProfileSize(512, 512, this)">
+                                <i class="fas fa-image me-1"></i>Medium (512x512)
+                            </button>
+                            <button type="button" class="btn btn-sm btn-outline-primary"
+                                onclick="setProfileSize(1024, 1024, this)">
+                                <i class="fas fa-image me-1"></i>Large (1024x1024)
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="preview-section mt-3 p-3 bg-light rounded">
+                        <label class="form-label text-muted small mb-2">Preview:</label>
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="preview-circle">
+                                <img id="profilePreview" src="" alt="Preview" style="display: none;">
+                            </div>
+                            <div class="preview-square">
+                                <img id="profilePreviewSquare" src="" alt="Preview square" style="display: none;">
+                            </div>
+                            <small class="text-muted">Rounded & Square preview</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-2"></i>Cancel
+                    </button>
+                    <button type="button" class="btn btn-primary" id="saveProfileBtn">
+                        <i class="fas fa-check me-2"></i>Save Profile Picture
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Toast Notification -->
     <div class="toast-container position-fixed bottom-0 end-0 p-3">
         <div id="shareToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
@@ -1896,159 +1859,131 @@
         </div>
     </div>
 
-    <!-- Lightbox JS -->
+    <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
-    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script>
+
     <script>
-        // User dropdown toggle
+        // CSRF token
+        const csrf = '{{ csrf_token() }}';
+
+        // ============================================
+        // USER DROPDOWN FUNCTIONALITY
+        // ============================================
         function toggleUserDropdown(event) {
             event.stopPropagation();
             const dropdown = document.getElementById('userDropdownMenu');
             const arrow = document.getElementById('dropdownArrow');
-
+            
             dropdown.classList.toggle('show');
-            arrow.classList.toggle('rotated');
+            if (arrow) {
+                arrow.style.transform = dropdown.classList.contains('show') ? 'rotate(180deg)' : '';
+            }
         }
 
-        // Close dropdown when clicking outside
         document.addEventListener('click', function(event) {
             const dropdown = document.getElementById('userDropdownMenu');
             const button = document.getElementById('userMenuButton');
-
-            if (!button.contains(event.target) && !dropdown.contains(event.target)) {
+            
+            if (button && dropdown && !button.contains(event.target) && !dropdown.contains(event.target)) {
                 dropdown.classList.remove('show');
-                document.getElementById('dropdownArrow').classList.remove('rotated');
+                const arrow = document.getElementById('dropdownArrow');
+                if (arrow) {
+                    arrow.style.transform = '';
+                }
             }
         });
 
-        // Close dropdown on escape key
         document.addEventListener('keydown', function(event) {
             if (event.key === 'Escape') {
                 const dropdown = document.getElementById('userDropdownMenu');
-                dropdown.classList.remove('show');
-                document.getElementById('dropdownArrow').classList.remove('rotated');
+                if (dropdown) {
+                    dropdown.classList.remove('show');
+                    const arrow = document.getElementById('dropdownArrow');
+                    if (arrow) {
+                        arrow.style.transform = '';
+                    }
+                }
             }
         });
 
-        // Prevent dropdown from closing when clicking inside it
         document.getElementById('userDropdownMenu')?.addEventListener('click', function(event) {
             event.stopPropagation();
         });
-    </script>
-    <script>
-        const csrf = '{{ csrf_token() }}';
 
-        // Profile image upload
-        document.getElementById('profileAvatar').addEventListener('click', () => {
-            document.getElementById('profileInput').click();
-        });
+        // ============================================
+        // MOBILE MENU FUNCTIONALITY
+        // ============================================
+        function toggleMobileMenu() {
+            const sidebar = document.querySelector('.sidebar');
+            const toggleBtn = document.querySelector('.mobile-menu-toggle i');
+            const overlay = document.querySelector('.sidebar-overlay');
 
-        document.getElementById('profileInput').addEventListener('change', function() {
-            uploadImage(this.files[0], 'profile_image');
-        });
+            sidebar.classList.toggle('active');
 
-        // Cover image upload
-        document.getElementById('changeCoverBtn').addEventListener('click', () => {
-            document.getElementById('coverInput').click();
-        });
-
-        document.getElementById('coverInput').addEventListener('change', function() {
-            uploadImage(this.files[0], 'cover_image');
-        });
-
-        // Core upload function
-        function uploadImage(file, type) {
-            if (!file) return;
-
-            const formData = new FormData();
-            formData.append(type, file);
-            formData.append('_token', csrf);
-
-            fetch("{{ route('profile.image.update') }}", {
-                    method: "POST",
-                    body: formData,
-                })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.status) {
-                        if (type === 'profile_image') {
-                            document.getElementById('profileAvatar').src = data.url;
-                            document.querySelector('.user-avatar').src = data.url;
-                        }
-                        if (type === 'cover_image') {
-                            document.querySelector('.cover-image').style.backgroundImage = `url('${data.url}')`;
-                        }
-                        toast('✅ Image updated');
-                    } else {
-                        toast(data.message || 'Upload failed');
-                    }
-                })
-                .catch(err => {
-                    console.error(err);
-                    toast('Server error');
-                });
+            if (sidebar.classList.contains('active')) {
+                toggleBtn.classList.remove('fa-bars');
+                toggleBtn.classList.add('fa-times');
+                document.body.style.overflow = 'hidden';
+                overlay.classList.add('active');
+            } else {
+                toggleBtn.classList.remove('fa-times');
+                toggleBtn.classList.add('fa-bars');
+                document.body.style.overflow = '';
+                overlay.classList.remove('active');
+            }
         }
 
+        function closeMobileMenu() {
+            const sidebar = document.querySelector('.sidebar');
+            const toggleBtn = document.querySelector('.mobile-menu-toggle i');
+            const overlay = document.querySelector('.sidebar-overlay');
 
-
-        // Simple toast
-        function toast(msg) {
-            const el = document.createElement('div');
-            el.innerText = msg;
-            el.style.cssText = `
-                position:fixed;
-                bottom:30px;
-                right:30px;
-                background:#111;
-                color:#fff;
-                padding:12px 18px;
-                border-radius:8px;
-                z-index:9999;
-            `;
-            document.body.appendChild(el);
-            setTimeout(() => el.remove(), 3000);
+            sidebar.classList.remove('active');
+            if (toggleBtn) {
+                toggleBtn.classList.remove('fa-times');
+                toggleBtn.classList.add('fa-bars');
+            }
+            document.body.style.overflow = '';
+            if (overlay) {
+                overlay.classList.remove('active');
+            }
         }
 
-        // Initialize Lightbox
-        lightbox.option({
-            'resizeDuration': 200,
-            'wrapAround': true,
-            'albumLabel': 'Image %1 of %2'
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768) {
+                const sidebar = document.querySelector('.sidebar');
+                const toggleBtn = document.querySelector('.mobile-menu-toggle i');
+                const overlay = document.querySelector('.sidebar-overlay');
+
+                sidebar.classList.remove('active');
+                if (toggleBtn) {
+                    toggleBtn.classList.remove('fa-times');
+                    toggleBtn.classList.add('fa-bars');
+                }
+                document.body.style.overflow = '';
+                if (overlay) {
+                    overlay.classList.remove('active');
+                }
+            }
         });
 
-        // Smooth transitions
-        document.addEventListener('DOMContentLoaded', function() {
-            const cards = document.querySelectorAll('.card');
-            cards.forEach(card => {
-                card.addEventListener('mouseenter', () => {
-                    card.style.transform = 'translateY(-4px)';
-                });
-                card.addEventListener('mouseleave', () => {
-                    card.style.transform = 'translateY(0)';
-                });
-            });
-
-            const buttons = document.querySelectorAll('.btn');
-            buttons.forEach(btn => {
-                btn.addEventListener('mousedown', () => {
-                    btn.style.transform = 'scale(0.98)';
-                });
-                btn.addEventListener('mouseup', () => {
-                    btn.style.transform = '';
-                });
-                btn.addEventListener('mouseleave', () => {
-                    btn.style.transform = '';
-                });
-            });
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && window.innerWidth <= 768) {
+                closeMobileMenu();
+            }
         });
 
-        // Share functionality
+        // ============================================
+        // SHARE FUNCTIONALITY
+        // ============================================
         const profileData = {
             id: '{{ Auth::user()->id }}',
             name: '{{ Auth::user()->name }}',
             email: '{{ Auth::user()->email }}',
-            url: '{{ route("userdetails.show", Auth::user()->slug) }}',
+            url: '{{ route('userdetails.show', Auth::user()->slug) }}',
             title: '{{ Auth::user()->name }} - Profile',
             description: 'Check out {{ Auth::user()->name }}\'s profile on our platform!'
         };
@@ -2062,6 +1997,9 @@
             });
 
             document.getElementById('profileLinkInput').value = profileData.url;
+
+            initializePostItems();
+            initializeModalHandlers();
         });
 
         window.shareOnFacebook = function() {
@@ -2125,318 +2063,19 @@
 
             return false;
         }
-    </script>
-    
-    <script>
-        // Post menu functions
-function togglePostMenu(postId, event) {
-    event.stopPropagation();
-    
-    // Close all other menus
-    document.querySelectorAll('[id^="post-menu-"]').forEach(menu => {
-        if (menu.id !== `post-menu-${postId}`) {
-            menu.style.display = 'none';
-        }
-    });
-    
-    // Toggle current menu
-    const menu = document.getElementById(`post-menu-${postId}`);
-    menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
-}
 
-// Close post menus when clicking outside
-document.addEventListener('click', function(event) {
-    if (!event.target.closest('.post-menu-container')) {
-        document.querySelectorAll('[id^="post-menu-"]').forEach(menu => {
-            menu.style.display = 'none';
-        });
-    }
-});
-
-// Confirm delete post
-function confirmDeletePost(postId, event) {
-    event.stopPropagation();
-    
-    // Close the menu
-    document.getElementById(`post-menu-${postId}`).style.display = 'none';
-    
-    // Show delete confirmation modal
-    showDeleteModal(postId);
-}
-
-// Show delete confirmation modal
-// Show delete confirmation modal
-function showDeleteModal(postId) {
-    // Remove existing modal if any
-    const existingModal = document.querySelector('.delete-modal');
-    if (existingModal) {
-        existingModal.remove();
-    }
-    
-    // Create modal
-    const modal = document.createElement('div');
-    modal.className = 'delete-modal active';
-    modal.innerHTML = `
-        <div class="delete-modal-content">
-            <div class="delete-modal-icon">
-                <i class="fas fa-exclamation-triangle"></i>
-            </div>
-            <h3 class="delete-modal-title">Delete Post?</h3>
-            <p class="delete-modal-message">This action cannot be undone. The post and all its images will be permanently deleted.</p>
-            <div class="delete-modal-actions">
-                <button class="delete-modal-btn cancel" onclick="closeDeleteModal()">Cancel</button>
-                <button class="delete-modal-btn delete" onclick="deletePost(${postId})" id="deletePostBtn">Delete</button>
-            </div>
-        </div>
-    `;
-    
-    document.body.appendChild(modal);
-}
-
-// Close delete modal
-function closeDeleteModal() {
-    const modal = document.querySelector('.delete-modal');
-    if (modal) {
-        modal.remove();
-    }
-}
-
-// Delete post function
-function deletePost(postId) {
-    const deleteBtn = document.getElementById('deletePostBtn');
-    if (deleteBtn) {
-        deleteBtn.disabled = true;
-        deleteBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Deleting...';
-    }
-    
-    // Create form data for method spoofing
-    const formData = new FormData();
-    formData.append('_token', csrf);
-    formData.append('_method', 'DELETE');
-    
-    // Show loading state on the post
-    const postElement = document.querySelector(`.post-item[data-post-id="${postId}"]`);
-    if (postElement) {
-        postElement.style.opacity = '0.5';
-    }
-    
-    fetch(`/feeds/${postId}`, {
-        method: 'POST', // Using POST with _method=DELETE
-        headers: {
-            'X-CSRF-TOKEN': csrf,
-            'X-Requested-With': 'XMLHttpRequest',
-            'Accept': 'application/json'
-        },
-        body: formData
-    })
-    .then(response => {
-        // Check if response is JSON
-        const contentType = response.headers.get('content-type');
-        if (contentType && contentType.includes('application/json')) {
-            return response.json();
-        }
-        
-        // If not JSON but redirect/ok, assume success
-        if (response.ok || response.redirected) {
-            return { status: true };
-        }
-        
-        throw new Error('Network response was not ok');
-    })
-    .then(data => {
-        if (data.status || data.success || data === true) {
-            // Success - remove post from DOM
-            handleSuccessfulDelete(postId);
-        } else {
-            throw new Error(data.message || 'Failed to delete post');
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        
-        // Revert loading state
-        if (postElement) {
-            postElement.style.opacity = '1';
-        }
-        
-        // Show error toast
-        if (typeof toast === 'function') {
-            toast('❌ ' + (error.message || 'Failed to delete post'));
-        } else {
-            alert('Failed to delete post. Please try again.');
-        }
-        
-        // Reset delete button if it exists
-        if (deleteBtn) {
-            deleteBtn.disabled = false;
-            deleteBtn.innerHTML = 'Delete';
-        }
-    });
-}
-
-// Helper function to handle successful deletion
-function handleSuccessfulDelete(postId) {
-    // Remove post from DOM
-    const postElement = document.querySelector(`.post-item[data-post-id="${postId}"]`);
-    if (postElement) {
-        // Add fade out animation
-        postElement.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
-        postElement.style.opacity = '0';
-        postElement.style.transform = 'scale(0.9)';
-        
-        // Remove after animation
-        setTimeout(() => {
-            postElement.remove();
-            
-            // Update post count in stats
-            updatePostCount();
-            
-            // Check if no posts left
-            checkEmptyPosts();
-        }, 300);
-    }
-    
-    // Close modal
-    closeDeleteModal();
-    
-    // Show success toast
-    if (typeof toast === 'function') {
-        toast('✅ Post deleted successfully');
-    }
-}
-
-// Update post count in stats
-function updatePostCount() {
-    const postCountElement = document.querySelector('.stat-value');
-    if (postCountElement) {
-        const currentCount = parseInt(postCountElement.textContent) || 0;
-        postCountElement.textContent = Math.max(0, currentCount - 1);
-    }
-}
-
-// Check if no posts left
-function checkEmptyPosts() {
-    const postsList = document.querySelector('.posts-list');
-    if (postsList && postsList.children.length === 0) {
-        postsList.innerHTML = `
-            <div class="empty-posts" style="text-align: center; padding: 3rem 1rem;">
-                <i class="fas fa-images" style="font-size: 3rem; color: #dee2e6; margin-bottom: 1rem;"></i>
-                <p style="font-size: 1.1rem; color: #6c757d;">No posts yet. Create your first post!</p>
-            </div>
-        `;
-    }
-}
-    </script>
-
-    <script>
-        // Mobile menu functionality
-        function toggleMobileMenu() {
-            const sidebar = document.querySelector('.sidebar');
-            const toggleBtn = document.querySelector('.mobile-menu-toggle i');
-            const overlay = createOverlay();
-
-            sidebar.classList.toggle('active');
-
-            if (sidebar.classList.contains('active')) {
-                toggleBtn.classList.remove('fa-bars');
-                toggleBtn.classList.add('fa-times');
-                document.body.style.overflow = 'hidden'; // Prevent background scrolling
-                overlay.classList.add('active');
-            } else {
-                toggleBtn.classList.remove('fa-times');
-                toggleBtn.classList.add('fa-bars');
-                document.body.style.overflow = '';
-                overlay.classList.remove('active');
-            }
-        }
-
-        // Create overlay if it doesn't exist
-        function createOverlay() {
-            let overlay = document.querySelector('.sidebar-overlay');
-            if (!overlay) {
-                overlay = document.createElement('div');
-                overlay.className = 'sidebar-overlay';
-                document.body.appendChild(overlay);
-
-                // Close sidebar when clicking overlay
-                overlay.addEventListener('click', function() {
-                    closeMobileMenu();
-                });
-            }
-            return overlay;
-        }
-
-        function closeMobileMenu() {
-            const sidebar = document.querySelector('.sidebar');
-            const toggleBtn = document.querySelector('.mobile-menu-toggle i');
-            const overlay = document.querySelector('.sidebar-overlay');
-
-            sidebar.classList.remove('active');
-            if (toggleBtn) {
-                toggleBtn.classList.remove('fa-times');
-                toggleBtn.classList.add('fa-bars');
-            }
-            document.body.style.overflow = '';
-            if (overlay) {
-                overlay.classList.remove('active');
-            }
-        }
-
-        // Close mobile menu when clicking a nav link (optional - good for single page apps)
-        document.addEventListener('DOMContentLoaded', function() {
-            const navLinks = document.querySelectorAll('.sidebar .nav-link');
-            navLinks.forEach(link => {
-                link.addEventListener('click', function() {
-                    if (window.innerWidth <= 768) {
-                        closeMobileMenu();
-                    }
-                });
-            });
-        });
-
-        // Handle window resize
-        window.addEventListener('resize', function() {
-            if (window.innerWidth > 768) {
-                const sidebar = document.querySelector('.sidebar');
-                const toggleBtn = document.querySelector('.mobile-menu-toggle i');
-                const overlay = document.querySelector('.sidebar-overlay');
-
-                sidebar.classList.remove('active');
-                if (toggleBtn) {
-                    toggleBtn.classList.remove('fa-times');
-                    toggleBtn.classList.add('fa-bars');
-                }
-                document.body.style.overflow = '';
-                if (overlay) {
-                    overlay.classList.remove('active');
-                }
-            }
-        });
-
-        // Close mobile menu when pressing Escape key
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && window.innerWidth <= 768) {
-                closeMobileMenu();
-            }
-        });
-    </script>
-    <script>
-        // Post images functionality
+        // ============================================
+        // POST MANAGEMENT
+        // ============================================
         let currentPostId = null;
         let currentModal = null;
-
-        // Make posts clickable
-        document.addEventListener('DOMContentLoaded', function() {
-            initializePostItems();
-            initializeModalHandlers();
-        });
 
         function initializePostItems() {
             const postItems = document.querySelectorAll('.post-item');
             postItems.forEach(item => {
                 item.addEventListener('click', function(e) {
-                    // Don't open if clicking on an image (to allow lightbox)
-                    if (e.target.classList.contains('post-thumbnail')) {
+                    if (e.target.classList.contains('post-thumbnail') || 
+                        e.target.closest('.post-menu-container')) {
                         return;
                     }
 
@@ -2448,8 +2087,170 @@ function checkEmptyPosts() {
             });
         }
 
+        function togglePostMenu(postId, event) {
+            event.stopPropagation();
+            
+            document.querySelectorAll('[id^="post-menu-"]').forEach(menu => {
+                if (menu.id !== `post-menu-${postId}`) {
+                    menu.style.display = 'none';
+                }
+            });
+            
+            const menu = document.getElementById(`post-menu-${postId}`);
+            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+        }
+
+        document.addEventListener('click', function(event) {
+            if (!event.target.closest('.post-menu-container')) {
+                document.querySelectorAll('[id^="post-menu-"]').forEach(menu => {
+                    menu.style.display = 'none';
+                });
+            }
+        });
+
+        function confirmDeletePost(postId, event) {
+            event.stopPropagation();
+            
+            document.getElementById(`post-menu-${postId}`).style.display = 'none';
+            
+            showDeleteModal(postId);
+        }
+
+        function showDeleteModal(postId) {
+            const existingModal = document.querySelector('.delete-modal');
+            if (existingModal) {
+                existingModal.remove();
+            }
+            
+            const modal = document.createElement('div');
+            modal.className = 'delete-modal active';
+            modal.innerHTML = `
+                <div class="delete-modal-content">
+                    <div class="delete-modal-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <h3 class="delete-modal-title">Delete Post?</h3>
+                    <p class="delete-modal-message">This action cannot be undone. The post and all its images will be permanently deleted.</p>
+                    <div class="delete-modal-actions">
+                        <button class="delete-modal-btn cancel" onclick="closeDeleteModal()">Cancel</button>
+                        <button class="delete-modal-btn delete" onclick="deletePost(${postId})" id="deletePostBtn">Delete</button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+        }
+
+        function closeDeleteModal() {
+            const modal = document.querySelector('.delete-modal');
+            if (modal) {
+                modal.remove();
+            }
+        }
+
+        function deletePost(postId) {
+            const deleteBtn = document.getElementById('deletePostBtn');
+            if (deleteBtn) {
+                deleteBtn.disabled = true;
+                deleteBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Deleting...';
+            }
+            
+            const formData = new FormData();
+            formData.append('_token', csrf);
+            formData.append('_method', 'DELETE');
+            
+            const postElement = document.querySelector(`.post-item[data-post-id="${postId}"]`);
+            if (postElement) {
+                postElement.style.opacity = '0.5';
+            }
+            
+            fetch(`/feeds/${postId}`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': csrf,
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json'
+                },
+                body: formData
+            })
+            .then(response => {
+                const contentType = response.headers.get('content-type');
+                if (contentType && contentType.includes('application/json')) {
+                    return response.json();
+                }
+                
+                if (response.ok || response.redirected) {
+                    return { status: true };
+                }
+                
+                throw new Error('Network response was not ok');
+            })
+            .then(data => {
+                if (data.status || data.success || data === true) {
+                    handleSuccessfulDelete(postId);
+                } else {
+                    throw new Error(data.message || 'Failed to delete post');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                
+                if (postElement) {
+                    postElement.style.opacity = '1';
+                }
+                
+                toast('❌ ' + (error.message || 'Failed to delete post'));
+                
+                if (deleteBtn) {
+                    deleteBtn.disabled = false;
+                    deleteBtn.innerHTML = 'Delete';
+                }
+            });
+        }
+
+        function handleSuccessfulDelete(postId) {
+            const postElement = document.querySelector(`.post-item[data-post-id="${postId}"]`);
+            if (postElement) {
+                postElement.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+                postElement.style.opacity = '0';
+                postElement.style.transform = 'scale(0.9)';
+                
+                setTimeout(() => {
+                    postElement.remove();
+                    updatePostCount();
+                    checkEmptyPosts();
+                }, 300);
+            }
+            
+            closeDeleteModal();
+            
+            toast('✅ Post deleted successfully');
+        }
+
+        function updatePostCount() {
+            const postCountElement = document.querySelector('.stat-value');
+            if (postCountElement) {
+                const currentCount = parseInt(postCountElement.textContent) || 0;
+                postCountElement.textContent = Math.max(0, currentCount - 1);
+            }
+        }
+
+        function checkEmptyPosts() {
+            const postsList = document.querySelector('.posts-list');
+            if (postsList && postsList.children.length === 0) {
+                postsList.innerHTML = `
+                    <div class="empty-posts">
+                        <i class="fas fa-images"></i>
+                        <p>No posts yet. Create your first post!</p>
+                    </div>
+                `;
+            }
+        }
+
+        // ============================================
+        // POST GALLERY FUNCTIONALITY
+        // ============================================
         function initializeModalHandlers() {
-            // Handle modal hidden event to ensure cleanup
             const modalEl = document.getElementById('postImagesModal');
             if (modalEl) {
                 modalEl.addEventListener('hidden.bs.modal', function() {
@@ -2457,7 +2258,6 @@ function checkEmptyPosts() {
                 });
             }
 
-            // Handle modal close button
             const closeBtn = document.querySelector('#postImagesModal .btn-close');
             if (closeBtn) {
                 closeBtn.addEventListener('click', function(e) {
@@ -2466,7 +2266,6 @@ function checkEmptyPosts() {
                 });
             }
 
-            // Handle modal footer close button
             const footerCloseBtn = document.querySelector('#postImagesModal .modal-footer .btn-light');
             if (footerCloseBtn) {
                 footerCloseBtn.addEventListener('click', function(e) {
@@ -2475,7 +2274,6 @@ function checkEmptyPosts() {
                 });
             }
 
-            // Handle escape key
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape' && currentModal) {
                     hideModal();
@@ -2484,16 +2282,13 @@ function checkEmptyPosts() {
         }
 
         function cleanupModal() {
-            // Remove any lingering modal backdrops
             const backdrops = document.querySelectorAll('.modal-backdrop');
             backdrops.forEach(backdrop => backdrop.remove());
 
-            // Reset body classes and styles
             document.body.classList.remove('modal-open');
             document.body.style.overflow = '';
             document.body.style.paddingRight = '';
 
-            // Reset modal instance
             if (currentModal) {
                 currentModal = null;
             }
@@ -2503,7 +2298,6 @@ function checkEmptyPosts() {
             if (currentModal) {
                 currentModal.hide();
             } else {
-                // Fallback cleanup if modal instance is lost
                 cleanupModal();
                 const modalEl = document.getElementById('postImagesModal');
                 if (modalEl) {
@@ -2516,12 +2310,10 @@ function checkEmptyPosts() {
         function showModal() {
             const modalEl = document.getElementById('postImagesModal');
 
-            // Dispose existing modal instance if any
             if (currentModal) {
                 currentModal.dispose();
             }
 
-            // Create new modal instance
             currentModal = new bootstrap.Modal(modalEl, {
                 backdrop: 'static',
                 keyboard: true
@@ -2530,14 +2322,14 @@ function checkEmptyPosts() {
             currentModal.show();
         }
 
-        function openPostGallery(postId) {
+        window.openPostGallery = function(postId) {
             if (!postId) return;
 
             currentPostId = postId;
 
-            // Show loading state
             const container = document.getElementById('postImagesContainer');
-            container.innerHTML = '<div class="col-12 text-center py-5"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div><p class="mt-2">Loading images...</p></div>';
+            container.innerHTML =
+                '<div class="col-12 text-center py-5"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div><p class="mt-2">Loading images...</p></div>';
 
             fetch(`/post/${postId}/images`, {
                     headers: {
@@ -2561,7 +2353,8 @@ function checkEmptyPosts() {
                 })
                 .catch(err => {
                     console.error('Error loading post images:', err);
-                    container.innerHTML = '<div class="col-12 text-center py-5"><i class="fas fa-exclamation-triangle fa-3x text-danger mb-3"></i><p>Failed to load images. Please try again.</p></div>';
+                    container.innerHTML =
+                        '<div class="col-12 text-center py-5"><i class="fas fa-exclamation-triangle fa-3x text-danger mb-3"></i><p>Failed to load images. Please try again.</p></div>';
                     toast('❌ ' + err.message);
                 });
         }
@@ -2571,7 +2364,8 @@ function checkEmptyPosts() {
             container.innerHTML = '';
 
             if (!images || images.length === 0) {
-                container.innerHTML = '<div class="col-12 text-center py-5"><i class="fas fa-images fa-3x text-muted mb-3"></i><p>No images in this post</p></div>';
+                container.innerHTML =
+                    '<div class="col-12 text-center py-5"><i class="fas fa-images fa-3x text-muted mb-3"></i><p>No images in this post</p></div>';
                 return;
             }
 
@@ -2580,24 +2374,21 @@ function checkEmptyPosts() {
                 col.className = 'col-md-4 col-sm-6 mb-3';
 
                 col.innerHTML = `
-            <div class="position-relative image-card">
-
-                <a data-fancybox="post-gallery" href="${image.url}">
-                    <img src="${image.url}" 
-                         class="img-fluid rounded shadow-sm"
-                         style="width:100%; height:150px; object-fit:cover; cursor:pointer"
-                         alt="Post image">
-                </a>
-
-                <div class="position-absolute top-0 end-0 m-2">
-                    <button class="btn btn-sm btn-danger rounded-circle"
-                            onclick="deletePostImage(${image.id}, event)">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </div>
-
-            </div>
-        `;
+                    <div class="position-relative image-card">
+                        <a data-fancybox="post-gallery" href="${image.url}">
+                            <img src="${image.url}"
+                                 class="img-fluid rounded shadow-sm"
+                                 style="width:100%; height:150px; object-fit:cover; cursor:pointer"
+                                 alt="Post image">
+                        </a>
+                        <div class="position-absolute top-0 end-0 m-2">
+                            <button class="btn btn-sm btn-danger rounded-circle"
+                                    onclick="deletePostImage(${image.id}, event)">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
 
                 container.appendChild(col);
             });
@@ -2605,14 +2396,12 @@ function checkEmptyPosts() {
             Fancybox.bind("[data-fancybox='post-gallery']", {});
         }
 
-        // Handle adding new images
         document.getElementById('modalImageInput')?.addEventListener('change', function() {
             if (!this.files.length || !currentPostId) {
                 toast('❌ No post selected or no files chosen');
                 return;
             }
 
-            // Validate file types
             const validTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
             const files = Array.from(this.files);
             const invalidFiles = files.filter(file => !validTypes.includes(file.type));
@@ -2623,8 +2412,8 @@ function checkEmptyPosts() {
                 return;
             }
 
-            // Show uploading state
-            const uploadBtn = document.querySelector('[onclick="document.getElementById(\'modalImageInput\').click()"]');
+            const uploadBtn = document.querySelector(
+                '[onclick="document.getElementById(\'modalImageInput\').click()"]');
             const originalText = uploadBtn.innerHTML;
             uploadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading...';
             uploadBtn.disabled = true;
@@ -2653,7 +2442,6 @@ function checkEmptyPosts() {
                 .then(data => {
                     if (data.status) {
                         toast('✅ Images added successfully');
-                        // Refresh the gallery
                         openPostGallery(currentPostId);
                     } else {
                         throw new Error(data.message || 'Upload failed');
@@ -2664,14 +2452,12 @@ function checkEmptyPosts() {
                     toast('❌ ' + err.message);
                 })
                 .finally(() => {
-                    // Reset upload button
                     uploadBtn.innerHTML = originalText;
                     uploadBtn.disabled = false;
                     this.value = '';
                 });
         });
 
-        // Delete post image
         window.deletePostImage = function(imageId, event) {
             if (event) {
                 event.stopPropagation();
@@ -2681,7 +2467,6 @@ function checkEmptyPosts() {
                 return;
             }
 
-            // Find and disable the delete button to prevent double clicks
             const deleteBtn = event?.target?.closest('button');
             if (deleteBtn) {
                 deleteBtn.disabled = true;
@@ -2708,7 +2493,6 @@ function checkEmptyPosts() {
                 .then(data => {
                     if (data.status) {
                         toast('✅ Image deleted successfully');
-                        // Refresh the gallery
                         openPostGallery(currentPostId);
                     } else {
                         throw new Error(data.message || 'Delete failed');
@@ -2717,7 +2501,6 @@ function checkEmptyPosts() {
                 .catch(err => {
                     console.error('Error deleting image:', err);
                     toast('❌ ' + err.message);
-                    // Re-enable the delete button if there's an error
                     if (deleteBtn) {
                         deleteBtn.disabled = false;
                         deleteBtn.innerHTML = '<i class="fas fa-trash"></i>';
@@ -2725,9 +2508,442 @@ function checkEmptyPosts() {
                 });
         }
 
-        // Enhanced toast function
+        // ============================================
+        // VIEW ORIGINAL IMAGES
+        // ============================================
+        window.openOriginalCoverImage = function() {
+            const coverContainer = document.getElementById('coverImageContainer');
+            const originalSrc = coverContainer.dataset.original;
+            
+            if (originalSrc && originalSrc !== '') {
+                Fancybox.show([{
+                    src: originalSrc,
+                    type: 'image',
+                    caption: '{{ Auth::user()->name }} - Cover Image'
+                }]);
+            } else {
+                const bgImage = coverContainer.style.backgroundImage;
+                const url = bgImage.replace(/^url\(['"](.+)['"]\)/, '$1');
+                Fancybox.show([{
+                    src: url,
+                    type: 'image',
+                    caption: '{{ Auth::user()->name }} - Cover Image'
+                }]);
+            }
+        }
+
+        document.getElementById('profileAvatar').addEventListener('click', function(e) {
+            if (e.target.classList.contains('profile-edit-icon') || e.target.closest('.profile-edit-icon')) {
+                return;
+            }
+
+            const originalSrc = this.dataset.original;
+
+            if (originalSrc && originalSrc !== '') {
+                Fancybox.show([{
+                    src: originalSrc,
+                    type: 'image',
+                    caption: '{{ Auth::user()->name }} - Profile Picture'
+                }]);
+            } else {
+                Fancybox.show([{
+                    src: this.src,
+                    type: 'image',
+                    caption: '{{ Auth::user()->name }} - Profile Picture'
+                }]);
+            }
+        });
+
+        // ============================================
+        // COVER IMAGE CROPPING
+        // ============================================
+        let coverCropper = null;
+        let coverCropModal = null;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const modalElement = document.getElementById('coverCropModal');
+            coverCropModal = new bootstrap.Modal(modalElement);
+
+            modalElement.addEventListener('hidden.bs.modal', function() {
+                if (coverCropper) {
+                    coverCropper.destroy();
+                    coverCropper = null;
+                }
+                document.getElementById('coverInput').value = '';
+            });
+        });
+
+        window.setCoverAspectRatio = function(ratio) {
+            if (coverCropper) {
+                coverCropper.setAspectRatio(ratio);
+
+                document.querySelectorAll('.aspect-ratio-controls .btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+
+                const buttons = document.querySelectorAll('.aspect-ratio-controls .btn');
+                if (isNaN(ratio)) {
+                    buttons.forEach(btn => {
+                        if (btn.textContent.trim() === 'Free') {
+                            btn.classList.add('active');
+                        }
+                    });
+                } else {
+                    buttons.forEach(btn => {
+                        const btnRatio = btn.getAttribute('onclick')?.match(/[\d.]+/g);
+                        if (btnRatio && Math.abs(eval(btnRatio.join('/')) - ratio) < 0.01) {
+                            btn.classList.add('active');
+                        }
+                    });
+                }
+            }
+        };
+
+        document.getElementById('coverInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            if (!file.type.match('image.*')) {
+                toast('❌ Please select an image file');
+                this.value = '';
+                return;
+            }
+
+            if (file.size > 5 * 1024 * 1024) {
+                toast('❌ Image size should be less than 5MB');
+                this.value = '';
+                return;
+            }
+
+            const reader = new FileReader();
+
+            reader.onload = function(event) {
+                const cropImage = document.getElementById('coverCropImage');
+                cropImage.src = event.target.result;
+
+                coverCropModal.show();
+
+                setTimeout(() => {
+                    if (coverCropper) {
+                        coverCropper.destroy();
+                    }
+
+                    coverCropper = new Cropper(cropImage, {
+                        aspectRatio: 16 / 5,
+                        viewMode: 1,
+                        dragMode: 'move',
+                        cropBoxMovable: true,
+                        cropBoxResizable: true,
+                        guides: true,
+                        center: true,
+                        highlight: false,
+                        background: false,
+                        autoCropArea: 1,
+                        zoomOnWheel: true,
+                        minContainerWidth: 600,
+                        minContainerHeight: 400,
+                        ready: function() {
+                            const containerData = this.cropper.getContainerData();
+                            const cropBoxData = {
+                                left: 0,
+                                top: 0,
+                                width: containerData.width,
+                                height: containerData.width / (16/5)
+                            };
+                            if (cropBoxData.height < containerData.height) {
+                                cropBoxData.top = (containerData.height - cropBoxData.height) / 2;
+                            }
+                            this.cropper.setCropBoxData(cropBoxData);
+                        }
+                    });
+                }, 200);
+            };
+
+            reader.readAsDataURL(file);
+        });
+
+        document.getElementById('saveCoverBtn').addEventListener('click', function() {
+            if (!coverCropper) return;
+
+            const saveBtn = this;
+            const originalText = saveBtn.innerHTML;
+            saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Saving...';
+            saveBtn.disabled = true;
+
+            const canvas = coverCropper.getCroppedCanvas({
+                width: 1920,
+                height: 600,
+                imageSmoothingEnabled: true,
+                imageSmoothingQuality: 'high',
+            });
+
+            canvas.toBlob(function(blob) {
+                const formData = new FormData();
+                formData.append('cover_image', blob, 'cover-image.jpg');
+                formData.append('_token', csrf);
+
+                fetch("{{ route('profile.image.update') }}", {
+                        method: "POST",
+                        body: formData,
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    })
+                    .then(res => {
+                        if (!res.ok) {
+                            throw new Error('Upload failed');
+                        }
+                        return res.json();
+                    })
+                    .then(data => {
+                        if (data.status) {
+                            document.querySelector('.cover-image').style.backgroundImage =
+                                `url('${data.url}?t=${Date.now()}')`;
+
+                            toast('✅ Cover image updated successfully');
+
+                            coverCropModal.hide();
+
+                            document.getElementById('coverInput').value = '';
+                        } else {
+                            throw new Error(data.message || 'Upload failed');
+                        }
+                    })
+                    .catch(err => {
+                        console.error('Error uploading cover:', err);
+                        toast('❌ ' + err.message);
+                    })
+                    .finally(() => {
+                        saveBtn.innerHTML = originalText;
+                        saveBtn.disabled = false;
+                    });
+            }, 'image/jpeg', 0.95);
+        });
+
+        // ============================================
+        // PROFILE PICTURE CROPPING
+        // ============================================
+        let profileCropper = null;
+        let profileCropModal = null;
+        let selectedProfileSize = 512;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const modalElement = document.getElementById('profileCropModal');
+            profileCropModal = new bootstrap.Modal(modalElement);
+
+            modalElement.addEventListener('hidden.bs.modal', function() {
+                if (profileCropper) {
+                    profileCropper.destroy();
+                    profileCropper = null;
+                }
+                document.getElementById('profilePreview').style.display = 'none';
+                document.getElementById('profilePreviewSquare').style.display = 'none';
+                document.getElementById('profileInput').value = '';
+            });
+        });
+
+        window.setProfileSize = function(width, height, button) {
+            selectedProfileSize = width;
+            if (profileCropper) {
+                document.querySelectorAll('.size-presets .btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                button.classList.add('active');
+
+                toast(`ℹ️ Image will be saved as ${width}x${height} pixels`);
+            }
+        };
+
+        document.getElementById('profileInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            if (!file.type.match('image.*')) {
+                toast('❌ Please select an image file');
+                this.value = '';
+                return;
+            }
+
+            if (file.size > 5 * 1024 * 1024) {
+                toast('❌ Image size should be less than 5MB');
+                this.value = '';
+                return;
+            }
+
+            const reader = new FileReader();
+
+            reader.onload = function(event) {
+                const cropImage = document.getElementById('profileCropImage');
+                cropImage.src = event.target.result;
+
+                profileCropModal.show();
+
+                setTimeout(() => {
+                    if (profileCropper) {
+                        profileCropper.destroy();
+                    }
+
+                    profileCropper = new Cropper(cropImage, {
+                        aspectRatio: 1 / 1,
+                        viewMode: 1,
+                        dragMode: 'move',
+                        cropBoxMovable: true,
+                        cropBoxResizable: true,
+                        guides: true,
+                        center: true,
+                        highlight: false,
+                        background: false,
+                        autoCropArea: 1,
+                        zoomOnWheel: true,
+                        minContainerWidth: 300,
+                        minContainerHeight: 300,
+                        crop: function(event) {
+                            updateProfilePreview(event.detail);
+                        },
+                        ready: function() {
+                            const containerData = this.cropper.getContainerData();
+                            const size = Math.min(containerData.width, containerData.height);
+                            this.cropper.setCropBoxData({
+                                left: (containerData.width - size) / 2,
+                                top: (containerData.height - size) / 2,
+                                width: size,
+                                height: size
+                            });
+                        }
+                    });
+                }, 200);
+            };
+
+            reader.readAsDataURL(file);
+        });
+
+        function updateProfilePreview(data) {
+            if (!profileCropper) return;
+
+            const canvas = profileCropper.getCroppedCanvas({
+                width: 100,
+                height: 100,
+                imageSmoothingEnabled: true,
+                imageSmoothingQuality: 'high'
+            });
+
+            const previewImg = document.getElementById('profilePreview');
+            const previewSquareImg = document.getElementById('profilePreviewSquare');
+
+            previewImg.src = canvas.toDataURL('image/jpeg');
+            previewSquareImg.src = canvas.toDataURL('image/jpeg');
+
+            previewImg.style.display = 'block';
+            previewSquareImg.style.display = 'block';
+        }
+
+        document.getElementById('saveProfileBtn').addEventListener('click', function() {
+            if (!profileCropper) return;
+
+            const saveBtn = this;
+            const originalText = saveBtn.innerHTML;
+            saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Saving...';
+            saveBtn.disabled = true;
+
+            const canvas = profileCropper.getCroppedCanvas({
+                width: selectedProfileSize,
+                height: selectedProfileSize,
+                imageSmoothingEnabled: true,
+                imageSmoothingQuality: 'high',
+            });
+
+            canvas.toBlob(function(blob) {
+                const formData = new FormData();
+                formData.append('profile_image', blob, 'profile-image.jpg');
+                formData.append('_token', csrf);
+
+                fetch("{{ route('profile.image.update') }}", {
+                        method: "POST",
+                        body: formData,
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    })
+                    .then(res => {
+                        if (!res.ok) {
+                            throw new Error('Upload failed');
+                        }
+                        return res.json();
+                    })
+                    .then(data => {
+                        if (data.status) {
+                            const newImageUrl = `${data.url}?t=${Date.now()}`;
+                            document.getElementById('profileAvatar').src = newImageUrl;
+                            document.querySelector('.user-avatar').src = newImageUrl;
+                            document.getElementById('modalProfileAvatar').src = newImageUrl;
+
+                            toast('✅ Profile picture updated successfully');
+
+                            profileCropModal.hide();
+
+                            document.getElementById('profileInput').value = '';
+                        } else {
+                            throw new Error(data.message || 'Upload failed');
+                        }
+                    })
+                    .catch(err => {
+                        console.error('Error uploading profile image:', err);
+                        toast('❌ ' + err.message);
+                    })
+                    .finally(() => {
+                        saveBtn.innerHTML = originalText;
+                        saveBtn.disabled = false;
+                    });
+            }, 'image/jpeg', 0.95);
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (!profileCropper || !profileCropModal || !document.getElementById('profileCropModal').classList
+                .contains('show')) {
+                return;
+            }
+
+            switch (e.key) {
+                case '+':
+                case '=':
+                    e.preventDefault();
+                    profileCropper.zoom(0.1);
+                    break;
+                case '-':
+                    e.preventDefault();
+                    profileCropper.zoom(-0.1);
+                    break;
+                case 'ArrowLeft':
+                    e.preventDefault();
+                    profileCropper.move(-10, 0);
+                    break;
+                case 'ArrowRight':
+                    e.preventDefault();
+                    profileCropper.move(10, 0);
+                    break;
+                case 'ArrowUp':
+                    e.preventDefault();
+                    profileCropper.move(0, -10);
+                    break;
+                case 'ArrowDown':
+                    e.preventDefault();
+                    profileCropper.move(0, 10);
+                    break;
+                case 'r':
+                    e.preventDefault();
+                    profileCropper.reset();
+                    break;
+                case 'Enter':
+                    e.preventDefault();
+                    document.getElementById('saveProfileBtn').click();
+                    break;
+            }
+        });
+
+        // ============================================
+        // TOAST FUNCTION
+        // ============================================
         function toast(message, duration = 3000) {
-            // Check if toast container exists, if not create it
             let toastContainer = document.querySelector('.toast-container');
             if (!toastContainer) {
                 toastContainer = document.createElement('div');
@@ -2735,31 +2951,34 @@ function checkEmptyPosts() {
                 document.body.appendChild(toastContainer);
             }
 
-            // Create toast element
+            const isSuccess = message.includes('✅');
+            const isError = message.includes('❌');
+            const isInfo = message.includes('ℹ️');
+
             const toastEl = document.createElement('div');
             toastEl.className = 'toast show';
             toastEl.setAttribute('role', 'alert');
             toastEl.setAttribute('aria-live', 'assertive');
             toastEl.setAttribute('aria-atomic', 'true');
 
-            // Determine toast style based on message
-            const isSuccess = message.includes('✅');
-            const isError = message.includes('❌');
+            let bgClass = '';
+            if (isSuccess) bgClass = 'bg-success text-white';
+            else if (isError) bgClass = 'bg-danger text-white';
+            else if (isInfo) bgClass = 'bg-info text-white';
 
             toastEl.innerHTML = `
-            <div class="toast-header ${isSuccess ? 'bg-success text-white' : isError ? 'bg-danger text-white' : ''}">
-                <i class="fas ${isSuccess ? 'fa-check-circle' : isError ? 'fa-exclamation-circle' : 'fa-info-circle'} me-2"></i>
-                <strong class="me-auto">${isSuccess ? 'Success' : isError ? 'Error' : 'Info'}</strong>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
-            </div>
-            <div class="toast-body">
-                ${message}
-            </div>
-        `;
+                <div class="toast-header ${bgClass}">
+                    <i class="fas ${isSuccess ? 'fa-check-circle' : isError ? 'fa-exclamation-circle' : isInfo ? 'fa-info-circle' : 'fa-bell'} me-2"></i>
+                    <strong class="me-auto">${isSuccess ? 'Success' : isError ? 'Error' : isInfo ? 'Info' : 'Notification'}</strong>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body">
+                    ${message.replace(/[✅❌ℹ️]/g, '')}
+                </div>
+            `;
 
             toastContainer.appendChild(toastEl);
 
-            // Initialize Bootstrap toast
             const toast = new bootstrap.Toast(toastEl, {
                 animation: true,
                 autohide: true,
@@ -2768,18 +2987,46 @@ function checkEmptyPosts() {
 
             toast.show();
 
-            // Remove toast after it's hidden
             toastEl.addEventListener('hidden.bs.toast', function() {
                 this.remove();
             });
         }
 
-        // Expose necessary functions to global scope
-        window.openPostGallery = openPostGallery;
-        window.deletePostImage = deletePostImage;
         window.toast = toast;
+
+        // Smooth transitions
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', () => {
+                    card.style.transform = 'translateY(-4px)';
+                });
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'translateY(0)';
+                });
+            });
+
+            const buttons = document.querySelectorAll('.btn');
+            buttons.forEach(btn => {
+                btn.addEventListener('mousedown', () => {
+                    btn.style.transform = 'scale(0.98)';
+                });
+                btn.addEventListener('mouseup', () => {
+                    btn.style.transform = '';
+                });
+                btn.addEventListener('mouseleave', () => {
+                    btn.style.transform = '';
+                });
+            });
+        });
+
+        // Initialize Lightbox
+        lightbox.option({
+            'resizeDuration': 200,
+            'wrapAround': true,
+            'albumLabel': 'Image %1 of %2'
+        });
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script>
 </body>
 
 </html>

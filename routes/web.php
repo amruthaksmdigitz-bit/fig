@@ -166,7 +166,6 @@ Route::get('/profile/edit', [ProfileController::class, 'edit'])->middleware('aut
 Route::post('/profile/update', [ProfileController::class, 'update'])->middleware('auth')->name('profile.update');
 Route::post('/profile/gallery-upload', [ProfileController::class, 'ajaxGalleryUpload'])
     ->name('profile.gallery.upload');
-
 Route::get('/profile/gallery', [ProfileController::class, 'gallery'])->name('profile.gallery')->middleware('auth');
 Route::post('/profile/image-update', [ProfileController::class, 'ajaxImageUpdate'])->middleware('auth')
     ->name('profile.image.update');
