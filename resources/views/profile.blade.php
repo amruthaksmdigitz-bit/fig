@@ -315,27 +315,23 @@
             opacity: 1;
         }
 
-        /* Add these styles to your CSS */
-        /* Update these styles in your CSS */
+
+        /* Profile Header Responsive Fixes */
         .profile-info {
             padding: 2rem;
             position: relative;
             display: flex;
             align-items: center;
-            /* Changed from flex-end to center */
             gap: 2rem;
+            flex-wrap: wrap;
+            /* Added for mobile */
         }
 
         .profile-image-wrapper {
             flex-shrink: 0;
-            margin-bottom: 0;
-            /* Removed negative margin */
         }
 
         .profile-avatar {
-            position: relative;
-            top: auto;
-            left: auto;
             width: 120px;
             height: 120px;
             border-radius: var(--radius-lg);
@@ -346,8 +342,8 @@
 
         .profile-details {
             flex: 1;
-            margin-left: 0;
-            padding-bottom: 0;
+            min-width: 280px;
+            /* Prevents content from squishing too much */
         }
 
         .profile-name {
@@ -355,9 +351,9 @@
             font-weight: 600;
             color: var(--gray-900);
             margin-bottom: 0.5rem;
-            /* Reduced from 0.75rem */
         }
 
+        /* Profile meta with icons - make it wrap nicely */
         .profile-meta {
             display: flex;
             flex-wrap: wrap;
@@ -365,39 +361,32 @@
             gap: 1.5rem;
             color: var(--gray-600);
             margin-bottom: 1rem;
-            /* Reduced from 1.5rem */
             font-size: 0.875rem;
+        }
+
+        .profile-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .profile-meta-item i {
+            color: var(--primary-color);
+            width: 16px;
         }
 
         .profile-stats {
             display: flex;
             gap: 2rem;
             margin-bottom: 1rem;
-            /* Added margin bottom */
-        }
-
-        .profile-actions {
-            display: flex;
-            gap: 0.75rem;
-        }
-
-        /* Make sure the cover image and profile section work together */
-        .cover-image {
-            height: 200px;
-            background: linear-gradient(135deg, var(--primary-light), var(--primary-dark));
-            position: relative;
-            background-size: cover;
-            background-position: center;
-        }
-
-        .profile-avatar {
-            position: relative !important;
-            top: 0 !important;
-            left: 0 !important;
+            flex-wrap: wrap;
+            /* Added for mobile */
         }
 
         .stat {
             text-align: center;
+            min-width: 80px;
+            /* Ensures stats don't get too small */
         }
 
         .stat-value {
@@ -414,6 +403,293 @@
         .profile-actions {
             display: flex;
             gap: 0.75rem;
+            flex-wrap: wrap;
+            /* Added for mobile */
+        }
+
+        /* Mobile Responsive Breakpoints */
+        @media (max-width: 992px) {
+            .profile-info {
+                gap: 1.5rem;
+            }
+
+            .profile-avatar {
+                width: 100px;
+                height: 100px;
+            }
+
+            .profile-name {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .profile-info {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                padding: 1.5rem;
+            }
+
+            .profile-image-wrapper {
+                margin-bottom: 0.5rem;
+            }
+
+            .profile-avatar {
+                width: 120px;
+                height: 120px;
+            }
+
+            .profile-details {
+                width: 100%;
+                min-width: auto;
+            }
+
+            .profile-meta {
+                justify-content: center;
+                gap: 1rem;
+            }
+
+            .profile-meta-item {
+                justify-content: center;
+            }
+
+            .profile-stats {
+                justify-content: center;
+                gap: 1.5rem;
+            }
+
+            .profile-actions {
+                justify-content: center;
+            }
+
+            .btn {
+                flex: 1 1 auto;
+                min-width: 140px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .profile-avatar {
+                width: 100px;
+                height: 100px;
+            }
+
+            .profile-name {
+                font-size: 1.35rem;
+            }
+
+            .profile-meta {
+                flex-direction: column;
+                gap: 0.75rem;
+                align-items: flex-start;
+                width: 100%;
+            }
+
+            .profile-meta-item {
+                width: 100%;
+                justify-content: flex-start;
+            }
+
+            .profile-stats {
+                width: 100%;
+                justify-content: space-around;
+            }
+
+            .stat {
+                min-width: 60px;
+            }
+
+            .profile-actions {
+                width: 100%;
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+
+        /* Fix for very small screens */
+        @media (max-width: 360px) {
+            .profile-meta {
+                align-items: flex-start;
+            }
+
+            .profile-meta-item {
+                font-size: 0.8rem;
+            }
+
+            .stat-value {
+                font-size: 1rem;
+            }
+
+            .stat-label {
+                font-size: 0.75rem;
+            }
+        }
+
+        /* Improve post images responsiveness */
+        .post-images {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .post-images {
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            }
+        }
+
+        @media (max-width: 576px) {
+            .post-images {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Fix for content grid */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 992px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Fix for sidebar on mobile */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+                z-index: 1000;
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0 !important;
+            }
+
+            /* Add mobile menu toggle button */
+            .mobile-menu-toggle {
+                display: block;
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                background: var(--primary-color);
+                color: white;
+                border: none;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+                z-index: 1001;
+                cursor: pointer;
+            }
+        }
+
+        /* Hide mobile menu toggle on desktop */
+        .mobile-menu-toggle {
+            display: none;
+        }
+
+        /* Fix for header on mobile */
+        @media (max-width: 768px) {
+            .header {
+                padding: 1rem;
+            }
+
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+
+            .page-title h1 {
+                font-size: 1.25rem;
+            }
+
+            .page-title p {
+                font-size: 0.8rem;
+            }
+
+            .user-btn .user-info {
+                display: none;
+            }
+
+            .user-avatar {
+                width: 35px;
+                height: 35px;
+            }
+        }
+
+        /* Fix for cards on mobile */
+        @media (max-width: 576px) {
+            .card {
+                padding: 1rem;
+            }
+
+            .card-title {
+                font-size: 1rem;
+            }
+
+            .about-content {
+                font-size: 0.9rem;
+            }
+
+            .contact-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+
+            .contact-icon {
+                width: 35px;
+                height: 35px;
+            }
+
+            .contact-details h4 {
+                font-size: 0.8rem;
+            }
+
+            .contact-details p {
+                font-size: 0.8rem;
+            }
+        }
+
+        /* Fix for modal on mobile */
+        @media (max-width: 576px) {
+            .modal-dialog {
+                margin: 0.5rem;
+            }
+
+            .modal-body .row {
+                margin: 0 -0.25rem;
+            }
+
+            .modal-body .col-4 {
+                padding: 0 0.25rem;
+            }
+
+            .modal-body .btn {
+                padding: 1rem 0.5rem;
+            }
+
+            .modal-body .btn i {
+                font-size: 1.25rem;
+            }
+
+            .modal-body .btn span {
+                font-size: 0.7rem;
+            }
         }
 
         .btn {
@@ -725,45 +1001,60 @@
             transform: scale(1.1);
         }
 
+        /* Dropdown Menu - Updated for mobile */
         .user-dropdown {
             position: relative;
         }
 
         .dropdown-menu {
             position: absolute;
-            top: 100%;
+            top: calc(100% + 0.5rem);
             right: 0;
-            background: #fff;
-            min-width: 200px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            border-radius: 6px;
-            overflow: hidden;
-            display: none;
+            min-width: 220px;
+            background: white;
+            border-radius: var(--radius-md);
+            border: 1px solid rgba(208, 160, 79, 0.2);
+            box-shadow: var(--shadow-lg);
+            padding: 0.5rem;
             z-index: 1000;
-            padding: 0.5rem 0;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
         }
 
-        .user-dropdown:hover .dropdown-menu {
-            display: block;
+        .dropdown-menu.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
         }
 
         .dropdown-menu a,
         .dropdown-menu button {
-            display: block;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
             width: 100%;
-            padding: 10px 15px;
-            text-align: left;
+            padding: 0.75rem 1rem;
             border: none;
             background: none;
-            color: #333;
+            color: var(--gray-700);
             text-decoration: none;
             cursor: pointer;
             font-size: 0.875rem;
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
         }
 
         .dropdown-menu a:hover,
         .dropdown-menu button:hover {
-            background: rgba(208, 160, 79, 0.1);
+            background-color: rgba(208, 160, 79, 0.1);
+            color: var(--primary-color);
+        }
+
+        .dropdown-menu a i,
+        .dropdown-menu button i {
+            width: 18px;
             color: var(--primary-color);
         }
 
@@ -771,6 +1062,29 @@
             height: 1px;
             background-color: var(--gray-200);
             margin: 0.5rem 0;
+        }
+
+        /* Arrow rotation when open */
+        #dropdownArrow {
+            transition: transform 0.3s ease;
+        }
+
+        #dropdownArrow.rotated {
+            transform: rotate(180deg);
+        }
+
+        /* Mobile adjustments */
+        @media (max-width: 768px) {
+            .dropdown-menu {
+                position: fixed;
+                top: auto;
+                bottom: 80px;
+                right: 20px;
+                left: 20px;
+                width: auto;
+                max-width: 300px;
+                margin: 0 auto;
+            }
         }
 
         /* Responsive */
@@ -834,6 +1148,283 @@
                 display: none;
             }
         }
+
+        /* Mobile Menu Toggle Button - Make it visible on mobile */
+        .mobile-menu-toggle {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            box-shadow: 0 4px 15px rgba(208, 160, 79, 0.4);
+            z-index: 1001;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-menu-toggle:hover {
+            background: var(--primary-dark);
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(208, 160, 79, 0.5);
+        }
+
+        .mobile-menu-toggle:active {
+            transform: scale(0.95);
+        }
+
+        /* Show on mobile */
+        @media (max-width: 768px) {
+            .mobile-menu-toggle {
+                display: flex;
+            }
+        }
+
+        /* Sidebar overlay for mobile */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .sidebar-overlay.active {
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar-overlay.active {
+                display: block;
+            }
+        }
+
+        /* Post Three Dots Menu Styles */
+        .post-menu-container {
+            position: relative;
+        }
+
+        .post-menu-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6b7280;
+            transition: all 0.2s;
+        }
+
+        .post-menu-btn:hover {
+            background-color: #f3f4f6;
+            color: #dc2626;
+        }
+
+        .post-dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            min-width: 180px;
+            z-index: 1000;
+            margin-top: 8px;
+            overflow: hidden;
+            animation: slideDown 0.2s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.95rem;
+        }
+
+        .menu-item.delete-item {
+            color: #dc2626;
+        }
+
+        .menu-item.delete-item:hover {
+            background-color: #fef2f2;
+        }
+
+        .menu-item svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* Delete Confirmation Modal */
+        .delete-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .delete-modal.active {
+            display: flex;
+        }
+
+        .delete-modal-content {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            animation: scaleIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .delete-modal-icon {
+            width: 80px;
+            height: 80px;
+            background: #fee2e2;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            color: #dc2626;
+            font-size: 2.5rem;
+        }
+
+        .delete-modal-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 0.5rem;
+        }
+
+        .delete-modal-message {
+            color: #6b7280;
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .delete-modal-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .delete-modal-btn {
+            flex: 1;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.95rem;
+        }
+
+        .delete-modal-btn.cancel {
+            background: #f3f4f6;
+            color: #4b5563;
+        }
+
+        .delete-modal-btn.cancel:hover {
+            background: #e5e7eb;
+        }
+
+        .delete-modal-btn.delete {
+            background: #dc2626;
+            color: white;
+        }
+
+        .delete-modal-btn.delete:hover {
+            background: #b91c1c;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+        }
+
+        .delete-modal-btn.delete:disabled {
+            background: #fca5a5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Mobile responsiveness for modal */
+        @media (max-width: 640px) {
+            .delete-modal-content {
+                padding: 1.5rem;
+            }
+
+            .delete-modal-icon {
+                width: 60px;
+                height: 60px;
+                font-size: 2rem;
+            }
+
+            .delete-modal-title {
+                font-size: 1.25rem;
+            }
+
+            .delete-modal-actions {
+                flex-direction: column;
+            }
+        }
     </style>
 </head>
 
@@ -887,7 +1478,10 @@
             </div>
         </nav>
     </div>
-
+    <!-- Mobile Menu Toggle Button -->
+    <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+        <i class="fas fa-bars"></i>
+    </button>
     <!-- Main Content -->
     <div class="main-content">
 
@@ -909,7 +1503,7 @@
                 <div class="header-actions">
                     <div class="user-menu">
                         <div class="user-dropdown">
-                            <button class="user-btn">
+                            <button class="user-btn" onclick="toggleUserDropdown(event)" id="userMenuButton">
                                 <img src="{{ Auth::user()->profile_image ? asset(Auth::user()->profile_image) : 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->name) . '&background=D0A04F&color=fff' }}" class="user-avatar" alt="{{ Auth::user()->name }}">
 
                                 <div class="user-info">
@@ -917,10 +1511,10 @@
                                     <div class="user-role">{{ Auth::user()->profession ?? 'User' }}</div>
                                 </div>
 
-                                <i class="fas fa-chevron-down"></i>
+                                <i class="fas fa-chevron-down" id="dropdownArrow"></i>
                             </button>
 
-                            <div class="dropdown-menu">
+                            <div class="dropdown-menu" id="userDropdownMenu">
                                 <a href="{{ url('/') }}">
                                     <i class="fas fa-home"></i> Home
                                 </a>
@@ -1039,7 +1633,7 @@
                     </div>
 
                     <!-- My Posts Section (Under About) -->
-                    <!-- My Posts Section (Under About) -->
+                    <!-- My Posts Section -->
                     <div class="card">
                         <div class="card-header">
                             <h2 class="card-title">
@@ -1049,8 +1643,34 @@
 
                         <div class="posts-list">
                             @forelse($feeds as $feed)
-                            <div class="post-item" data-post-id="{{ $feed->id }}" style="cursor: pointer;">
-                                <h3 class="post-title" style="font-size: 1.35rem; margin-bottom: 1rem;">{{ $feed->title }}</h3>
+                            <div class="post-item" data-post-id="{{ $feed->id }}">
+                                <!-- Post Header with Three Dots Menu -->
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                                    <h3 class="post-title" style="font-size: 1.35rem; margin: 0;">{{ $feed->title }}</h3>
+
+                                    <!-- Three Dots Menu -->
+                                    <div class="post-menu-container" style="position: relative;">
+                                        <button class="post-menu-btn" onclick="togglePostMenu({{ $feed->id }}, event)" style="background: none; border: none; cursor: pointer; padding: 8px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #6b7280; transition: all 0.2s;">
+                                            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                                                <circle cx="10" cy="4" r="2" />
+                                                <circle cx="10" cy="10" r="2" />
+                                                <circle cx="10" cy="16" r="2" />
+                                            </svg>
+                                        </button>
+
+                                        <!-- Dropdown Menu -->
+                                        <div class="post-dropdown-menu" id="post-menu-{{ $feed->id }}" style="display: none; position: absolute; top: 100%; right: 0; background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); min-width: 160px; z-index: 100; margin-top: 5px; overflow: hidden;">
+                                            <div class="menu-item delete-item" onclick="confirmDeletePost({{ $feed->id }}, event)" style="display: flex; align-items: center; gap: 10px; padding: 12px 16px; cursor: pointer; transition: background-color 0.2s; color: #dc2626;">
+                                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2" />
+                                                    <line x1="10" y1="11" x2="10" y2="17" />
+                                                    <line x1="14" y1="11" x2="14" y2="17" />
+                                                </svg>
+                                                <span style="font-size: 0.9rem; font-weight: 500;">Delete Post</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
                                 @if($feed->images && $feed->images->count())
                                 <div class="post-images" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1rem; margin-bottom: 1rem;">
@@ -1280,7 +1900,42 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // User dropdown toggle
+        function toggleUserDropdown(event) {
+            event.stopPropagation();
+            const dropdown = document.getElementById('userDropdownMenu');
+            const arrow = document.getElementById('dropdownArrow');
 
+            dropdown.classList.toggle('show');
+            arrow.classList.toggle('rotated');
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const dropdown = document.getElementById('userDropdownMenu');
+            const button = document.getElementById('userMenuButton');
+
+            if (!button.contains(event.target) && !dropdown.contains(event.target)) {
+                dropdown.classList.remove('show');
+                document.getElementById('dropdownArrow').classList.remove('rotated');
+            }
+        });
+
+        // Close dropdown on escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                const dropdown = document.getElementById('userDropdownMenu');
+                dropdown.classList.remove('show');
+                document.getElementById('dropdownArrow').classList.remove('rotated');
+            }
+        });
+
+        // Prevent dropdown from closing when clicking inside it
+        document.getElementById('userDropdownMenu')?.addEventListener('click', function(event) {
+            event.stopPropagation();
+        });
+    </script>
     <script>
         const csrf = '{{ csrf_token() }}';
 
@@ -1470,6 +2125,300 @@
 
             return false;
         }
+    </script>
+    
+    <script>
+        // Post menu functions
+function togglePostMenu(postId, event) {
+    event.stopPropagation();
+    
+    // Close all other menus
+    document.querySelectorAll('[id^="post-menu-"]').forEach(menu => {
+        if (menu.id !== `post-menu-${postId}`) {
+            menu.style.display = 'none';
+        }
+    });
+    
+    // Toggle current menu
+    const menu = document.getElementById(`post-menu-${postId}`);
+    menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+}
+
+// Close post menus when clicking outside
+document.addEventListener('click', function(event) {
+    if (!event.target.closest('.post-menu-container')) {
+        document.querySelectorAll('[id^="post-menu-"]').forEach(menu => {
+            menu.style.display = 'none';
+        });
+    }
+});
+
+// Confirm delete post
+function confirmDeletePost(postId, event) {
+    event.stopPropagation();
+    
+    // Close the menu
+    document.getElementById(`post-menu-${postId}`).style.display = 'none';
+    
+    // Show delete confirmation modal
+    showDeleteModal(postId);
+}
+
+// Show delete confirmation modal
+// Show delete confirmation modal
+function showDeleteModal(postId) {
+    // Remove existing modal if any
+    const existingModal = document.querySelector('.delete-modal');
+    if (existingModal) {
+        existingModal.remove();
+    }
+    
+    // Create modal
+    const modal = document.createElement('div');
+    modal.className = 'delete-modal active';
+    modal.innerHTML = `
+        <div class="delete-modal-content">
+            <div class="delete-modal-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <h3 class="delete-modal-title">Delete Post?</h3>
+            <p class="delete-modal-message">This action cannot be undone. The post and all its images will be permanently deleted.</p>
+            <div class="delete-modal-actions">
+                <button class="delete-modal-btn cancel" onclick="closeDeleteModal()">Cancel</button>
+                <button class="delete-modal-btn delete" onclick="deletePost(${postId})" id="deletePostBtn">Delete</button>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+}
+
+// Close delete modal
+function closeDeleteModal() {
+    const modal = document.querySelector('.delete-modal');
+    if (modal) {
+        modal.remove();
+    }
+}
+
+// Delete post function
+function deletePost(postId) {
+    const deleteBtn = document.getElementById('deletePostBtn');
+    if (deleteBtn) {
+        deleteBtn.disabled = true;
+        deleteBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Deleting...';
+    }
+    
+    // Create form data for method spoofing
+    const formData = new FormData();
+    formData.append('_token', csrf);
+    formData.append('_method', 'DELETE');
+    
+    // Show loading state on the post
+    const postElement = document.querySelector(`.post-item[data-post-id="${postId}"]`);
+    if (postElement) {
+        postElement.style.opacity = '0.5';
+    }
+    
+    fetch(`/feeds/${postId}`, {
+        method: 'POST', // Using POST with _method=DELETE
+        headers: {
+            'X-CSRF-TOKEN': csrf,
+            'X-Requested-With': 'XMLHttpRequest',
+            'Accept': 'application/json'
+        },
+        body: formData
+    })
+    .then(response => {
+        // Check if response is JSON
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+            return response.json();
+        }
+        
+        // If not JSON but redirect/ok, assume success
+        if (response.ok || response.redirected) {
+            return { status: true };
+        }
+        
+        throw new Error('Network response was not ok');
+    })
+    .then(data => {
+        if (data.status || data.success || data === true) {
+            // Success - remove post from DOM
+            handleSuccessfulDelete(postId);
+        } else {
+            throw new Error(data.message || 'Failed to delete post');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        
+        // Revert loading state
+        if (postElement) {
+            postElement.style.opacity = '1';
+        }
+        
+        // Show error toast
+        if (typeof toast === 'function') {
+            toast('❌ ' + (error.message || 'Failed to delete post'));
+        } else {
+            alert('Failed to delete post. Please try again.');
+        }
+        
+        // Reset delete button if it exists
+        if (deleteBtn) {
+            deleteBtn.disabled = false;
+            deleteBtn.innerHTML = 'Delete';
+        }
+    });
+}
+
+// Helper function to handle successful deletion
+function handleSuccessfulDelete(postId) {
+    // Remove post from DOM
+    const postElement = document.querySelector(`.post-item[data-post-id="${postId}"]`);
+    if (postElement) {
+        // Add fade out animation
+        postElement.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+        postElement.style.opacity = '0';
+        postElement.style.transform = 'scale(0.9)';
+        
+        // Remove after animation
+        setTimeout(() => {
+            postElement.remove();
+            
+            // Update post count in stats
+            updatePostCount();
+            
+            // Check if no posts left
+            checkEmptyPosts();
+        }, 300);
+    }
+    
+    // Close modal
+    closeDeleteModal();
+    
+    // Show success toast
+    if (typeof toast === 'function') {
+        toast('✅ Post deleted successfully');
+    }
+}
+
+// Update post count in stats
+function updatePostCount() {
+    const postCountElement = document.querySelector('.stat-value');
+    if (postCountElement) {
+        const currentCount = parseInt(postCountElement.textContent) || 0;
+        postCountElement.textContent = Math.max(0, currentCount - 1);
+    }
+}
+
+// Check if no posts left
+function checkEmptyPosts() {
+    const postsList = document.querySelector('.posts-list');
+    if (postsList && postsList.children.length === 0) {
+        postsList.innerHTML = `
+            <div class="empty-posts" style="text-align: center; padding: 3rem 1rem;">
+                <i class="fas fa-images" style="font-size: 3rem; color: #dee2e6; margin-bottom: 1rem;"></i>
+                <p style="font-size: 1.1rem; color: #6c757d;">No posts yet. Create your first post!</p>
+            </div>
+        `;
+    }
+}
+    </script>
+
+    <script>
+        // Mobile menu functionality
+        function toggleMobileMenu() {
+            const sidebar = document.querySelector('.sidebar');
+            const toggleBtn = document.querySelector('.mobile-menu-toggle i');
+            const overlay = createOverlay();
+
+            sidebar.classList.toggle('active');
+
+            if (sidebar.classList.contains('active')) {
+                toggleBtn.classList.remove('fa-bars');
+                toggleBtn.classList.add('fa-times');
+                document.body.style.overflow = 'hidden'; // Prevent background scrolling
+                overlay.classList.add('active');
+            } else {
+                toggleBtn.classList.remove('fa-times');
+                toggleBtn.classList.add('fa-bars');
+                document.body.style.overflow = '';
+                overlay.classList.remove('active');
+            }
+        }
+
+        // Create overlay if it doesn't exist
+        function createOverlay() {
+            let overlay = document.querySelector('.sidebar-overlay');
+            if (!overlay) {
+                overlay = document.createElement('div');
+                overlay.className = 'sidebar-overlay';
+                document.body.appendChild(overlay);
+
+                // Close sidebar when clicking overlay
+                overlay.addEventListener('click', function() {
+                    closeMobileMenu();
+                });
+            }
+            return overlay;
+        }
+
+        function closeMobileMenu() {
+            const sidebar = document.querySelector('.sidebar');
+            const toggleBtn = document.querySelector('.mobile-menu-toggle i');
+            const overlay = document.querySelector('.sidebar-overlay');
+
+            sidebar.classList.remove('active');
+            if (toggleBtn) {
+                toggleBtn.classList.remove('fa-times');
+                toggleBtn.classList.add('fa-bars');
+            }
+            document.body.style.overflow = '';
+            if (overlay) {
+                overlay.classList.remove('active');
+            }
+        }
+
+        // Close mobile menu when clicking a nav link (optional - good for single page apps)
+        document.addEventListener('DOMContentLoaded', function() {
+            const navLinks = document.querySelectorAll('.sidebar .nav-link');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    if (window.innerWidth <= 768) {
+                        closeMobileMenu();
+                    }
+                });
+            });
+        });
+
+        // Handle window resize
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768) {
+                const sidebar = document.querySelector('.sidebar');
+                const toggleBtn = document.querySelector('.mobile-menu-toggle i');
+                const overlay = document.querySelector('.sidebar-overlay');
+
+                sidebar.classList.remove('active');
+                if (toggleBtn) {
+                    toggleBtn.classList.remove('fa-times');
+                    toggleBtn.classList.add('fa-bars');
+                }
+                document.body.style.overflow = '';
+                if (overlay) {
+                    overlay.classList.remove('active');
+                }
+            }
+        });
+
+        // Close mobile menu when pressing Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && window.innerWidth <= 768) {
+                closeMobileMenu();
+            }
+        });
     </script>
     <script>
         // Post images functionality

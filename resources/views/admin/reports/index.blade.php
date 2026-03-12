@@ -186,7 +186,7 @@
 
                                 @if($report->feed)
                                 {{-- <!-- Hide Post Form -->
-                                <form action="{{ url('admin/reports/hide-post/' . $report->feed->id) }}"
+        <form action="{{ url('admin/reports/hide-post/' . $report->feed->id) }}"
                                 method="POST" class="d-inline">
                                 @csrf
                                 <button type="submit" class="btn btn-warning btn-sm" onclick="return confirm('Hide this post? It will be hidden from public view.')">
@@ -194,7 +194,6 @@
                                 </button>
                                 </form> --}}
 
-                                <!-- Delete Post Form -->
                                 <!-- Delete Post Form -->
                                 <form action="{{ url('admin/reports/delete-post/' . $report->feed->id) }}" method="POST" class="d-inline">
                                     @csrf
@@ -205,13 +204,42 @@
                                 </form>
                                 @endif
 
-                                <!-- Dismiss Report Form -->
-                                <form action="{{ url('admin/reports/dismiss/' . $report->id) }}" method="POST" class="d-inline">
-                                    @csrf
-                                    <button type="submit" class="btn btn-success btn-sm" onclick="return confirm('Dismiss this report? The report will be marked as dismissed.')">
-                                        <i class="bi bi-check"></i> Dismiss
-                                    </button>
-                                </form>
+                                <!-- Dismiss Report Button with Modal -->
+                                <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#dismissModal{{ $report->id }}">
+                                    <i class="bi bi-check"></i> Dismiss
+                                </button>
+
+                                <!-- Dismiss Modal -->
+                                <div class="modal fade" id="dismissModal{{ $report->id }}" tabindex="-1" aria-labelledby="dismissModalLabel{{ $report->id }}" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <form action="{{ url('admin/reports/dismiss/' . $report->id) }}" method="POST">
+                                                @csrf
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="dismissModalLabel{{ $report->id }}">Dismiss Report #{{ $report->id }}</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>Are you sure you want to dismiss this report?</p>
+                                                    <p><strong>Post:</strong> {{ $report->feed->title ?? 'Deleted Post' }}</p>
+                                                    <p><strong>Reporter:</strong> {{ $report->reporter->name ?? 'Unknown' }}</p>
+
+                                                    <div class="mb-3">
+                                                        <label for="admin_notes{{ $report->id }}" class="form-label">Admin Notes (Optional)</label>
+                                                        <textarea class="form-control" id="admin_notes{{ $report->id }}" name="admin_notes" rows="3" placeholder="Add any notes about why this report is being dismissed..."></textarea>
+                                                        <div class="form-text">These notes will be included in the email notifications.</div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                    <button type="submit" class="btn btn-success">
+                                                        <i class="bi bi-check"></i> Confirm Dismiss
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </td>
                     </tr>
