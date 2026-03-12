@@ -25,12 +25,14 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    
+
     <link rel="manifest" href="site.webmanifest">
     <link rel="shortcut icon" type="image/x-icon" href="favicon.png">
 
     <meta name="description" content="Furniture International Group - Global directory of furniture manufacturers, suppliers, exporters. Find quality furniture companies worldwide for business networking and sourcing.">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- Canonical URL -->
     <link rel="canonical" href="{{ url()->current() }}">
@@ -81,7 +83,8 @@
     <link rel="stylesheet" href="{{asset('assets/css/style.css')}}">
 
     <link rel="stylesheet" href="{{ asset('assets/css/blog.css') }}">
-	<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css"/>
     <!-- Custom CSS for dropdown -->
     <style>
         html,
@@ -235,6 +238,7 @@
             color: #0F3B26;
             margin-right: 8px;
         }
+
         .signup .btn-signup {
             display: flex;
             align-items: center;
@@ -264,6 +268,42 @@
 
         #navigation li {
             margin-left: 5px;
+        }
+
+      /* Profile Badge */
+.profile-badge {
+    list-style: none;
+}
+
+.profile-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+}
+
+/* Avatar */
+.user-avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    border: 2px solid #d0a04f;
+    object-fit: cover;
+}
+
+/* Username */
+.user-name {
+    font-size: 16px;
+    font-weight: 600;
+    text-transform: lowercase;
+}
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .profile-image {
+                width: 35px;
+                height: 35px;
+            }
         }
 
         /* Mobile Responsive */
@@ -349,7 +389,7 @@
                                                     <i class="ti-home mr-2"></i>Home
                                                 </a>
                                             </li>
-                                            
+
                                             <li class="{{ request()->is('about') ? 'active' : '' }}">
                                                 <a href="/about">
                                                     <i class="ti-info-alt mr-2"></i>About
@@ -382,50 +422,36 @@
 
                                             <!-- Auth Buttons -->
                                             @auth
-                                            <!-- User is logged in - show dropdown -->
-                                            <li class="dropdown user-menu">
-                                                <button class="dropdown-toggle" onclick="toggleUserDropdown()">
-                                                    <i class="ti-user mr-2"></i>
-                                                    {{ Str::limit(Auth::user()->name, 15) }}
-                                                    <i class="fas fa-chevron-down ml-2"></i>
-                                                </button>
-                                                <ul class="dropdown-menu" id="userDropdown">
-                                                    <li>
-                                                        <a class="dropdown-item" href="{{ route('profile') }}">
-                                                            <i class="ti-user mr-2"></i>Profile
-                                                        </a>
+                                            <li class="profile-badge">
+                                                <a href="{{ route('profile') }}" class="profile-wrapper">
 
-                                                    </li>
-                                                    @if(Auth::user()->is_admin)
-                                                    <li>
-                                                        <a class="dropdown-item" href="{{ route('admin.dashboard') }}">
-                                                            <i class="ti-dashboard mr-2"></i>Dashboard
-                                                        </a>
-                                                    </li>
-                                                    @endif
-                                                    <li>
-                                                        <hr class="dropdown-divider">
-                                                    </li>
-                                                    <li>
-                                                        <form method="POST" action="{{ route('logout') }}" id="logout-form">
-                                                            @csrf
-                                                            <button type="submit" class="dropdown-item logout-btn">
-                                                                <i class="ti-power-off mr-2"></i>Logout
-                                                            </button>
-                                                        </form>
-                                                    </li>
-                                                </ul>
-                                            </li>
-                                            @else
-                                            <!-- User is not logged in - show Sign In and Sign Up -->
-                                            <li class="login">
-                                                <a href="{{ route('login') }}">
-                                                    <i class="ti-shift-right mr-2"></i>Sign In
+                                                    @php
+                                                    $profileImage = Auth::user()->profile_image ?? 'default-avatar.png';
+                                                    @endphp
+
+                                                    <img
+                                                        src="{{ Auth::user()->profile_image 
+                ? asset(Auth::user()->profile_image) 
+                : 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->name) . '&background=D0A04F&color=fff' }}"
+                                                        class="user-avatar"
+                                                        alt="{{ Auth::user()->name }}">
+
+                                                    <span class="user-name">
+                                                        {{ Auth::user()->name }}
+                                                    </span>
+
                                                 </a>
                                             </li>
+                                            @else
+                                            <li class="login">
+                                                <a href="{{ route('login') }}">
+                                                    Sign In
+                                                </a>
+                                            </li>
+
                                             <li class="signup">
                                                 <a href="{{ route('signup') }}">
-                                                    <i class="ti-user mr-2"></i>Sign Up
+                                                    Sign Up
                                                 </a>
                                             </li>
                                             @endauth
@@ -538,9 +564,9 @@
                             <div class="col-xl-6 col-lg-6">
                                 <div class="footer-services">
                                     <ul>
-                                        <li>  <a href="https://mdigitz.com/" target="_blank" style="color: #ffffff !important;">Web Development  </a><span style="margin: 0 10px;">|</span></li>
-                                        <li>  <a href="https://mdigitz.com/" target="_blank" style="color: #ffffff !important;">Mobile Application Development </a> <span style="margin: 0 10px;">|</span></li>
-                                        <li>  <a href="https://mdigitz.com/" target="_blank" style="color: #ffffff !important;">Custom Software Development </a></li>
+                                        <li> <a href="https://mdigitz.com/" target="_blank" style="color: #ffffff !important;">Web Development </a><span style="margin: 0 10px;">|</span></li>
+                                        <li> <a href="https://mdigitz.com/" target="_blank" style="color: #ffffff !important;">Mobile Application Development </a> <span style="margin: 0 10px;">|</span></li>
+                                        <li> <a href="https://mdigitz.com/" target="_blank" style="color: #ffffff !important;">Custom Software Development </a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -549,7 +575,7 @@
                                 <div class="footer-copy-right">
                                     <p>
                                         <a href="https://mdigitz.com/" target="_blank" style="color: #ffffff !important;">
-                                            Powered By <img width="150px" src="/assets/img/logomdigitz.png"/>
+                                            Powered By <img width="150px" src="/assets/img/logomdigitz.png" />
                                         </a>
                                     </p>
                                 </div>
@@ -892,94 +918,94 @@
     <script src="{{ asset('assets/js/jquery.ajaxchimp.min.js') }}"></script>
     <script src="{{ asset('assets/js/plugins.js') }}"></script>
     <script src="{{ asset('assets/js/main.js') }}"></script>
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
-<script>
-$(document).ready(function() {
+    <script>
+        $(document).ready(function() {
 
-    $('#location').select2({
-        placeholder: "Search Location",
-        allowClear: true,
-        width: '100%',
-        minimumInputLength: 2,   // 👈 Important (wait for typing)
-        ajax: {
-            url: "{{ route('locations.search') }}",
-            dataType: 'json',
-            delay: 300, // small delay for keyup typing
-            data: function (params) {
-                return {
-                    search: params.term
-                };
-            },
-            processResults: function (data) {
-                return {
-                    results: $.map(data, function(item) {
+            $('#location').select2({
+                placeholder: "Search Location",
+                allowClear: true,
+                width: '100%',
+                minimumInputLength: 2, // 👈 Important (wait for typing)
+                ajax: {
+                    url: "{{ route('locations.search') }}",
+                    dataType: 'json',
+                    delay: 300, // small delay for keyup typing
+                    data: function(params) {
                         return {
-                            id: item.id,
-                            text: item.name
-                        }
-                    })
-                };
-            },
-            cache: true
-        }
-    });
- $('#homelocation').select2({
-        placeholder: "Search Location",
-        allowClear: true,
-        width: '100%',
-        minimumInputLength: 2,   // 👈 Important (wait for typing)
-        ajax: {
-            url: "{{ route('locations.search') }}",
-            dataType: 'json',
-            delay: 300, // small delay for keyup typing
-            data: function (params) {
-                return {
-                    search: params.term
-                };
-            },
-            processResults: function (data) {
-                return {
-                    results: $.map(data, function(item) {
+                            search: params.term
+                        };
+                    },
+                    processResults: function(data) {
                         return {
-                            id: item.id,
-                            text: item.name
-                        }
-                    })
-                };
-            },
-            cache: true
-        }
-    });
-});
-</script>
-<script>
-document.addEventListener("DOMContentLoaded", function () {
+                            results: $.map(data, function(item) {
+                                return {
+                                    id: item.id,
+                                    text: item.name
+                                }
+                            })
+                        };
+                    },
+                    cache: true
+                }
+            });
+            $('#homelocation').select2({
+                placeholder: "Search Location",
+                allowClear: true,
+                width: '100%',
+                minimumInputLength: 2, // 👈 Important (wait for typing)
+                ajax: {
+                    url: "{{ route('locations.search') }}",
+                    dataType: 'json',
+                    delay: 300, // small delay for keyup typing
+                    data: function(params) {
+                        return {
+                            search: params.term
+                        };
+                    },
+                    processResults: function(data) {
+                        return {
+                            results: $.map(data, function(item) {
+                                return {
+                                    id: item.id,
+                                    text: item.name
+                                }
+                            })
+                        };
+                    },
+                    cache: true
+                }
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
 
-    const currentUrl = window.location.href;
-    const navLinks = document.querySelectorAll("#navigation li");
+            const currentUrl = window.location.href;
+            const navLinks = document.querySelectorAll("#navigation li");
 
-    navLinks.forEach(function (li) {
+            navLinks.forEach(function(li) {
 
-        const link = li.querySelector("a");
-        if (!link) return;
+                const link = li.querySelector("a");
+                if (!link) return;
 
-        const linkUrl = link.href;
+                const linkUrl = link.href;
 
-        // Exact match OR current URL starts with link URL (for subpages)
-        if (
-            currentUrl === linkUrl ||
-            currentUrl.startsWith(linkUrl + "/")
-        ) {
-            li.classList.add("active");
-        } else {
-            li.classList.remove("active");
-        }
+                // Exact match OR current URL starts with link URL (for subpages)
+                if (
+                    currentUrl === linkUrl ||
+                    currentUrl.startsWith(linkUrl + "/")
+                ) {
+                    li.classList.add("active");
+                } else {
+                    li.classList.remove("active");
+                }
 
-    });
+            });
 
-});
-</script>
+        });
+    </script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -1172,6 +1198,7 @@ document.addEventListener("DOMContentLoaded", function () {
             document.documentElement.style.paddingBottom = '0';
         });
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script>
 </body>
 
 </html>

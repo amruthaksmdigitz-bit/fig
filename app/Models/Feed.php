@@ -20,4 +20,10 @@ class Feed extends Model
     {
         return $this->hasMany(FeedImage::class);
     }
+
+    // Add this to your Feed model
+    public function reports()
+    {
+        return $this->hasMany(Report::class);
+    }
 }

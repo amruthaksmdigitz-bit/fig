@@ -7,81 +7,80 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Feed;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ProfileUpdateMail;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
 
 class ProfileController extends Controller
 {
-
     public function show()
-    {
-        $user = Auth::user();
+{
+    $user = Auth::user();
 
-        $feeds = Feed::with('images')
-            ->where('user_id', $user->id)
-            ->latest()
-            ->get();
+    $feeds = Feed::with('images')
+                ->where('user_id',$user->id)
+                ->latest()
+                ->get();
 
-        return view('profile', compact('user','feeds'));
-    }
-
-
+    return view('profile', compact('user','feeds'));
+}
     public function publicProfile($username)
     {
-        $user = User::where('slug', $username)->firstOrFail();
-
+        $user = User::where('username', $username)->firstOrFail();
         return view('profile', compact('user'));
     }
 
+    
 
-    public function settings()
-    {
-        $user = auth()->user();
-
-        $locationName = null;
-
-        if ($user->location) {
-
+public function settings()
+{
+    $user = auth()->user();
+    
+    // Fix: Check if location exists and is an object/relationship
+    $locationName = null;
+    
+    // Check if location relation exists and is loaded
+    if ($user->location) {
+        // If it's a relationship, it should be an object
+        if (is_object($user->location)) {
+            $locationName = $user->location->name ?? null;
+        } else {
+            // If it's just an ID, you might need to fetch it manually
             $location = \App\Models\Location::find($user->location);
-
             $locationName = $location->name ?? null;
         }
+    }
+    return view('settings', [
+        'user' => $user,
+        'locationName' => $locationName,
+    ]);
+}
 
-        return view('settings', compact('user','locationName'));
+public function updatePassword(Request $request)
+{
+    $request->validate([
+        'current_password' => ['required'],
+        'password' => ['required', 'confirmed', 'min:8'],
+    ]);
+
+    if (!Hash::check($request->current_password, auth()->user()->password)) {
+        return back()->withErrors([
+            'current_password' => 'Current password is incorrect',
+        ]);
     }
 
+    auth()->user()->update([
+        'password' => Hash::make($request->password),
+    ]);
 
-    public function updatePassword(Request $request)
-    {
-
-        $request->validate([
-            'current_password' => ['required'],
-            'password' => ['required','confirmed','min:8'],
-        ]);
-
-        if (!Hash::check($request->current_password, auth()->user()->password)) {
-
-            return back()->withErrors([
-                'current_password' => 'Current password is incorrect',
-            ]);
-        }
-
-        auth()->user()->update([
-            'password' => Hash::make($request->password),
-        ]);
-
-        return redirect()->route('profile')
-            ->with('success','Password updated successfully');
-    }
-
-
-
-    /*
-    ==========================
-    GALLERY PAGE
-    ==========================
-    */
+    // ✅ redirect + success message
+    return redirect()
+        ->route('profile')
+        ->with('success', 'Password updated successfully');
+}
 
 public function gallery()
 {
@@ -103,11 +102,10 @@ public function gallery()
 public function ajaxGalleryUpload(Request $request)
 {
     $request->validate([
-        'gallery_images.*' => 'required|image|max:20480' // 20MB max
+        'gallery_images.*' => 'required|image|max:20480'
     ]);
 
     $user = Auth::user();
-
     $manager = new ImageManager(new Driver());
 
     $imageDir = public_path('uploads/user_images');
@@ -117,18 +115,60 @@ public function ajaxGalleryUpload(Request $request)
     if (!file_exists($thumbDir)) mkdir($thumbDir, 0755, true);
 
     foreach ($request->file('gallery_images') as $file) {
-        // Generate unique filename
-        $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+        $filename = time() . '_' . uniqid() . '.webp';
+        
+        // === PROCESS MAIN IMAGE (<100KB) ===
+        $image = $manager->read($file);
+        
+        // Resize if too large
+        if ($image->width() > 1200 || $image->height() > 1200) {
+            $image->scale(width: 1200);
+        }
+        
+        // Save main image with adaptive quality
+        $quality = 75;
+        $image->toWebp($quality);
+        $image->save($imageDir . '/' . $filename);
+        
+        // Check size and adjust if needed (simple one-time adjustment)
+        if (filesize($imageDir . '/' . $filename) > 100 * 1024) {
+            $image = $manager->read($file);
+            if ($image->width() > 1200 || $image->height() > 1200) {
+                $image->scale(width: 1200);
+            }
+            $image->toWebp(60);
+            $image->save($imageDir . '/' . $filename);
+        }
+        
+        // === CREATE THUMBNAIL (target 5-10KB) ===
+        // Read the saved main image
+        $thumbnail = $manager->read($imageDir . '/' . $filename);
+        
+        // Create thumbnail at 150x150 (good balance for 5-10KB WebP)
+        $thumbnail->cover(150, 150);
+        
+        // Quality 40-50 usually gives 5-10KB for 150px WebP images
+        $thumbnail->toWebp(45);
+        $thumbnail->save($thumbDir . '/' . $filename);
+        
+        // Optional: Verify and adjust if outside range
+        $thumbSize = filesize($thumbDir . '/' . $filename) / 1024;
+        
+        if ($thumbSize > 10) {
+            // Too large - reduce quality
+            $thumbnail = $manager->read($imageDir . '/' . $filename);
+            $thumbnail->cover(150, 150);
+            $thumbnail->toWebp(35);
+            $thumbnail->save($thumbDir . '/' . $filename);
+        } elseif ($thumbSize < 5) {
+            // Too small - increase quality slightly
+            $thumbnail = $manager->read($imageDir . '/' . $filename);
+            $thumbnail->cover(150, 150);
+            $thumbnail->toWebp(55);
+            $thumbnail->save($thumbDir . '/' . $filename);
+        }
 
-        // Save original
-        $file->move($imageDir, $filename);
-
-        // Create thumbnail (300x300)
-        $image = $manager->read($imageDir . '/' . $filename);
-        $image->cover(300, 300);
-        $image->save($thumbDir . '/' . $filename);
-
-        // Save both original and thumbnail in DB
+        // Save to database
         $user->multipleImages()->create([
             'image' => 'uploads/user_images/' . $filename,
             'thumbnail' => 'uploads/gallery_thumbnails/' . $filename,
@@ -137,10 +177,220 @@ public function ajaxGalleryUpload(Request $request)
 
     return response()->json([
         'status' => true,
-        'message' => 'Images uploaded successfully'
+        'message' => 'Images uploaded and compressed successfully'
     ]);
 }
 
+public function ajaxImageUpdate(Request $request)
+{
+    $user = auth()->user();
+    $manager = new ImageManager(new Driver());
+
+    $request->validate([
+        'profile_image' => 'nullable|image|max:2048',
+        'cover_image'   => 'nullable|image|max:4096',
+    ]);
+
+    // ============================================
+    // PROFILE IMAGE UPLOAD
+    // ============================================
+    if ($request->hasFile('profile_image')) {
+        $file = $request->file('profile_image');
+        $baseFilename = time() . '_profile_' . uniqid();
+        
+        // Delete old files
+        if ($user->profile_image && file_exists(public_path($user->profile_image))) {
+            unlink(public_path($user->profile_image));
+        }
+        if ($user->profile_thumbnail && file_exists(public_path($user->profile_thumbnail))) {
+            unlink(public_path($user->profile_thumbnail));
+        }
+
+        // Create directories if they don't exist
+        $profileDir = 'uploads/profiles';
+        $thumbDir = 'uploads/profile_thumbnails';
+        
+        if (!file_exists(public_path($profileDir))) {
+            mkdir(public_path($profileDir), 0755, true);
+        }
+        if (!file_exists(public_path($thumbDir))) {
+            mkdir(public_path($thumbDir), 0755, true);
+        }
+
+        // Read the image
+        $image = $manager->read($file);
+        
+        // Resize if too large (max 800px for profile)
+        if ($image->width() > 800 || $image->height() > 800) {
+            $image->scale(width: 800);
+        }
+        
+        // Save as WEBP for original (<100KB)
+        $originalQuality = 80;
+        $originalFilename = $baseFilename . '.webp';
+        $originalPath = $profileDir . '/' . $originalFilename;
+        
+        $image->toWebp($originalQuality);
+        $image->save(public_path($originalPath));
+        
+        // Check size and adjust if >100KB
+        $originalSize = filesize(public_path($originalPath)) / 1024;
+        
+        while ($originalSize > 100 && $originalQuality > 30) {
+            $originalQuality -= 10;
+            $image = $manager->read($file);
+            if ($image->width() > 800 || $image->height() > 800) {
+                $image->scale(width: 800);
+            }
+            $image->toWebp($originalQuality);
+            $image->save(public_path($originalPath));
+            $originalSize = filesize(public_path($originalPath)) / 1024;
+        }
+        
+        // Create THUMBNAIL (150x150, 5-10KB WEBP)
+        $thumbnail = $manager->read($file);
+        $thumbnail->cover(150, 150);
+        
+        $thumbQuality = 50;
+        $thumbFilename = $baseFilename . '_thumb.webp';
+        $thumbPath = $thumbDir . '/' . $thumbFilename;
+        
+        $thumbnail->toWebp($thumbQuality);
+        $thumbnail->save(public_path($thumbPath));
+        
+        // Adjust thumbnail size to 5-10KB
+        $thumbSize = filesize(public_path($thumbPath)) / 1024;
+        
+        // If too large (>10KB), reduce quality
+        while ($thumbSize > 10 && $thumbQuality > 20) {
+            $thumbQuality -= 5;
+            $thumbnail = $manager->read($file);
+            $thumbnail->cover(150, 150);
+            $thumbnail->toWebp($thumbQuality);
+            $thumbnail->save(public_path($thumbPath));
+            $thumbSize = filesize(public_path($thumbPath)) / 1024;
+        }
+        
+        // If too small (<5KB), increase quality slightly
+        while ($thumbSize < 5 && $thumbQuality < 80) {
+            $thumbQuality += 5;
+            $thumbnail = $manager->read($file);
+            $thumbnail->cover(150, 150);
+            $thumbnail->toWebp($thumbQuality);
+            $thumbnail->save(public_path($thumbPath));
+            $thumbSize = filesize(public_path($thumbPath)) / 1024;
+        }
+
+        // Save paths to database
+        $user->profile_image = $originalPath;
+        $user->profile_thumbnail = $thumbPath;
+        $user->save();
+
+        return response()->json([
+            'status' => true,
+            'url' => asset($thumbPath), // Return thumbnail for display
+            'original_url' => asset($originalPath), // Original for viewing
+            'message' => 'Profile image uploaded successfully'
+        ]);
+    }
+
+    // ============================================
+    // COVER IMAGE UPLOAD
+    // ============================================
+    if ($request->hasFile('cover_image')) {
+        $file = $request->file('cover_image');
+        $baseFilename = time() . '_cover_' . uniqid();
+        
+        // Delete old files
+        if ($user->cover_image && file_exists(public_path($user->cover_image))) {
+            unlink(public_path($user->cover_image));
+        }
+        if ($user->cover_thumbnail && file_exists(public_path($user->cover_thumbnail))) {
+            unlink(public_path($user->cover_thumbnail));
+        }
+
+        // Create directories if they don't exist
+        $coverDir = 'uploads/covers';
+        $thumbDir = 'uploads/cover_thumbnails';
+        
+        if (!file_exists(public_path($coverDir))) {
+            mkdir(public_path($coverDir), 0755, true);
+        }
+        if (!file_exists(public_path($thumbDir))) {
+            mkdir(public_path($thumbDir), 0755, true);
+        }
+
+        // Read the image
+        $image = $manager->read($file);
+        
+        // Resize if too wide (max 1920px width)
+        if ($image->width() > 1920) {
+            $image->scale(width: 1920);
+        }
+        
+        // Save as WEBP for original (<200KB)
+        $originalQuality = 80;
+        $originalFilename = $baseFilename . '.webp';
+        $originalPath = $coverDir . '/' . $originalFilename;
+        
+        $image->toWebp($originalQuality);
+        $image->save(public_path($originalPath));
+        
+        // Check size and adjust if >200KB
+        $originalSize = filesize(public_path($originalPath)) / 1024;
+        
+        while ($originalSize > 200 && $originalQuality > 30) {
+            $originalQuality -= 10;
+            $image = $manager->read($file);
+            if ($image->width() > 1920) {
+                $image->scale(width: 1920);
+            }
+            $image->toWebp($originalQuality);
+            $image->save(public_path($originalPath));
+            $originalSize = filesize(public_path($originalPath)) / 1024;
+        }
+        
+        // Create THUMBNAIL (600x200, <20KB WEBP)
+        $thumbnail = $manager->read($file);
+        $thumbnail->cover(600, 200);
+        
+        $thumbQuality = 70;
+        $thumbFilename = $baseFilename . '_thumb.webp';
+        $thumbPath = $thumbDir . '/' . $thumbFilename;
+        
+        $thumbnail->toWebp($thumbQuality);
+        $thumbnail->save(public_path($thumbPath));
+        
+        // Adjust thumbnail size to <20KB
+        $thumbSize = filesize(public_path($thumbPath)) / 1024;
+        
+        while ($thumbSize > 20 && $thumbQuality > 30) {
+            $thumbQuality -= 10;
+            $thumbnail = $manager->read($file);
+            $thumbnail->cover(600, 200);
+            $thumbnail->toWebp($thumbQuality);
+            $thumbnail->save(public_path($thumbPath));
+            $thumbSize = filesize(public_path($thumbPath)) / 1024;
+        }
+
+        // Save paths to database
+        $user->cover_image = $originalPath;
+        $user->cover_thumbnail = $thumbPath;
+        $user->save();
+
+        return response()->json([
+            'status' => true,
+            'url' => asset($thumbPath), // Return thumbnail for display
+            'original_url' => asset($originalPath), // Original for viewing
+            'message' => 'Cover image uploaded successfully'
+        ]);
+    }
+
+    return response()->json([
+        'status' => false,
+        'message' => 'No image file provided'
+    ]);
+}
     public function edit()
     {
         $user = Auth::user();
@@ -148,176 +398,12 @@ public function ajaxGalleryUpload(Request $request)
         $locationName = null;
 
         if ($user->location) {
-
             $locationName = DB::table('locations')
-                ->where('id',$user->location)
+                ->where('id', $user->location)
                 ->value('name');
         }
 
-        return view('profile_edit', compact('user','locationName'));
-    }
-
-
-
-    /*
-    ==========================
-    PROFILE UPDATE
-    ==========================
-    */
-
-    public function update(Request $request)
-    {
-
-        $user = Auth::user();
-
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'location_name' => 'nullable|string|max:255',
-            'description' => 'nullable|string',
-            'profile_image' => 'nullable|image|max:10480',
-            'cover_image' => 'nullable|image|max:40960',
-        ]);
-
-        $user->name = $validated['name'];
-
-
-        /*
-        LOCATION
-        */
-
-        if ($request->filled('location_name')) {
-
-            $locationId = DB::table('locations')
-                ->where('name', $request->location_name)
-                ->value('id');
-
-            if ($locationId) {
-
-                $user->location = $locationId;
-            }
-        }
-
-
-        $user->description = $validated['description'] ?? $user->description;
-
-
-        $manager = new ImageManager(new Driver());
-
-
-        /*
-        PROFILE IMAGE
-        */
-
-        if ($request->hasFile('profile_image')) {
-
-            if ($user->profile_image && file_exists(public_path($user->profile_image))) {
-
-                unlink(public_path($user->profile_image));
-            }
-
-            if ($user->profile_thumbnail && file_exists(public_path($user->profile_thumbnail))) {
-
-                unlink(public_path($user->profile_thumbnail));
-            }
-
-            $file = $request->file('profile_image');
-
-            $filename = time().'_profile_'.uniqid().'.'.$file->getClientOriginalExtension();
-
-            $profileDir = public_path('uploads/profiles');
-
-            if (!file_exists($profileDir)) {
-
-                mkdir($profileDir,0755,true);
-            }
-
-            $file->move($profileDir,$filename);
-
-            $user->profile_image = 'uploads/profiles/'.$filename;
-
-
-            /*
-            PROFILE THUMBNAIL
-            */
-
-            $thumbDir = public_path('uploads/profile_thumbnails');
-
-            if (!file_exists($thumbDir)) {
-
-                mkdir($thumbDir,0755,true);
-            }
-
-            $image = $manager->read($profileDir.'/'.$filename);
-
-            $image->cover(150,150);
-
-            $image->save($thumbDir.'/'.$filename);
-
-            $user->profile_thumbnail = 'uploads/profile_thumbnails/'.$filename;
-        }
-
-
-
-        /*
-        COVER IMAGE
-        */
-
-        if ($request->hasFile('cover_image')) {
-
-            if ($user->cover_image && file_exists(public_path($user->cover_image))) {
-
-                unlink(public_path($user->cover_image));
-            }
-
-            if ($user->cover_thumbnail && file_exists(public_path($user->cover_thumbnail))) {
-
-                unlink(public_path($user->cover_thumbnail));
-            }
-
-            $file = $request->file('cover_image');
-
-            $filename = time().'_cover_'.uniqid().'.'.$file->getClientOriginalExtension();
-
-            $coverDir = public_path('uploads/covers');
-
-            if (!file_exists($coverDir)) {
-
-                mkdir($coverDir,0755,true);
-            }
-
-            $file->move($coverDir,$filename);
-
-            $user->cover_image = 'uploads/covers/'.$filename;
-
-
-            /*
-            COVER THUMBNAIL
-            */
-
-            $thumbDir = public_path('uploads/cover_thumbnails');
-
-            if (!file_exists($thumbDir)) {
-
-                mkdir($thumbDir,0755,true);
-            }
-
-            $image = $manager->read($coverDir.'/'.$filename);
-
-            $image->cover(600,200);
-
-            $image->save($thumbDir.'/'.$filename);
-
-            $user->cover_thumbnail = 'uploads/cover_thumbnails/'.$filename;
-        }
-
-
-        $user->is_approved = 0;
-
-        $user->save();
-
-        return redirect()->route('profile')
-            ->with('success','Profile updated successfully!');
-
+        return view('profile_edit', compact('user', 'locationName'));
     }
 
 }

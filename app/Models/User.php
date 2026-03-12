@@ -104,4 +104,15 @@ class User extends Authenticatable
             return 'Never';
         }
     }
+
+    // Add this to your User model
+    public function reportsMade()
+    {
+        return $this->hasMany(Report::class, 'reporter_id');
+    }
+
+    public function reportsReceived()
+    {
+        return $this->hasMany(Report::class, 'reported_user_id');
+    }
 }
