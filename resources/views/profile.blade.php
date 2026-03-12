@@ -15,7 +15,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
 
     <!-- Lightbox for gallery -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css" />
@@ -63,6 +64,7 @@
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
         }
+
         .fancybox__container {
             z-index: 999999 !important;
         }
@@ -274,6 +276,35 @@
         .dropdown-item i {
             width: 16px;
             color: var(--primary-color);
+        }
+
+        .cover-edit-icon {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--primary-color);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-md);
+            cursor: pointer;
+            transition: var(--transition);
+            border: 2px solid white;
+            z-index: 10;
+        }
+
+        .cover-edit-icon:hover {
+            transform: scale(1.1);
+            background: var(--primary-dark);
+        }
+
+        .cover-image {
+            cursor: pointer;
+            position: relative;
         }
 
         /* Content Area */
@@ -666,6 +697,7 @@
             background-color: var(--gray-200);
             margin: 0.5rem 0;
         }
+
         .cover-crop-container {
             width: 100%;
             height: 400px;
@@ -746,7 +778,7 @@
             font-size: 14px;
         }
 
-        .cover-crop-container img:not([src=""]) + .cover-crop-container::before {
+        .cover-crop-container img:not([src=""])+.cover-crop-container::before {
             display: none;
         }
 
@@ -821,26 +853,26 @@
                 height: 420px !important;
             }
 
-            .cover-crop-container{
-                width:100%;
-                height:400px;
-                overflow:hidden;
-                background:#000;
+            .cover-crop-container {
+                width: 100%;
+                height: 400px;
+                overflow: hidden;
+                background: #000;
             }
 
-            .cover-crop-container img{
-                max-width:100%;
-                display:block;
+            .cover-crop-container img {
+                max-width: 100%;
+                display: block;
             }
 
             .cropper-view-box,
-            .cropper-face{
-                border-radius:12px;
+            .cropper-face {
+                border-radius: 12px;
             }
 
-            .cropper-crop-box{
-                width:100%!important;
-                height:100%!important;
+            .cropper-crop-box {
+                width: 100% !important;
+                height: 100% !important;
             }
         }
 
@@ -859,7 +891,7 @@
         }
 
         /* Custom cropper styles for profile */
-        .profile-crop-container + .cropper-container {
+        .profile-crop-container+.cropper-container {
             border-radius: 12px;
         }
 
@@ -927,7 +959,7 @@
 
         .size-presets .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         /* Preview section */
@@ -962,8 +994,13 @@
         }
 
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
         }
 
         /* Responsive design */
@@ -971,13 +1008,13 @@
             .profile-crop-container {
                 height: 250px;
             }
-           
+
             .crop-controls .btn {
                 width: 32px;
                 height: 32px;
                 font-size: 12px;
             }
-           
+
             .size-presets .btn {
                 font-size: 12px;
                 padding: 4px 8px;
@@ -1007,9 +1044,17 @@
 
         /* Success animation */
         @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                transform: scale(1);
+            }
         }
 
         .profile-avatar.updated {
@@ -1036,20 +1081,23 @@
                 </a>
             </div>
             <div class="nav-item">
-                <a href="{{ route('profile.edit') }}" class="nav-link {{ request()->routeIs('profile.edit') ? 'active' : '' }}">
+                <a href="{{ route('profile.edit') }}"
+                    class="nav-link {{ request()->routeIs('profile.edit') ? 'active' : '' }}">
                     <i class="fas fa-user-edit"></i>
                     <span>Edit Profile</span>
                 </a>
             </div>
             <!-- Gallery Menu Item -->
             <div class="nav-item">
-                <a href="{{ route('profile.gallery') }}" class="nav-link {{ request()->routeIs('profile.gallery') ? 'active' : '' }}">
+                <a href="{{ route('profile.gallery') }}"
+                    class="nav-link {{ request()->routeIs('profile.gallery') ? 'active' : '' }}">
                     <i class="fas fa-images"></i>
                     <span>Gallery</span>
                 </a>
             </div>
             <div class="nav-item">
-                <a href="{{ route('profile.settings') }}" class="nav-link {{ request()->routeIs('profile.settings') ? 'active' : '' }}">
+                <a href="{{ route('profile.settings') }}"
+                    class="nav-link {{ request()->routeIs('profile.settings') ? 'active' : '' }}">
                     <i class="fas fa-cog"></i>
                     <span>Settings</span>
                 </a>
@@ -1060,7 +1108,8 @@
             <div class="nav-item">
                 <form action="{{ route('logout') }}" method="POST">
                     @csrf
-                    <button type="submit" class="nav-link" style="width: 100%; text-align: left; background: none; border: none; cursor: pointer;">
+                    <button type="submit" class="nav-link"
+                        style="width: 100%; text-align: left; background: none; border: none; cursor: pointer;">
                         <i class="fas fa-sign-out-alt"></i>
                         <span>Logout</span>
                     </button>
@@ -1073,10 +1122,10 @@
     <div class="main-content">
 
         @if (session('success'))
-        <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
-            {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
+            <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
         @endif
 
         <!-- Header -->
@@ -1092,8 +1141,7 @@
                         <div class="user-dropdown">
                             <button class="user-btn">
                                 <img src="{{ Auth::user()->profile_image ? asset(Auth::user()->profile_image) : 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->name) . '&background=D0A04F&color=fff' }}"
-                                    class="user-avatar"
-                                    alt="{{ Auth::user()->name }}">
+                                    class="user-avatar" alt="{{ Auth::user()->name }}">
 
                                 <div class="user-info">
                                     <div class="user-name">{{ Auth::user()->name }}</div>
@@ -1137,11 +1185,18 @@
         <main class="content">
             <!-- Profile Header -->
             <div class="profile-header">
-                <div class="cover-image" style="background-image: url('{{ Auth::user()->cover_image ? asset(Auth::user()->cover_image) : 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80' }}')">
+                <div class="cover-image"
+                    style="background-image: url('{{ Auth::user()->cover_image ? asset(Auth::user()->cover_image) : 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80' }}'); cursor: pointer; position: relative;"
+                    id="coverImageContainer" onclick="openOriginalCoverImage()"
+                    data-original="{{ Auth::user()->cover_image ? asset(Auth::user()->cover_image) : '' }}">
+
                     <div class="cover-overlay">
-                        <button class="btn btn-outline" id="changeCoverBtn">
-                            <i class="fas fa-camera"></i> Change Cover
-                        </button>
+                        <!-- Edit Icon instead of Camera button -->
+                        <div class="cover-edit-icon"
+                            onclick="event.stopPropagation(); document.getElementById('coverInput').click()"
+                            title="Change Cover Image">
+                            <i class="fas fa-pencil-alt"></i>
+                        </div>
                         <input type="file" id="coverInput" accept="image/*" hidden>
                     </div>
                 </div>
@@ -1150,20 +1205,18 @@
                     <input type="file" id="profileInput" accept="image/*" hidden>
 
                     <div style="position: relative; display: inline-block;">
-    <!-- Profile Image (click to view original) -->
-    <img id="profileAvatar" 
-         src="{{ Auth::user()->profile_thumbnail ? asset(Auth::user()->profile_thumbnail) : (Auth::user()->profile_image ? asset(Auth::user()->profile_image) : 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->name) . '&background=D0A04F&color=fff') }}"
-         class="profile-avatar cursor-pointer"
-         alt="{{ Auth::user()->name }}"
-         onclick="openOriginalProfileImage()"
-         style="cursor: pointer;"
-         data-original="{{ Auth::user()->profile_image ? asset(Auth::user()->profile_image) : '' }}">
+                        <!-- Profile Image (click to view original) -->
+                        <img id="profileAvatar"
+                            src="{{ Auth::user()->profile_thumbnail ? asset(Auth::user()->profile_thumbnail) : (Auth::user()->profile_image ? asset(Auth::user()->profile_image) : 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->name) . '&background=D0A04F&color=fff') }}"
+                            class="profile-avatar cursor-pointer" alt="{{ Auth::user()->name }}"
+                            onclick="openOriginalProfileImage()" style="cursor: pointer;"
+                            data-original="{{ Auth::user()->profile_image ? asset(Auth::user()->profile_image) : '' }}">
 
-    <!-- Edit Button instead of Camera Icon -->
-    <div class="profile-edit-icon" onclick="document.getElementById('profileInput').click()" title="Change Profile Picture">
-        <i class="fas fa-pencil-alt"></i>
-    </div>
-</div>
+                        <!-- Edit Button instead of Camera Icon -->
+                        <div class="profile-edit-icon" title="Change Profile Picture">
+                            <i class="fas fa-pencil-alt"></i>
+                        </div>
+                    </div>
 
                     <div class="profile-details">
                         <h1 class="profile-name">{{ Auth::user()->name }}</h1>
@@ -1173,11 +1226,11 @@
                                 <i class="fas fa-briefcase"></i>
                                 <span>{{ Auth::user()->profession ?? 'Professional' }}</span>
                             </div>
-                            @if(Auth::user()->locationRelation)
-                            <div class="profile-meta-item">
-                                <i class="fas fa-map-marker-alt"></i>
-                                <span>{{ Auth::user()->locationRelation->name }}</span>
-                            </div>
+                            @if (Auth::user()->locationRelation)
+                                <div class="profile-meta-item">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>{{ Auth::user()->locationRelation->name }}</span>
+                                </div>
                             @endif
                             <div class="profile-meta-item">
                                 <i class="fas fa-envelope"></i>
@@ -1191,7 +1244,8 @@
                                 <div class="stat-label">Posts</div>
                             </div>
                             <div class="stat">
-                                <div class="stat-value">{{ Auth::user()->multipleImages ? count(Auth::user()->multipleImages) : 0 }}</div>
+                                <div class="stat-value">
+                                    {{ Auth::user()->multipleImages ? count(Auth::user()->multipleImages) : 0 }}</div>
                                 <div class="stat-label">Photos</div>
                             </div>
                         </div>
@@ -1202,7 +1256,8 @@
                             </a>
 
                             <!-- Share Button -->
-                            <button class="btn btn-outline" id="shareProfileBtn" data-bs-toggle="modal" data-bs-target="#shareModal">
+                            <button class="btn btn-outline" id="shareProfileBtn" data-bs-toggle="modal"
+                                data-bs-target="#shareModal">
                                 <i class="fas fa-share-alt"></i> Share
                             </button>
                         </div>
@@ -1222,7 +1277,8 @@
                             </h2>
                         </div>
                         <div class="about-content">
-                            <p>{{ Auth::user()->description ?? 'No description available. Add a description to tell people more about yourself.' }}</p>
+                            <p>{{ Auth::user()->description ?? 'No description available. Add a description to tell people more about yourself.' }}
+                            </p>
                         </div>
                     </div>
 
@@ -1236,36 +1292,35 @@
 
                         <div class="posts-list">
                             @forelse($feeds as $feed)
-                            <div class="post-item" data-post-id="{{ $feed->id }}" style="cursor: pointer;">
-                                <h3 class="post-title">{{ $feed->title }}</h3>
-                               
-                                @if($feed->images && $feed->images->count())
-                                <div class="post-images">
-                                    @foreach($feed->images->take(3) as $image)
-                                    <img src="{{ asset('storage/'.$image->image) }}"
-                                         class="post-thumbnail cursor-pointer"
-                                         alt="Post image"
-                                         onclick="event.stopPropagation(); openPostGallery({{ $feed->id }})">
-                                    @endforeach
-                                    @if($feed->images->count() > 3)
-                                    <div class="post-thumbnail d-flex align-items-center justify-content-center bg-light cursor-pointer"
-                                         onclick="event.stopPropagation(); openPostGallery({{ $feed->id }})">
-                                        +{{ $feed->images->count() - 3 }}
-                                    </div>
+                                <div class="post-item" data-post-id="{{ $feed->id }}" style="cursor: pointer;">
+                                    <h3 class="post-title">{{ $feed->title }}</h3>
+
+                                    @if ($feed->images && $feed->images->count())
+                                        <div class="post-images">
+                                            @foreach ($feed->images->take(3) as $image)
+                                                <img src="{{ asset('storage/' . $image->image) }}"
+                                                    class="post-thumbnail cursor-pointer" alt="Post image"
+                                                    onclick="event.stopPropagation(); openPostGallery({{ $feed->id }})">
+                                            @endforeach
+                                            @if ($feed->images->count() > 3)
+                                                <div class="post-thumbnail d-flex align-items-center justify-content-center bg-light cursor-pointer"
+                                                    onclick="event.stopPropagation(); openPostGallery({{ $feed->id }})">
+                                                    +{{ $feed->images->count() - 3 }}
+                                                </div>
+                                            @endif
+                                        </div>
                                     @endif
+
+                                    <div class="post-date">
+                                        <i class="fas fa-clock"></i>
+                                        {{ $feed->created_at->diffForHumans() }}
+                                    </div>
                                 </div>
-                                @endif
-                               
-                                <div class="post-date">
-                                    <i class="fas fa-clock"></i>
-                                    {{ $feed->created_at->diffForHumans() }}
-                                </div>
-                            </div>
                             @empty
-                            <div class="empty-posts">
-                                <i class="fas fa-images"></i>
-                                <p>No posts yet. Create your first post!</p>
-                            </div>
+                                <div class="empty-posts">
+                                    <i class="fas fa-images"></i>
+                                    <p>No posts yet. Create your first post!</p>
+                                </div>
                             @endforelse
                         </div>
                     </div>
@@ -1291,52 +1346,52 @@
                                 </div>
                             </div>
 
-                            @if(Auth::user()->phone)
-                            <div class="contact-item">
-                                <div class="contact-icon">
-                                    <i class="fas fa-phone"></i>
+                            @if (Auth::user()->phone)
+                                <div class="contact-item">
+                                    <div class="contact-icon">
+                                        <i class="fas fa-phone"></i>
+                                    </div>
+                                    <div class="contact-details">
+                                        <h4>Phone</h4>
+                                        <p>{{ Auth::user()->phone }}</p>
+                                    </div>
                                 </div>
-                                <div class="contact-details">
-                                    <h4>Phone</h4>
-                                    <p>{{ Auth::user()->phone }}</p>
-                                </div>
-                            </div>
                             @endif
 
-                            @if(Auth::user()->locationRelation)
-                            <div class="contact-item">
-                                <div class="contact-icon">
-                                    <i class="fas fa-map-marker-alt"></i>
+                            @if (Auth::user()->locationRelation)
+                                <div class="contact-item">
+                                    <div class="contact-icon">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                    </div>
+                                    <div class="contact-details">
+                                        <h4>Location</h4>
+                                        <p>{{ Auth::user()->locationRelation->name }}</p>
+                                    </div>
                                 </div>
-                                <div class="contact-details">
-                                    <h4>Location</h4>
-                                    <p>{{ Auth::user()->locationRelation->name }}</p>
-                                </div>
-                            </div>
                             @endif
 
-                            @if(Auth::user()->website)
-                            <div class="contact-item">
-                                <div class="contact-icon">
-                                    <i class="fas fa-globe"></i>
+                            @if (Auth::user()->website)
+                                <div class="contact-item">
+                                    <div class="contact-icon">
+                                        <i class="fas fa-globe"></i>
+                                    </div>
+                                    <div class="contact-details">
+                                        <h4>Website</h4>
+                                        <p>{{ Auth::user()->website }}</p>
+                                    </div>
                                 </div>
-                                <div class="contact-details">
-                                    <h4>Website</h4>
-                                    <p>{{ Auth::user()->website }}</p>
-                                </div>
-                            </div>
                             @endif
 
-                            @if(Auth::user()->profession)
-                            <div class="contact-item">
-                                <div class="contact-icon">
-                                    <i class="fas fa-briefcase"></i>
+                            @if (Auth::user()->profession)
+                                <div class="contact-item">
+                                    <div class="contact-icon">
+                                        <i class="fas fa-briefcase"></i>
+                                    </div>
+                                    <div class="contact-details">
+                                        <h4>Profession</h4>
+                                        <p>{{ Auth::user()->profession }}</p>
+                                    </div>
                                 </div>
-                                <div class="contact-details">
-                                    <h4>Profession</h4>
-                                    <p>{{ Auth::user()->profession }}</p>
-                                </div>
-                            </div>
                             @endif
                         </div>
                     </div>
@@ -1363,15 +1418,13 @@
                             <div class="d-flex align-items-center">
                                 <div class="flex-shrink-0">
                                     <img src="{{ Auth::user()->profile_image ? asset(Auth::user()->profile_image) : 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->name) . '&background=D0A04F&color=fff' }}"
-                                        alt="{{ Auth::user()->name }}"
-                                        class="rounded-circle"
-                                        width="50"
-                                        height="50"
-                                        id="modalProfileAvatar">
+                                        alt="{{ Auth::user()->name }}" class="rounded-circle" width="50"
+                                        height="50" id="modalProfileAvatar">
                                 </div>
                                 <div class="flex-grow-1 ms-3">
                                     <h6 class="mb-1" id="modalProfileName">{{ Auth::user()->name }}</h6>
-                                    <p class="mb-0 text-muted small" id="modalProfileEmail">{{ Auth::user()->email }}</p>
+                                    <p class="mb-0 text-muted small" id="modalProfileEmail">{{ Auth::user()->email }}
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -1383,25 +1436,29 @@
                     <!-- Social Media Grid -->
                     <div class="row g-2 mb-3">
                         <div class="col-4 col-md-3">
-                            <button onclick="shareOnFacebook()" class="btn btn-outline-primary w-100 py-3" data-bs-dismiss="modal">
+                            <button onclick="shareOnFacebook()" class="btn btn-outline-primary w-100 py-3"
+                                data-bs-dismiss="modal">
                                 <i class="fab fa-facebook-f fa-lg mb-2 d-block"></i>
                                 <span class="small">Facebook</span>
                             </button>
                         </div>
                         <div class="col-4 col-md-3">
-                            <button onclick="shareOnTwitter()" class="btn btn-outline-dark w-100 py-3" data-bs-dismiss="modal">
+                            <button onclick="shareOnTwitter()" class="btn btn-outline-dark w-100 py-3"
+                                data-bs-dismiss="modal">
                                 <i class="fab fa-twitter fa-lg mb-2 d-block"></i>
                                 <span class="small">Twitter</span>
                             </button>
                         </div>
                         <div class="col-4 col-md-3">
-                            <button onclick="shareOnLinkedIn()" class="btn btn-outline-info w-100 py-3" data-bs-dismiss="modal">
+                            <button onclick="shareOnLinkedIn()" class="btn btn-outline-info w-100 py-3"
+                                data-bs-dismiss="modal">
                                 <i class="fab fa-linkedin-in fa-lg mb-2 d-block"></i>
                                 <span class="small">LinkedIn</span>
                             </button>
                         </div>
                         <div class="col-4 col-md-3">
-                            <button onclick="shareOnWhatsApp()" class="btn btn-outline-success w-100 py-3" data-bs-dismiss="modal">
+                            <button onclick="shareOnWhatsApp()" class="btn btn-outline-success w-100 py-3"
+                                data-bs-dismiss="modal">
                                 <i class="fab fa-whatsapp fa-lg mb-2 d-block"></i>
                                 <span class="small">WhatsApp</span>
                             </button>
@@ -1412,7 +1469,8 @@
                     <div class="mt-4">
                         <label class="form-label text-muted small mb-2">Or copy direct link:</label>
                         <div class="input-group">
-                            <input type="text" class="form-control" id="profileLinkInput" value="" readonly>
+                            <input type="text" class="form-control" id="profileLinkInput" value=""
+                                readonly>
                             <button class="btn btn-outline-primary" type="button" onclick="copyProfileLink()">
                                 <i class="fas fa-copy"></i>
                             </button>
@@ -1427,7 +1485,8 @@
     </div>
 
     <!-- Post Images Modal -->
-    <div class="modal fade" id="postImagesModal" tabindex="-1" aria-labelledby="postImagesModalLabel" aria-hidden="true">
+    <div class="modal fade" id="postImagesModal" tabindex="-1" aria-labelledby="postImagesModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -1443,7 +1502,7 @@
                             <i class="fas fa-plus-circle"></i> Add Images
                         </button>
                     </div>
-                   
+
                     <div id="postImagesContainer" class="row g-3">
                         <!-- Images will be loaded here dynamically -->
                     </div>
@@ -1456,7 +1515,8 @@
     </div>
 
     <!-- Cover Image Crop Modal -->
-    <div class="modal fade" id="coverCropModal" tabindex="-1" aria-labelledby="coverCropModalLabel" aria-hidden="true">
+    <div class="modal fade" id="coverCropModal" tabindex="-1" aria-labelledby="coverCropModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -1466,52 +1526,66 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="cover-crop-container" style="max-height: 500px; overflow: hidden; background: #f5f5f5;">
-                        <img id="coverCropImage" src="" alt="Cover image to crop" style="max-width: 100%; display: block;">
+                    <div class="cover-crop-container"
+                        style="max-height: 500px; overflow: hidden; background: #f5f5f5;">
+                        <img id="coverCropImage" src="" alt="Cover image to crop"
+                            style="max-width: 100%; display: block;">
                     </div>
-                   
+
                     <!-- Crop Controls -->
                     <div class="crop-controls mt-3 d-flex justify-content-center gap-2">
-                        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="coverCropper.zoom(0.1)">
+                        <button type="button" class="btn btn-sm btn-outline-secondary"
+                            onclick="coverCropper.zoom(0.1)">
                             <i class="fas fa-search-plus"></i>
                         </button>
-                        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="coverCropper.zoom(-0.1)">
+                        <button type="button" class="btn btn-sm btn-outline-secondary"
+                            onclick="coverCropper.zoom(-0.1)">
                             <i class="fas fa-search-minus"></i>
                         </button>
-                        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="coverCropper.move(-10, 0)">
+                        <button type="button" class="btn btn-sm btn-outline-secondary"
+                            onclick="coverCropper.move(-10, 0)">
                             <i class="fas fa-arrow-left"></i>
                         </button>
-                        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="coverCropper.move(10, 0)">
+                        <button type="button" class="btn btn-sm btn-outline-secondary"
+                            onclick="coverCropper.move(10, 0)">
                             <i class="fas fa-arrow-right"></i>
                         </button>
-                        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="coverCropper.move(0, -10)">
+                        <button type="button" class="btn btn-sm btn-outline-secondary"
+                            onclick="coverCropper.move(0, -10)">
                             <i class="fas fa-arrow-up"></i>
                         </button>
-                        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="coverCropper.move(0, 10)">
+                        <button type="button" class="btn btn-sm btn-outline-secondary"
+                            onclick="coverCropper.move(0, 10)">
                             <i class="fas fa-arrow-down"></i>
                         </button>
-                        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="coverCropper.reset()">
+                        <button type="button" class="btn btn-sm btn-outline-secondary"
+                            onclick="coverCropper.reset()">
                             <i class="fas fa-undo"></i>
                         </button>
                     </div>
-                   
+
                     <!-- Aspect Ratio Options -->
                     <div class="aspect-ratio-controls mt-3">
                         <label class="form-label text-muted small">Aspect Ratio:</label>
                         <div class="d-flex gap-2 flex-wrap">
-                            <button type="button" class="btn btn-sm btn-outline-primary active" onclick="setCoverAspectRatio(16/5)">
+                            <button type="button" class="btn btn-sm btn-outline-primary active"
+                                onclick="setCoverAspectRatio(16/5)">
                                 16:5 (Current)
                             </button>
-                            <button type="button" class="btn btn-sm btn-outline-primary" onclick="setCoverAspectRatio(16/9)">
+                            <button type="button" class="btn btn-sm btn-outline-primary"
+                                onclick="setCoverAspectRatio(16/9)">
                                 16:9
                             </button>
-                            <button type="button" class="btn btn-sm btn-outline-primary" onclick="setCoverAspectRatio(3/1)">
+                            <button type="button" class="btn btn-sm btn-outline-primary"
+                                onclick="setCoverAspectRatio(3/1)">
                                 3:1
                             </button>
-                            <button type="button" class="btn btn-sm btn-outline-primary" onclick="setCoverAspectRatio(4/1)">
+                            <button type="button" class="btn btn-sm btn-outline-primary"
+                                onclick="setCoverAspectRatio(4/1)">
                                 4:1
                             </button>
-                            <button type="button" class="btn btn-sm btn-outline-primary" onclick="setCoverAspectRatio(NaN)">
+                            <button type="button" class="btn btn-sm btn-outline-primary"
+                                onclick="setCoverAspectRatio(NaN)">
                                 Free
                             </button>
                         </div>
@@ -1530,7 +1604,8 @@
     </div>
 
     <!-- Profile Picture Crop Modal -->
-    <div class="modal fade" id="profileCropModal" tabindex="-1" aria-labelledby="profileCropModalLabel" aria-hidden="true">
+    <div class="modal fade" id="profileCropModal" tabindex="-1" aria-labelledby="profileCropModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-md modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -1540,66 +1615,84 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="profile-crop-container" style="max-height: 400px; overflow: hidden; background: #f5f5f5; border-radius: 12px;">
-                        <img id="profileCropImage" src="" alt="Profile image to crop" style="max-width: 100%; display: block;">
+                    <div class="profile-crop-container"
+                        style="max-height: 400px; overflow: hidden; background: #f5f5f5; border-radius: 12px;">
+                        <img id="profileCropImage" src="" alt="Profile image to crop"
+                            style="max-width: 100%; display: block;">
                     </div>
-                   
+
                     <!-- Crop Controls -->
                     <div class="crop-controls mt-3 d-flex justify-content-center gap-2 flex-wrap">
-                        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="profileCropper.zoom(0.1)">
+                        <button type="button" class="btn btn-sm btn-outline-secondary"
+                            onclick="profileCropper.zoom(0.1)">
                             <i class="fas fa-search-plus"></i>
                         </button>
-                        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="profileCropper.zoom(-0.1)">
+                        <button type="button" class="btn btn-sm btn-outline-secondary"
+                            onclick="profileCropper.zoom(-0.1)">
                             <i class="fas fa-search-minus"></i>
                         </button>
-                        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="profileCropper.move(-10, 0)">
+                        <button type="button" class="btn btn-sm btn-outline-secondary"
+                            onclick="profileCropper.move(-10, 0)">
                             <i class="fas fa-arrow-left"></i>
                         </button>
-                        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="profileCropper.move(10, 0)">
+                        <button type="button" class="btn btn-sm btn-outline-secondary"
+                            onclick="profileCropper.move(10, 0)">
                             <i class="fas fa-arrow-right"></i>
                         </button>
-                        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="profileCropper.move(0, -10)">
+                        <button type="button" class="btn btn-sm btn-outline-secondary"
+                            onclick="profileCropper.move(0, -10)">
                             <i class="fas fa-arrow-up"></i>
                         </button>
-                        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="profileCropper.move(0, 10)">
+                        <button type="button" class="btn btn-sm btn-outline-secondary"
+                            onclick="profileCropper.move(0, 10)">
                             <i class="fas fa-arrow-down"></i>
                         </button>
-                        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="profileCropper.rotate(-90)">
+                        <button type="button" class="btn btn-sm btn-outline-secondary"
+                            onclick="profileCropper.rotate(-90)">
                             <i class="fas fa-undo-alt"></i>
                         </button>
-                        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="profileCropper.rotate(90)">
+                        <button type="button" class="btn btn-sm btn-outline-secondary"
+                            onclick="profileCropper.rotate(90)">
                             <i class="fas fa-redo-alt"></i>
                         </button>
-                        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="profileCropper.reset()">
+                        <button type="button" class="btn btn-sm btn-outline-secondary"
+                            onclick="profileCropper.reset()">
                             <i class="fas fa-undo"></i>
                         </button>
                     </div>
-                   
+
                     <!-- Size Presets -->
                     <div class="size-presets mt-3">
                         <label class="form-label text-muted small">Size Presets:</label>
                         <div class="d-flex gap-2 flex-wrap">
-                            <button type="button" class="btn btn-sm btn-outline-primary" onclick="setProfileSize(300, 300, this)">
+                            <button type="button" class="btn btn-sm btn-outline-primary"
+                                onclick="setProfileSize(300, 300, this)">
                                 <i class="fas fa-image me-1"></i>Small (300x300)
                             </button>
-                            <button type="button" class="btn btn-sm btn-outline-primary active" onclick="setProfileSize(512, 512, this)">
+                            <button type="button" class="btn btn-sm btn-outline-primary active"
+                                onclick="setProfileSize(512, 512, this)">
                                 <i class="fas fa-image me-1"></i>Medium (512x512)
                             </button>
-                            <button type="button" class="btn btn-sm btn-outline-primary" onclick="setProfileSize(1024, 1024, this)">
+                            <button type="button" class="btn btn-sm btn-outline-primary"
+                                onclick="setProfileSize(1024, 1024, this)">
                                 <i class="fas fa-image me-1"></i>Large (1024x1024)
                             </button>
                         </div>
                     </div>
-                   
+
                     <!-- Preview -->
                     <div class="preview-section mt-3 p-3 bg-light rounded">
                         <label class="form-label text-muted small mb-2">Preview:</label>
                         <div class="d-flex align-items-center gap-3">
-                            <div class="preview-circle" style="width: 60px; height: 60px; border-radius: 12px; overflow: hidden; border: 2px solid var(--primary-color);">
-                                <img id="profilePreview" src="" alt="Preview" style="width: 100%; height: 100%; object-fit: cover; display: none;">
+                            <div class="preview-circle"
+                                style="width: 60px; height: 60px; border-radius: 12px; overflow: hidden; border: 2px solid var(--primary-color);">
+                                <img id="profilePreview" src="" alt="Preview"
+                                    style="width: 100%; height: 100%; object-fit: cover; display: none;">
                             </div>
-                            <div class="preview-square" style="width: 60px; height: 60px; overflow: hidden; border-radius: 8px; border: 2px solid var(--primary-color);">
-                                <img id="profilePreviewSquare" src="" alt="Preview square" style="width: 100%; height: 100%; object-fit: cover; display: none;">
+                            <div class="preview-square"
+                                style="width: 60px; height: 60px; overflow: hidden; border-radius: 8px; border: 2px solid var(--primary-color);">
+                                <img id="profilePreviewSquare" src="" alt="Preview square"
+                                    style="width: 100%; height: 100%; object-fit: cover; display: none;">
                             </div>
                             <small class="text-muted">Rounded & Square preview</small>
                         </div>
@@ -1648,7 +1741,7 @@
             id: '{{ Auth::user()->id }}',
             name: '{{ Auth::user()->name }}',
             email: '{{ Auth::user()->email }}',
-            url: '{{ route("userdetails.show", Auth::user()->slug) }}',
+            url: '{{ route('userdetails.show', Auth::user()->slug) }}',
             title: '{{ Auth::user()->name }} - Profile',
             description: 'Check out {{ Auth::user()->name }}\'s profile on our platform!'
         };
@@ -1744,7 +1837,7 @@
                     if (e.target.classList.contains('post-thumbnail')) {
                         return;
                     }
-                   
+
                     const postId = this.dataset.postId;
                     if (postId) {
                         openPostGallery(postId);
@@ -1792,12 +1885,12 @@
             // Remove any lingering modal backdrops
             const backdrops = document.querySelectorAll('.modal-backdrop');
             backdrops.forEach(backdrop => backdrop.remove());
-           
+
             // Reset body classes and styles
             document.body.classList.remove('modal-open');
             document.body.style.overflow = '';
             document.body.style.paddingRight = '';
-           
+
             // Reset modal instance
             if (currentModal) {
                 currentModal = null;
@@ -1820,55 +1913,57 @@
 
         function showModal() {
             const modalEl = document.getElementById('postImagesModal');
-           
+
             // Dispose existing modal instance if any
             if (currentModal) {
                 currentModal.dispose();
             }
-           
+
             // Create new modal instance
             currentModal = new bootstrap.Modal(modalEl, {
                 backdrop: 'static',
                 keyboard: true
             });
-           
+
             currentModal.show();
         }
 
         window.openPostGallery = function(postId) {
             if (!postId) return;
-           
+
             currentPostId = postId;
-           
+
             // Show loading state
             const container = document.getElementById('postImagesContainer');
-            container.innerHTML = '<div class="col-12 text-center py-5"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div><p class="mt-2">Loading images...</p></div>';
-           
+            container.innerHTML =
+                '<div class="col-12 text-center py-5"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div><p class="mt-2">Loading images...</p></div>';
+
             fetch(`/post/${postId}/images`, {
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'Accept': 'application/json'
-                }
-            })
-            .then(res => {
-                if (!res.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return res.json();
-            })
-            .then(data => {
-                if (data.status) {
-                    displayPostImages(data.images);
-                    showModal();
-                } else {
-                    throw new Error(data.message || 'Failed to load images');
-                }
-            })
-            .catch(err => {
-                console.error('Error loading post images:', err);
-                container.innerHTML = '<div class="col-12 text-center py-5"><i class="fas fa-exclamation-triangle fa-3x text-danger mb-3"></i><p>Failed to load images. Please try again.</p></div>';
-                toast('❌ ' + err.message);
-            });
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(res => {
+                    if (!res.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return res.json();
+                })
+                .then(data => {
+                    if (data.status) {
+                        displayPostImages(data.images);
+                        showModal();
+                    } else {
+                        throw new Error(data.message || 'Failed to load images');
+                    }
+                })
+                .catch(err => {
+                    console.error('Error loading post images:', err);
+                    container.innerHTML =
+                        '<div class="col-12 text-center py-5"><i class="fas fa-exclamation-triangle fa-3x text-danger mb-3"></i><p>Failed to load images. Please try again.</p></div>';
+                    toast('❌ ' + err.message);
+                });
         }
 
         function displayPostImages(images) {
@@ -1876,7 +1971,8 @@
             container.innerHTML = '';
 
             if (!images || images.length === 0) {
-                container.innerHTML = '<div class="col-12 text-center py-5"><i class="fas fa-images fa-3x text-muted mb-3"></i><p>No images in this post</p></div>';
+                container.innerHTML =
+                    '<div class="col-12 text-center py-5"><i class="fas fa-images fa-3x text-muted mb-3"></i><p>No images in this post</p></div>';
                 return;
             }
 
@@ -1913,64 +2009,65 @@
                 toast('❌ No post selected or no files chosen');
                 return;
             }
-           
+
             // Validate file types
             const validTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
             const files = Array.from(this.files);
             const invalidFiles = files.filter(file => !validTypes.includes(file.type));
-           
+
             if (invalidFiles.length > 0) {
                 toast('❌ Please select only image files (JPEG, PNG, GIF, WEBP)');
                 this.value = '';
                 return;
             }
-           
+
             // Show uploading state
-            const uploadBtn = document.querySelector('[onclick="document.getElementById(\'modalImageInput\').click()"]');
+            const uploadBtn = document.querySelector(
+                '[onclick="document.getElementById(\'modalImageInput\').click()"]');
             const originalText = uploadBtn.innerHTML;
             uploadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading...';
             uploadBtn.disabled = true;
-           
+
             const formData = new FormData();
             formData.append('post_id', currentPostId);
             formData.append('_token', csrf);
-           
+
             files.forEach(file => {
                 formData.append('images[]', file);
             });
-           
+
             fetch('/post/images/add', {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest'
-                }
-            })
-            .then(res => {
-                if (!res.ok) {
-                    throw new Error('Upload failed');
-                }
-                return res.json();
-            })
-            .then(data => {
-                if (data.status) {
-                    toast('✅ Images added successfully');
-                    // Refresh the gallery
-                    openPostGallery(currentPostId);
-                } else {
-                    throw new Error(data.message || 'Upload failed');
-                }
-            })
-            .catch(err => {
-                console.error('Error uploading images:', err);
-                toast('❌ ' + err.message);
-            })
-            .finally(() => {
-                // Reset upload button
-                uploadBtn.innerHTML = originalText;
-                uploadBtn.disabled = false;
-                this.value = '';
-            });
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(res => {
+                    if (!res.ok) {
+                        throw new Error('Upload failed');
+                    }
+                    return res.json();
+                })
+                .then(data => {
+                    if (data.status) {
+                        toast('✅ Images added successfully');
+                        // Refresh the gallery
+                        openPostGallery(currentPostId);
+                    } else {
+                        throw new Error(data.message || 'Upload failed');
+                    }
+                })
+                .catch(err => {
+                    console.error('Error uploading images:', err);
+                    toast('❌ ' + err.message);
+                })
+                .finally(() => {
+                    // Reset upload button
+                    uploadBtn.innerHTML = originalText;
+                    uploadBtn.disabled = false;
+                    this.value = '';
+                });
         });
 
         // Delete post image
@@ -1978,53 +2075,53 @@
             if (event) {
                 event.stopPropagation();
             }
-           
+
             if (!confirm('Are you sure you want to delete this image? This action cannot be undone.')) {
                 return;
             }
-           
+
             // Find and disable the delete button to prevent double clicks
             const deleteBtn = event?.target?.closest('button');
             if (deleteBtn) {
                 deleteBtn.disabled = true;
                 deleteBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
             }
-           
+
             fetch('/post/images/delete', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': csrf,
-                    'X-Requested-With': 'XMLHttpRequest'
-                },
-                body: JSON.stringify({
-                    image_id: imageId
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrf,
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: JSON.stringify({
+                        image_id: imageId
+                    })
                 })
-            })
-            .then(res => {
-                if (!res.ok) {
-                    throw new Error('Delete failed');
-                }
-                return res.json();
-            })
-            .then(data => {
-                if (data.status) {
-                    toast('✅ Image deleted successfully');
-                    // Refresh the gallery
-                    openPostGallery(currentPostId);
-                } else {
-                    throw new Error(data.message || 'Delete failed');
-                }
-            })
-            .catch(err => {
-                console.error('Error deleting image:', err);
-                toast('❌ ' + err.message);
-                // Re-enable the delete button if there's an error
-                if (deleteBtn) {
-                    deleteBtn.disabled = false;
-                    deleteBtn.innerHTML = '<i class="fas fa-trash"></i>';
-                }
-            });
+                .then(res => {
+                    if (!res.ok) {
+                        throw new Error('Delete failed');
+                    }
+                    return res.json();
+                })
+                .then(data => {
+                    if (data.status) {
+                        toast('✅ Image deleted successfully');
+                        // Refresh the gallery
+                        openPostGallery(currentPostId);
+                    } else {
+                        throw new Error(data.message || 'Delete failed');
+                    }
+                })
+                .catch(err => {
+                    console.error('Error deleting image:', err);
+                    toast('❌ ' + err.message);
+                    // Re-enable the delete button if there's an error
+                    if (deleteBtn) {
+                        deleteBtn.disabled = false;
+                        deleteBtn.innerHTML = '<i class="fas fa-trash"></i>';
+                    }
+                });
         }
 
         // ============================================
@@ -2037,7 +2134,7 @@
             // Initialize cover crop modal
             const modalElement = document.getElementById('coverCropModal');
             coverCropModal = new bootstrap.Modal(modalElement);
-           
+
             // Handle modal hidden event
             modalElement.addEventListener('hidden.bs.modal', function() {
                 if (coverCropper) {
@@ -2053,12 +2150,12 @@
         window.setCoverAspectRatio = function(ratio) {
             if (coverCropper) {
                 coverCropper.setAspectRatio(ratio);
-               
+
                 // Update active button state
                 document.querySelectorAll('.aspect-ratio-controls .btn').forEach(btn => {
                     btn.classList.remove('active');
                 });
-               
+
                 // Find and activate the clicked button
                 const buttons = document.querySelectorAll('.aspect-ratio-controls .btn');
                 if (isNaN(ratio)) {
@@ -2079,10 +2176,108 @@
             }
         };
 
+
+        // ============================================
+// VIEW ORIGINAL COVER IMAGE
+// ============================================
+window.openOriginalCoverImage = function() {
+    const coverContainer = document.getElementById('coverImageContainer');
+    const originalSrc = coverContainer.dataset.original;
+    
+    if (originalSrc && originalSrc !== '') {
+        Fancybox.show([{
+            src: originalSrc,
+            type: 'image',
+            caption: '{{ Auth::user()->name }} - Cover Image'
+        }]);
+    } else {
+        // If no custom image, get the background image URL
+        const bgImage = coverContainer.style.backgroundImage;
+        const url = bgImage.replace(/^url\(['"](.+)['"]\)/, '$1');
+        Fancybox.show([{
+            src: url,
+            type: 'image',
+            caption: '{{ Auth::user()->name }} - Cover Image'
+        }]);
+    }
+}
+
         // Handle cover input change - Show crop modal
-        document.getElementById('changeCoverBtn').addEventListener('click', function() {
-            document.getElementById('coverInput').click();
-        });
+       // Remove the old changeCoverBtn handler and add these:
+
+// Handle edit icon click (already handled inline, but we need to ensure file input exists)
+document.getElementById('coverInput')?.addEventListener('click', function(e) {
+    e.stopPropagation(); // Prevent triggering the cover image click
+});
+
+// Keep the existing change handler for when file is selected
+document.getElementById('coverInput').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    // Validate file type
+    if (!file.type.match('image.*')) {
+        toast('❌ Please select an image file');
+        this.value = '';
+        return;
+    }
+
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+        toast('❌ Image size should be less than 5MB');
+        this.value = '';
+        return;
+    }
+
+    const reader = new FileReader();
+   
+    reader.onload = function(event) {
+        // Set the image source
+        const cropImage = document.getElementById('coverCropImage');
+        cropImage.src = event.target.result;
+       
+        // Show the modal
+        coverCropModal.show();
+       
+        // Initialize cropper after modal is shown
+        setTimeout(() => {
+            if (coverCropper) {
+                coverCropper.destroy();
+            }
+           
+            coverCropper = new Cropper(cropImage, {
+                aspectRatio: 16 / 5,
+                viewMode: 1,
+                dragMode: 'move',
+                cropBoxMovable: true,
+                cropBoxResizable: true,
+                guides: true,
+                center: true,
+                highlight: false,
+                background: false,
+                autoCropArea: 1,
+                zoomOnWheel: true,
+                minContainerWidth: 600,
+                minContainerHeight: 400,
+                ready: function() {
+                    const containerData = this.cropper.getContainerData();
+                    const cropBoxData = {
+                        left: 0,
+                        top: 0,
+                        width: containerData.width,
+                        height: containerData.width / (16/5)
+                    };
+                    if (cropBoxData.height < containerData.height) {
+                        cropBoxData.top = (containerData.height - cropBoxData.height) / 2;
+                    }
+                    this.cropper.setCropBoxData(cropBoxData);
+                }
+            });
+        }, 200);
+    };
+   
+    reader.readAsDataURL(file);
+});
 
         document.getElementById('coverInput').addEventListener('change', function(e) {
             const file = e.target.files[0];
@@ -2103,21 +2298,21 @@
             }
 
             const reader = new FileReader();
-           
+
             reader.onload = function(event) {
                 // Set the image source
                 const cropImage = document.getElementById('coverCropImage');
                 cropImage.src = event.target.result;
-               
+
                 // Show the modal
                 coverCropModal.show();
-               
+
                 // Initialize cropper after modal is shown
                 setTimeout(() => {
                     if (coverCropper) {
                         coverCropper.destroy();
                     }
-                   
+
                     coverCropper = new Cropper(cropImage, {
                         aspectRatio: 16 / 5, // Default aspect ratio
                         viewMode: 1,
@@ -2139,31 +2334,32 @@
                                 left: 0,
                                 top: 0,
                                 width: containerData.width,
-                                height: containerData.width / (16/5)
+                                height: containerData.width / (16 / 5)
                             };
                             // Center vertically if height is less than container
                             if (cropBoxData.height < containerData.height) {
-                                cropBoxData.top = (containerData.height - cropBoxData.height) / 2;
+                                cropBoxData.top = (containerData.height - cropBoxData
+                                    .height) / 2;
                             }
                             this.cropper.setCropBoxData(cropBoxData);
                         }
                     });
                 }, 200);
             };
-           
+
             reader.readAsDataURL(file);
         });
 
         // Save cropped cover image
         document.getElementById('saveCoverBtn').addEventListener('click', function() {
             if (!coverCropper) return;
-           
+
             // Show loading state
             const saveBtn = this;
             const originalText = saveBtn.innerHTML;
             saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Saving...';
             saveBtn.disabled = true;
-           
+
             // Get cropped canvas
             const canvas = coverCropper.getCroppedCanvas({
                 width: 1920, // Max width
@@ -2171,53 +2367,54 @@
                 imageSmoothingEnabled: true,
                 imageSmoothingQuality: 'high',
             });
-           
+
             // Convert canvas to blob
             canvas.toBlob(function(blob) {
                 const formData = new FormData();
                 formData.append('cover_image', blob, 'cover-image.jpg');
                 formData.append('_token', csrf);
-               
+
                 // Upload the cropped image
                 fetch("{{ route('profile.image.update') }}", {
-                    method: "POST",
-                    body: formData,
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest'
-                    }
-                })
-                .then(res => {
-                    if (!res.ok) {
-                        throw new Error('Upload failed');
-                    }
-                    return res.json();
-                })
-                .then(data => {
-                    if (data.status) {
-                        // Update cover image
-                        document.querySelector('.cover-image').style.backgroundImage = `url('${data.url}?t=${Date.now()}')`;
-                       
-                        // Show success message
-                        toast('✅ Cover image updated successfully');
-                       
-                        // Close modal
-                        coverCropModal.hide();
-                       
-                        // Clear file input
-                        document.getElementById('coverInput').value = '';
-                    } else {
-                        throw new Error(data.message || 'Upload failed');
-                    }
-                })
-                .catch(err => {
-                    console.error('Error uploading cover:', err);
-                    toast('❌ ' + err.message);
-                })
-                .finally(() => {
-                    // Reset button
-                    saveBtn.innerHTML = originalText;
-                    saveBtn.disabled = false;
-                });
+                        method: "POST",
+                        body: formData,
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    })
+                    .then(res => {
+                        if (!res.ok) {
+                            throw new Error('Upload failed');
+                        }
+                        return res.json();
+                    })
+                    .then(data => {
+                        if (data.status) {
+                            // Update cover image
+                            document.querySelector('.cover-image').style.backgroundImage =
+                                `url('${data.url}?t=${Date.now()}')`;
+
+                            // Show success message
+                            toast('✅ Cover image updated successfully');
+
+                            // Close modal
+                            coverCropModal.hide();
+
+                            // Clear file input
+                            document.getElementById('coverInput').value = '';
+                        } else {
+                            throw new Error(data.message || 'Upload failed');
+                        }
+                    })
+                    .catch(err => {
+                        console.error('Error uploading cover:', err);
+                        toast('❌ ' + err.message);
+                    })
+                    .finally(() => {
+                        // Reset button
+                        saveBtn.innerHTML = originalText;
+                        saveBtn.disabled = false;
+                    });
             }, 'image/jpeg', 0.95); // High quality JPEG
         });
 
@@ -2232,7 +2429,7 @@
             // Initialize profile crop modal
             const modalElement = document.getElementById('profileCropModal');
             profileCropModal = new bootstrap.Modal(modalElement);
-           
+
             // Handle modal hidden event
             modalElement.addEventListener('hidden.bs.modal', function() {
                 if (profileCropper) {
@@ -2256,17 +2453,46 @@
                     btn.classList.remove('active');
                 });
                 button.classList.add('active');
-               
+
                 toast(`ℹ️ Image will be saved as ${width}x${height} pixels`);
             }
         };
 
         // Handle profile input change - Show crop modal
+        // ============================================
+        // PROFILE IMAGE CLICK HANDLER - Show original
+        // ============================================
         document.getElementById('profileAvatar').addEventListener('click', function(e) {
             // Don't trigger if clicking on the edit icon
             if (e.target.classList.contains('profile-edit-icon') || e.target.closest('.profile-edit-icon')) {
                 return;
             }
+
+            // Get the original image URL from data attribute
+            const originalSrc = this.dataset.original;
+
+            // If there's an original image, show it
+            if (originalSrc && originalSrc !== '') {
+                Fancybox.show([{
+                    src: originalSrc,
+                    type: 'image',
+                    caption: '{{ Auth::user()->name }} - Profile Picture'
+                }]);
+            } else {
+                // If no custom image, show the current thumbnail/avatar
+                Fancybox.show([{
+                    src: this.src,
+                    type: 'image',
+                    caption: '{{ Auth::user()->name }} - Profile Picture'
+                }]);
+            }
+        });
+
+        // ============================================
+        // EDIT ICON CLICK HANDLER - Change profile picture
+        // ============================================
+        document.querySelector('.profile-edit-icon').addEventListener('click', function(e) {
+            e.stopPropagation(); // Prevent event from bubbling to parent
             document.getElementById('profileInput').click();
         });
 
@@ -2289,21 +2515,21 @@
             }
 
             const reader = new FileReader();
-           
+
             reader.onload = function(event) {
                 // Set the image source
                 const cropImage = document.getElementById('profileCropImage');
                 cropImage.src = event.target.result;
-               
+
                 // Show the modal
                 profileCropModal.show();
-               
+
                 // Initialize cropper after modal is shown
                 setTimeout(() => {
                     if (profileCropper) {
                         profileCropper.destroy();
                     }
-                   
+
                     profileCropper = new Cropper(cropImage, {
                         aspectRatio: 1 / 1, // 1:1 aspect ratio for profile pictures
                         viewMode: 1,
@@ -2325,7 +2551,8 @@
                         ready: function() {
                             // Set crop box to square in the center
                             const containerData = this.cropper.getContainerData();
-                            const size = Math.min(containerData.width, containerData.height);
+                            const size = Math.min(containerData.width, containerData
+                                .height);
                             this.cropper.setCropBoxData({
                                 left: (containerData.width - size) / 2,
                                 top: (containerData.height - size) / 2,
@@ -2336,14 +2563,14 @@
                     });
                 }, 200);
             };
-           
+
             reader.readAsDataURL(file);
         });
 
         // Update preview images
         function updateProfilePreview(data) {
             if (!profileCropper) return;
-           
+
             // Get cropped canvas for preview
             const canvas = profileCropper.getCroppedCanvas({
                 width: 100,
@@ -2351,14 +2578,14 @@
                 imageSmoothingEnabled: true,
                 imageSmoothingQuality: 'high'
             });
-           
+
             // Update preview images
             const previewImg = document.getElementById('profilePreview');
             const previewSquareImg = document.getElementById('profilePreviewSquare');
-           
+
             previewImg.src = canvas.toDataURL('image/jpeg');
             previewSquareImg.src = canvas.toDataURL('image/jpeg');
-           
+
             previewImg.style.display = 'block';
             previewSquareImg.style.display = 'block';
         }
@@ -2366,13 +2593,13 @@
         // Save cropped profile image
         document.getElementById('saveProfileBtn').addEventListener('click', function() {
             if (!profileCropper) return;
-           
+
             // Show loading state
             const saveBtn = this;
             const originalText = saveBtn.innerHTML;
             saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Saving...';
             saveBtn.disabled = true;
-           
+
             // Get cropped canvas with selected size
             const canvas = profileCropper.getCroppedCanvas({
                 width: selectedProfileSize,
@@ -2380,66 +2607,67 @@
                 imageSmoothingEnabled: true,
                 imageSmoothingQuality: 'high',
             });
-           
+
             // Convert canvas to blob
             canvas.toBlob(function(blob) {
                 const formData = new FormData();
                 formData.append('profile_image', blob, 'profile-image.jpg');
                 formData.append('_token', csrf);
-               
+
                 // Upload the cropped image
                 fetch("{{ route('profile.image.update') }}", {
-                    method: "POST",
-                    body: formData,
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest'
-                    }
-                })
-                .then(res => {
-                    if (!res.ok) {
-                        throw new Error('Upload failed');
-                    }
-                    return res.json();
-                })
-                .then(data => {
-                    if (data.status) {
-                        // Update profile images
-                        const newImageUrl = `${data.url}?t=${Date.now()}`;
-                        document.getElementById('profileAvatar').src = newImageUrl;
-                        document.querySelector('.user-avatar').src = newImageUrl;
-                        document.getElementById('modalProfileAvatar').src = newImageUrl;
-                       
-                        // Show success message
-                        toast('✅ Profile picture updated successfully');
-                       
-                        // Close modal
-                        profileCropModal.hide();
-                       
-                        // Clear file input
-                        document.getElementById('profileInput').value = '';
-                    } else {
-                        throw new Error(data.message || 'Upload failed');
-                    }
-                })
-                .catch(err => {
-                    console.error('Error uploading profile image:', err);
-                    toast('❌ ' + err.message);
-                })
-                .finally(() => {
-                    // Reset button
-                    saveBtn.innerHTML = originalText;
-                    saveBtn.disabled = false;
-                });
+                        method: "POST",
+                        body: formData,
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    })
+                    .then(res => {
+                        if (!res.ok) {
+                            throw new Error('Upload failed');
+                        }
+                        return res.json();
+                    })
+                    .then(data => {
+                        if (data.status) {
+                            // Update profile images
+                            const newImageUrl = `${data.url}?t=${Date.now()}`;
+                            document.getElementById('profileAvatar').src = newImageUrl;
+                            document.querySelector('.user-avatar').src = newImageUrl;
+                            document.getElementById('modalProfileAvatar').src = newImageUrl;
+
+                            // Show success message
+                            toast('✅ Profile picture updated successfully');
+
+                            // Close modal
+                            profileCropModal.hide();
+
+                            // Clear file input
+                            document.getElementById('profileInput').value = '';
+                        } else {
+                            throw new Error(data.message || 'Upload failed');
+                        }
+                    })
+                    .catch(err => {
+                        console.error('Error uploading profile image:', err);
+                        toast('❌ ' + err.message);
+                    })
+                    .finally(() => {
+                        // Reset button
+                        saveBtn.innerHTML = originalText;
+                        saveBtn.disabled = false;
+                    });
             }, 'image/jpeg', 0.95); // High quality JPEG
         });
 
         // Add keyboard shortcuts for cropping
         document.addEventListener('keydown', function(e) {
-            if (!profileCropper || !profileCropModal || !document.getElementById('profileCropModal').classList.contains('show')) {
+            if (!profileCropper || !profileCropModal || !document.getElementById('profileCropModal').classList
+                .contains('show')) {
                 return;
             }
-           
-            switch(e.key) {
+
+            switch (e.key) {
                 case '+':
                 case '=':
                     e.preventDefault();
@@ -2487,23 +2715,23 @@
                 toastContainer.className = 'toast-container position-fixed bottom-0 end-0 p-3';
                 document.body.appendChild(toastContainer);
             }
-           
+
             // Determine toast style based on message
             const isSuccess = message.includes('✅');
             const isError = message.includes('❌');
             const isInfo = message.includes('ℹ️');
-           
+
             const toastEl = document.createElement('div');
             toastEl.className = 'toast show';
             toastEl.setAttribute('role', 'alert');
             toastEl.setAttribute('aria-live', 'assertive');
             toastEl.setAttribute('aria-atomic', 'true');
-           
+
             let bgClass = '';
             if (isSuccess) bgClass = 'bg-success text-white';
             else if (isError) bgClass = 'bg-danger text-white';
             else if (isInfo) bgClass = 'bg-info text-white';
-           
+
             toastEl.innerHTML = `
                 <div class="toast-header ${bgClass}">
                     <i class="fas ${isSuccess ? 'fa-check-circle' : isError ? 'fa-exclamation-circle' : isInfo ? 'fa-info-circle' : 'fa-bell'} me-2"></i>
@@ -2514,17 +2742,17 @@
                     ${message.replace(/[✅❌ℹ️]/g, '')}
                 </div>
             `;
-           
+
             toastContainer.appendChild(toastEl);
-           
+
             const toast = new bootstrap.Toast(toastEl, {
                 animation: true,
                 autohide: true,
                 delay: duration
             });
-           
+
             toast.show();
-           
+
             toastEl.addEventListener('hidden.bs.toast', function() {
                 this.remove();
             });
@@ -2565,30 +2793,10 @@
             'wrapAround': true,
             'albumLabel': 'Image %1 of %2'
         });
-                // ============================================
+        // ============================================
         // VIEW ORIGINAL PROFILE IMAGE
         // ============================================
-        window.openOriginalProfileImage = function() {
-            const profileImg = document.getElementById('profileAvatar');
-            const originalSrc = profileImg.dataset.original;
-            
-            // If there's an original image, show it
-            if (originalSrc && originalSrc !== '') {
-                // Open in lightbox/fancybox
-                Fancybox.show([{
-                    src: originalSrc,
-                    type: 'image',
-                    caption: '{{ Auth::user()->name }} - Profile Picture'
-                }]);
-            } else {
-                // If no custom image, just show the current one
-                Fancybox.show([{
-                    src: profileImg.src,
-                    type: 'image',
-                    caption: '{{ Auth::user()->name }} - Profile Picture'
-                }]);
-            }
-        }
+
 
         // Smooth transitions
         document.addEventListener('DOMContentLoaded', function() {
@@ -2622,7 +2830,7 @@
             'wrapAround': true,
             'albumLabel': 'Image %1 of %2'
         });
-
     </script>
 </body>
+
 </html>

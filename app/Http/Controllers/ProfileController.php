@@ -406,4 +406,85 @@ public function ajaxImageUpdate(Request $request)
         return view('profile_edit', compact('user', 'locationName'));
     }
 
+
+    public function update(Request $request)
+{
+    $user = Auth::user();
+
+    $validated = $request->validate([
+        'name' => 'required|string|max:255',
+        'location_name' => 'nullable|string|max:255',
+        'description' => 'nullable|string',
+        'gallery_images.*' => 'nullable|image|max:4096',
+    ]);
+
+    $oldUserData = $user->getOriginal();
+
+    $user->name = $validated['name'];
+    
+    if ($request->filled('location_name')) {
+        $locationId = DB::table('locations')
+            ->where('name', $request->location_name)
+            ->value('id');
+
+        if ($locationId) {
+            $user->location = $locationId;
+        }
+    }
+
+    $user->description = $validated['description'] ?? $user->description;
+
+    // === Gallery Images ===
+    if ($request->hasFile('gallery_images')) {
+        $galleryPaths = [];
+
+        // Delete old gallery images if you want to replace them
+        if (!empty($user->gallery_images)) {
+            $oldGallery = is_array($user->gallery_images)
+                ? $user->gallery_images
+                : json_decode($user->gallery_images, true);
+            foreach ($oldGallery as $img) {
+                if (file_exists(public_path($img))) {
+                    unlink(public_path($img));
+                }
+            }
+        }
+
+        foreach ($request->file('gallery_images') as $file) {
+            $filename = time() . 'gallery' . $file->getClientOriginalName();
+            $file->move(public_path('uploads/gallery'), $filename);
+            $galleryPaths[] = 'uploads/gallery/' . $filename;
+        }
+
+        $user->gallery_images = json_encode($galleryPaths);
+    }
+    
+    $user->is_approved = 0;
+    $user->save();
+
+    \Log::info('Attempting to send email...');
+
+    try {
+        \Log::info('Creating mail instance...');
+        $mail = new ProfileUpdateMail($user);
+
+        \Log::info('Sending to: impulsedesignersfurniture@gmail.com');
+
+        Mail::to([
+            'impulsedesignersfurniture@gmail.com',
+            'harshamdigitz@gmail.com',
+            'iamshafimc@gmail.com'
+        ])->send($mail);
+
+        \Log::info('✅ Mail send method completed without exception');
+    } catch (\Exception $e) {
+        \Log::error('❌ Mail exception: ' . $e->getMessage());
+        \Log::error('Exception trace: ' . $e->getTraceAsString());
+    }
+
+    \Log::info('=== UPDATE METHOD COMPLETED ===');
+
+    return redirect()->route('profile')->with('success', 'Profile updated successfully!');
+}
+
 }
