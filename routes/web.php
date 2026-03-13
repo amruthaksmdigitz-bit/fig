@@ -142,7 +142,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/post/{feedId}/images', [FeedController::class, 'getImages'])->name('post.images');
     Route::post('/post/images/add', [FeedController::class, 'addImages'])->name('post.images.add');
     Route::post('/post/images/delete', [FeedController::class, 'deleteImage'])->name('post.images.delete');
-    Route::delete('/post/{feedId}', [FeedController::class, 'destroy'])->name('post.destroy');
+    Route::delete('/feeds/{feed}', [FeedController::class, 'destroy'])->name('feeds.destroy');
 });
 // Frontend blog routes
 Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');

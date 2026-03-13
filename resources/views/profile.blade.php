@@ -81,6 +81,7 @@
             display: flex;
             flex-direction: column;
             box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
         }
 
         .sidebar-header {
@@ -194,6 +195,10 @@
             position: relative;
         }
 
+        .user-dropdown {
+            position: relative;
+        }
+
         .user-btn {
             display: flex;
             align-items: center;
@@ -237,7 +242,7 @@
             position: absolute;
             right: 0;
             top: calc(100% + 0.5rem);
-            min-width: 200px;
+            min-width: 220px;
             background: white;
             border-radius: var(--radius-md);
             border: 1px solid rgba(208, 160, 79, 0.2);
@@ -246,36 +251,53 @@
             opacity: 0;
             visibility: hidden;
             transform: translateY(-10px);
-            transition: var(--transition);
-            z-index: 100;
+            transition: all 0.3s ease;
+            z-index: 1000;
         }
 
-        .user-menu:hover .dropdown-menu {
+        .dropdown-menu.show {
             opacity: 1;
             visibility: visible;
             transform: translateY(0);
         }
 
-        .dropdown-item {
+        .dropdown-menu a,
+        .dropdown-menu button {
             display: flex;
             align-items: center;
             gap: 0.75rem;
+            width: 100%;
             padding: 0.75rem 1rem;
+            border: none;
+            background: none;
             color: var(--gray-700);
             text-decoration: none;
+            cursor: pointer;
+            font-size: 0.875rem;
             border-radius: var(--radius-sm);
             transition: var(--transition);
-            font-size: 0.875rem;
         }
 
-        .dropdown-item:hover {
+        .dropdown-menu a:hover,
+        .dropdown-menu button:hover {
             background-color: rgba(208, 160, 79, 0.1);
             color: var(--primary-color);
         }
 
-        .dropdown-item i {
-            width: 16px;
+        .dropdown-menu a i,
+        .dropdown-menu button i {
+            width: 18px;
             color: var(--primary-color);
+        }
+
+        .dropdown-divider {
+            height: 1px;
+            background-color: var(--gray-200);
+            margin: 0.5rem 0;
+        }
+
+        #dropdownArrow {
+            transition: transform 0.3s ease;
         }
 
         .cover-edit-icon {
@@ -307,6 +329,21 @@
             position: relative;
         }
 
+        .cover-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .cover-image:hover .cover-overlay {
+            opacity: 1;
+        }
+
         /* Content Area */
         .content {
             padding: 2rem;
@@ -332,30 +369,22 @@
             background-position: center;
         }
 
-        .cover-overlay {
-            position: absolute;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            transition: var(--transition);
-        }
-
-        .cover-image:hover .cover-overlay {
-            opacity: 1;
-        }
-
         .profile-info {
             padding: 2rem;
             position: relative;
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .profile-image-wrapper {
+            flex-shrink: 0;
+            position: relative;
+            display: inline-block;
         }
 
         .profile-avatar {
-            position: absolute;
-            top: -60px;
-            left: 2rem;
             width: 120px;
             height: 120px;
             border-radius: var(--radius-lg);
@@ -364,8 +393,30 @@
             box-shadow: var(--shadow-lg);
         }
 
+        .profile-edit-icon {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: var(--primary-color);
+            color: white;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-md);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .profile-edit-icon:hover {
+            transform: scale(1.1);
+        }
+
         .profile-details {
-            margin-left: 140px;
+            flex: 1;
+            min-width: 280px;
         }
 
         .profile-name {
@@ -380,8 +431,9 @@
             align-items: center;
             gap: 1.5rem;
             color: var(--gray-600);
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
             font-size: 0.875rem;
+            flex-wrap: wrap;
         }
 
         .profile-meta-item {
@@ -392,16 +444,19 @@
 
         .profile-meta-item i {
             color: var(--primary-color);
+            width: 16px;
         }
 
         .profile-stats {
             display: flex;
             gap: 2rem;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
         }
 
         .stat {
             text-align: center;
+            min-width: 80px;
         }
 
         .stat-value {
@@ -418,6 +473,7 @@
         .profile-actions {
             display: flex;
             gap: 0.75rem;
+            flex-wrap: wrap;
         }
 
         .btn {
@@ -519,6 +575,7 @@
             background: var(--gray-50);
             border-radius: var(--radius);
             transition: var(--transition);
+            cursor: pointer;
         }
 
         .post-item:hover {
@@ -526,11 +583,83 @@
             box-shadow: var(--shadow-sm);
         }
 
+        .post-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
         .post-title {
-            font-size: 1rem;
+            font-size: 1.35rem;
             font-weight: 600;
             color: var(--gray-800);
-            margin-bottom: 0.5rem;
+            margin: 0;
+        }
+
+        .post-menu-container {
+            position: relative;
+        }
+
+        .post-menu-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6b7280;
+            transition: all 0.2s;
+        }
+
+        .post-menu-btn:hover {
+            background-color: #f3f4f6;
+            color: #dc2626;
+        }
+
+        .post-dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            min-width: 180px;
+            z-index: 1000;
+            margin-top: 8px;
+            overflow: hidden;
+            animation: slideDown 0.2s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.95rem;
+        }
+
+        .menu-item.delete-item {
+            color: #dc2626;
+        }
+
+        .menu-item.delete-item:hover {
+            background-color: #fef2f2;
         }
 
         .post-images {
@@ -546,6 +675,7 @@
             border-radius: var(--radius-sm);
             object-fit: cover;
             border: 1px solid var(--gray-200);
+            cursor: pointer;
         }
 
         .post-date {
@@ -609,130 +739,43 @@
             color: var(--gray-600);
         }
 
-        /* Upload button styling */
-        .upload-btn {
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: var(--radius);
-            font-weight: 500;
-            transition: var(--transition);
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.875rem;
-        }
-
-        .upload-btn:hover {
-            background-color: var(--primary-dark);
-            transform: translateY(-1px);
-        }
-
-        .profile-edit-icon {
-            position: absolute;
-            bottom: 10px;
-            right: 10px;
-            background: var(--primary-color);
-            color: white;
-            width: 34px;
-            height: 34px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: var(--shadow-md);
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .profile-edit-icon:hover {
-            transform: scale(1.1);
-        }
-
-        .user-dropdown {
-            position: relative;
-        }
-
-        .dropdown-menu {
-            position: absolute;
-            top: 100%;
-            right: 0;
-            background: #fff;
-            min-width: 200px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            border-radius: 6px;
-            overflow: hidden;
-            display: none;
-            z-index: 1000;
-            padding: 0.5rem 0;
-        }
-
-        .user-dropdown:hover .dropdown-menu {
-            display: block;
-        }
-
-        .dropdown-menu a,
-        .dropdown-menu button {
-            display: block;
-            width: 100%;
-            padding: 10px 15px;
-            text-align: left;
-            border: none;
-            background: none;
-            color: #333;
-            text-decoration: none;
-            cursor: pointer;
-            font-size: 0.875rem;
-        }
-
-        .dropdown-menu a:hover,
-        .dropdown-menu button:hover {
-            background: rgba(208, 160, 79, 0.1);
-            color: var(--primary-color);
-        }
-
-        .dropdown-divider {
-            height: 1px;
-            background-color: var(--gray-200);
-            margin: 0.5rem 0;
-        }
-
-        .cover-crop-container {
+        /* Crop Modals */
+        .cover-crop-container,
+        .profile-crop-container {
             width: 100%;
             height: 400px;
             overflow: hidden;
             background: #f0f0f0;
             border-radius: 8px;
+            position: relative;
         }
 
-        .cover-crop-container img {
+        .cover-crop-container img,
+        .profile-crop-container img {
             max-width: 100%;
             display: block;
         }
 
-        /* Cropper.js custom styles */
         .cropper-view-box,
         .cropper-face {
             border-radius: 8px;
         }
 
         .cropper-view-box {
-            outline: 2px solid var(--primary-color, #D0A04F);
+            outline: 2px solid var(--primary-color);
             outline-color: rgba(208, 160, 79, 0.75);
         }
 
         .cropper-line {
-            background-color: var(--primary-color, #D0A04F);
+            background-color: var(--primary-color);
         }
 
         .cropper-point {
-            background-color: var(--primary-color, #D0A04F);
+            background-color: var(--primary-color);
             width: 8px;
             height: 8px;
         }
 
-        /* Crop controls styling */
         .crop-controls .btn {
             width: 40px;
             height: 40px;
@@ -745,44 +788,217 @@
         }
 
         .crop-controls .btn:hover {
-            background-color: var(--primary-color, #D0A04F);
+            background-color: var(--primary-color);
             color: white;
             transform: scale(1.1);
         }
 
-        /* Aspect ratio buttons */
-        .aspect-ratio-controls .btn.active {
-            background-color: var(--primary-color, #D0A04F);
+        .aspect-ratio-controls .btn.active,
+        .size-presets .btn.active {
+            background-color: var(--primary-color);
             color: white;
-            border-color: var(--primary-color, #D0A04F);
+            border-color: var(--primary-color);
         }
 
-        /* Modal animation */
-        .modal.fade .modal-dialog {
-            transform: scale(0.95);
-            transition: transform 0.2s ease-out;
+        .preview-section {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border: 1px solid rgba(208, 160, 79, 0.2);
+            border-radius: 8px;
         }
 
-        .modal.show .modal-dialog {
-            transform: scale(1);
+        .preview-circle {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 2px solid var(--primary-color);
         }
 
-        /* Image preview while loading */
-        .cover-crop-container::before {
-            content: 'Loading image...';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: #999;
-            font-size: 14px;
+        .preview-square {
+            width: 60px;
+            height: 60px;
+            overflow: hidden;
+            border-radius: 8px;
+            border: 2px solid var(--primary-color);
         }
 
-        .cover-crop-container img:not([src=""])+.cover-crop-container::before {
+        .preview-circle img,
+        .preview-square img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Delete Confirmation Modal */
+        .delete-modal {
             display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
         }
 
-        /* Responsive */
+        .delete-modal.active {
+            display: flex;
+        }
+
+        .delete-modal-content {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            animation: scaleIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .delete-modal-icon {
+            width: 80px;
+            height: 80px;
+            background: #fee2e2;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            color: #dc2626;
+            font-size: 2.5rem;
+        }
+
+        .delete-modal-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 0.5rem;
+        }
+
+        .delete-modal-message {
+            color: #6b7280;
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .delete-modal-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .delete-modal-btn {
+            flex: 1;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.95rem;
+        }
+
+        .delete-modal-btn.cancel {
+            background: #f3f4f6;
+            color: #4b5563;
+        }
+
+        .delete-modal-btn.cancel:hover {
+            background: #e5e7eb;
+        }
+
+        .delete-modal-btn.delete {
+            background: #dc2626;
+            color: white;
+        }
+
+        .delete-modal-btn.delete:hover {
+            background: #b91c1c;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+        }
+
+        .delete-modal-btn.delete:disabled {
+            background: #fca5a5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Toast */
+        .toast-container {
+            z-index: 99999;
+        }
+
+        /* Mobile Menu Toggle */
+        .mobile-menu-toggle {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            box-shadow: 0 4px 15px rgba(208, 160, 79, 0.4);
+            z-index: 1001;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-menu-toggle:hover {
+            background: var(--primary-dark);
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(208, 160, 79, 0.5);
+        }
+
+        .mobile-menu-toggle:active {
+            transform: scale(0.95);
+        }
+
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .sidebar-overlay.active {
+            opacity: 1;
+        }
+
+        /* Responsive Design */
         @media (max-width: 1024px) {
             .sidebar {
                 width: 80px;
@@ -809,204 +1025,144 @@
         }
 
         @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                width: 260px;
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .sidebar-brand span,
+            .nav-link span {
+                display: inline;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .mobile-menu-toggle {
+                display: flex;
+            }
+
+            .sidebar-overlay.active {
+                display: block;
+            }
+
             .header-content {
                 flex-direction: column;
                 gap: 1rem;
                 align-items: flex-start;
             }
 
+            .page-title h1 {
+                font-size: 1.25rem;
+            }
+
             .content {
                 padding: 1rem;
             }
 
+            .profile-info {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                padding: 1.5rem;
+            }
+
+            .profile-image-wrapper {
+                margin-bottom: 0.5rem;
+            }
+
             .profile-avatar {
-                position: relative;
-                top: 0;
-                left: 0;
-                margin-bottom: 1rem;
+                width: 120px;
+                height: 120px;
             }
 
             .profile-details {
-                margin-left: 0;
+                width: 100%;
+                min-width: auto;
+            }
+
+            .profile-meta {
+                justify-content: center;
+            }
+
+            .profile-meta-item {
+                justify-content: center;
             }
 
             .profile-stats {
-                flex-wrap: wrap;
                 justify-content: center;
             }
 
             .profile-actions {
-                flex-wrap: wrap;
+                justify-content: center;
             }
 
             .user-btn .user-info {
                 display: none;
             }
 
-            .cropper-view-box,
-            .cropper-face {
-                border-radius: 12px;
-            }
-
-            .cropper-container {
-                width: 100%;
-                height: 420px !important;
-            }
-
-            .cover-crop-container {
-                width: 100%;
-                height: 400px;
-                overflow: hidden;
-                background: #000;
-            }
-
-            .cover-crop-container img {
-                max-width: 100%;
-                display: block;
-            }
-
-            .cropper-view-box,
-            .cropper-face {
-                border-radius: 12px;
-            }
-
-            .cropper-crop-box {
-                width: 100% !important;
-                height: 100% !important;
-            }
-        }
-
-        .profile-crop-container {
-            width: 100%;
-            height: 350px;
-            overflow: hidden;
-            background: #f0f0f0;
-            border-radius: 12px;
-            position: relative;
-        }
-
-        .profile-crop-container img {
-            max-width: 100%;
-            display: block;
-        }
-
-        /* Custom cropper styles for profile */
-        .profile-crop-container+.cropper-container {
-            border-radius: 12px;
-        }
-
-        .cropper-view-box {
-            border-radius: 12px;
-            outline: 2px solid var(--primary-color, #D0A04F);
-            outline-color: rgba(208, 160, 79, 0.75);
-        }
-
-        .cropper-face {
-            background-color: inherit;
-            border-radius: 12px;
-        }
-
-        .cropper-line {
-            background-color: var(--primary-color, #D0A04F);
-        }
-
-        .cropper-point {
-            background-color: var(--primary-color, #D0A04F);
-            width: 8px;
-            height: 8px;
-            border-radius: 4px;
-        }
-
-        .preview-circle img {
-            transition: all 0.2s;
-        }
-
-        .preview-square img {
-            transition: all 0.2s;
-        }
-
-        /* Crop controls for profile */
-        .crop-controls .btn {
-            width: 36px;
-            height: 36px;
-            padding: 0;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            transition: all 0.2s;
-            background: white;
-            border: 1px solid #dee2e6;
-        }
-
-        .crop-controls .btn:hover {
-            background-color: var(--primary-color, #D0A04F);
-            color: white;
-            transform: scale(1.1);
-            border-color: var(--primary-color, #D0A04F);
-        }
-
-        /* Size preset buttons */
-        .size-presets .btn.active {
-            background-color: var(--primary-color, #D0A04F);
-            color: white;
-            border-color: var(--primary-color, #D0A04F);
-        }
-
-        .size-presets .btn {
-            transition: all 0.2s;
-        }
-
-        .size-presets .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Preview section */
-        .preview-section {
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            border: 1px solid rgba(208, 160, 79, 0.2);
-        }
-
-        /* Modal animations */
-        .modal.fade .modal-dialog {
-            transform: scale(0.95);
-            transition: transform 0.2s ease-out;
-        }
-
-        .modal.show .modal-dialog {
-            transform: scale(1);
-        }
-
-        /* Loading indicator */
-        .profile-crop-container.loading::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 40px;
-            height: 40px;
-            margin: -20px 0 0 -20px;
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid var(--primary-color, #D0A04F);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-
-        /* Responsive design */
-        @media (max-width: 576px) {
+            .cover-crop-container,
             .profile-crop-container {
-                height: 250px;
+                height: 300px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .profile-meta {
+                flex-direction: column;
+                gap: 0.75rem;
+                align-items: flex-start;
+                width: 100%;
+            }
+
+            .profile-meta-item {
+                width: 100%;
+                justify-content: flex-start;
+            }
+
+            .profile-stats {
+                width: 100%;
+                justify-content: space-around;
+            }
+
+            .stat {
+                min-width: 60px;
+            }
+
+            .profile-actions {
+                width: 100%;
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .post-images {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .delete-modal-content {
+                padding: 1.5rem;
+            }
+
+            .delete-modal-icon {
+                width: 60px;
+                height: 60px;
+                font-size: 2rem;
+            }
+
+            .delete-modal-title {
+                font-size: 1.25rem;
+            }
+
+            .delete-modal-actions {
+                flex-direction: column;
             }
 
             .crop-controls .btn {
@@ -1014,51 +1170,20 @@
                 height: 32px;
                 font-size: 12px;
             }
-
-            .size-presets .btn {
-                font-size: 12px;
-                padding: 4px 8px;
-            }
         }
 
-        /* Tooltip for keyboard shortcuts */
-        .keyboard-shortcut {
-            position: relative;
-            cursor: help;
-        }
-
-        .keyboard-shortcut:hover::after {
-            content: attr(data-shortcut);
-            position: absolute;
-            bottom: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #333;
-            color: white;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-            white-space: nowrap;
-            z-index: 1000;
-        }
-
-        /* Success animation */
-        @keyframes pulse {
-            0% {
-                transform: scale(1);
+        @media (max-width: 360px) {
+            .profile-meta-item {
+                font-size: 0.8rem;
             }
 
-            50% {
-                transform: scale(1.05);
+            .stat-value {
+                font-size: 1rem;
             }
 
-            100% {
-                transform: scale(1);
+            .stat-label {
+                font-size: 0.75rem;
             }
-        }
-
-        .profile-avatar.updated {
-            animation: pulse 0.5s ease-in-out;
         }
     </style>
 </head>
@@ -1087,7 +1212,6 @@
                     <span>Edit Profile</span>
                 </a>
             </div>
-            <!-- Gallery Menu Item -->
             <div class="nav-item">
                 <a href="{{ route('profile.gallery') }}"
                     class="nav-link {{ request()->routeIs('profile.gallery') ? 'active' : '' }}">
@@ -1118,6 +1242,14 @@
         </nav>
     </div>
 
+    <!-- Mobile Menu Toggle Button -->
+    <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" onclick="closeMobileMenu()"></div>
+
     <!-- Main Content -->
     <div class="main-content">
 
@@ -1139,7 +1271,7 @@
                 <div class="header-actions">
                     <div class="user-menu">
                         <div class="user-dropdown">
-                            <button class="user-btn">
+                            <button class="user-btn" onclick="toggleUserDropdown(event)" id="userMenuButton">
                                 <img src="{{ Auth::user()->profile_image ? asset(Auth::user()->profile_image) : 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->name) . '&background=D0A04F&color=fff' }}"
                                     class="user-avatar" alt="{{ Auth::user()->name }}">
 
@@ -1148,10 +1280,10 @@
                                     <div class="user-role">{{ Auth::user()->profession ?? 'User' }}</div>
                                 </div>
 
-                                <i class="fas fa-chevron-down"></i>
+                                <i class="fas fa-chevron-down" id="dropdownArrow"></i>
                             </button>
 
-                            <div class="dropdown-menu">
+                            <div class="dropdown-menu" id="userDropdownMenu">
                                 <a href="{{ url('/') }}">
                                     <i class="fas fa-home"></i> Home
                                 </a>
@@ -1191,7 +1323,6 @@
                     data-original="{{ Auth::user()->cover_image ? asset(Auth::user()->cover_image) : '' }}">
 
                     <div class="cover-overlay">
-                        <!-- Edit Icon instead of Camera button -->
                         <div class="cover-edit-icon"
                             onclick="event.stopPropagation(); document.getElementById('coverInput').click()"
                             title="Change Cover Image">
@@ -1204,16 +1335,14 @@
                 <div class="profile-info">
                     <input type="file" id="profileInput" accept="image/*" hidden>
 
-                    <div style="position: relative; display: inline-block;">
-                        <!-- Profile Image (click to view original) -->
+                    <div class="profile-image-wrapper">
                         <img id="profileAvatar"
                             src="{{ Auth::user()->profile_thumbnail ? asset(Auth::user()->profile_thumbnail) : (Auth::user()->profile_image ? asset(Auth::user()->profile_image) : 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->name) . '&background=D0A04F&color=fff') }}"
-                            class="profile-avatar cursor-pointer" alt="{{ Auth::user()->name }}"
+                            class="profile-avatar" alt="{{ Auth::user()->name }}"
                             onclick="openOriginalProfileImage()" style="cursor: pointer;"
                             data-original="{{ Auth::user()->profile_image ? asset(Auth::user()->profile_image) : '' }}">
 
-                        <!-- Edit Button instead of Camera Icon -->
-                        <div class="profile-edit-icon" title="Change Profile Picture">
+                        <div class="profile-edit-icon" onclick="document.getElementById('profileInput').click()" title="Change Profile Picture">
                             <i class="fas fa-pencil-alt"></i>
                         </div>
                     </div>
@@ -1255,7 +1384,6 @@
                                 <i class="fas fa-edit"></i> Edit Profile
                             </a>
 
-                            <!-- Share Button -->
                             <button class="btn btn-outline" id="shareProfileBtn" data-bs-toggle="modal"
                                 data-bs-target="#shareModal">
                                 <i class="fas fa-share-alt"></i> Share
@@ -1282,7 +1410,7 @@
                         </div>
                     </div>
 
-                    <!-- My Posts Section (Under About) -->
+                    <!-- My Posts Section -->
                     <div class="card">
                         <div class="card-header">
                             <h2 class="card-title">
@@ -1292,18 +1420,41 @@
 
                         <div class="posts-list">
                             @forelse($feeds as $feed)
-                                <div class="post-item" data-post-id="{{ $feed->id }}" style="cursor: pointer;">
-                                    <h3 class="post-title">{{ $feed->title }}</h3>
+                                <div class="post-item" data-post-id="{{ $feed->id }}">
+                                    <div class="post-header">
+                                        <h3 class="post-title">{{ $feed->title }}</h3>
+
+                                        <div class="post-menu-container">
+                                            <button class="post-menu-btn" onclick="togglePostMenu({{ $feed->id }}, event)">
+                                                <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                                                    <circle cx="10" cy="4" r="2" />
+                                                    <circle cx="10" cy="10" r="2" />
+                                                    <circle cx="10" cy="16" r="2" />
+                                                </svg>
+                                            </button>
+
+                                            <div class="post-dropdown-menu" id="post-menu-{{ $feed->id }}" style="display: none;">
+                                                <div class="menu-item delete-item" onclick="confirmDeletePost({{ $feed->id }}, event)">
+                                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                        <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2" />
+                                                        <line x1="10" y1="11" x2="10" y2="17" />
+                                                        <line x1="14" y1="11" x2="14" y2="17" />
+                                                    </svg>
+                                                    <span>Delete Post</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
                                     @if ($feed->images && $feed->images->count())
                                         <div class="post-images">
                                             @foreach ($feed->images->take(3) as $image)
                                                 <img src="{{ asset('storage/' . $image->image) }}"
-                                                    class="post-thumbnail cursor-pointer" alt="Post image"
+                                                    class="post-thumbnail" alt="Post image"
                                                     onclick="event.stopPropagation(); openPostGallery({{ $feed->id }})">
                                             @endforeach
                                             @if ($feed->images->count() > 3)
-                                                <div class="post-thumbnail d-flex align-items-center justify-content-center bg-light cursor-pointer"
+                                                <div class="post-thumbnail d-flex align-items-center justify-content-center bg-light"
                                                     onclick="event.stopPropagation(); openPostGallery({{ $feed->id }})">
                                                     +{{ $feed->images->count() - 3 }}
                                                 </div>
@@ -1398,7 +1549,6 @@
                 </div>
             </div>
         </main>
-        <input type="file" id="galleryInput" multiple accept="image/*" hidden>
     </div>
 
     <!-- Share Modal -->
@@ -1412,7 +1562,6 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <!-- Profile Preview -->
                     <div class="card mb-4 border-0 bg-light">
                         <div class="card-body">
                             <div class="d-flex align-items-center">
@@ -1430,10 +1579,8 @@
                         </div>
                     </div>
 
-                    <!-- Share Via Label -->
                     <p class="text-muted mb-3">Share via:</p>
 
-                    <!-- Social Media Grid -->
                     <div class="row g-2 mb-3">
                         <div class="col-4 col-md-3">
                             <button onclick="shareOnFacebook()" class="btn btn-outline-primary w-100 py-3"
@@ -1465,7 +1612,6 @@
                         </div>
                     </div>
 
-                    <!-- Direct Link Input -->
                     <div class="mt-4">
                         <label class="form-label text-muted small mb-2">Or copy direct link:</label>
                         <div class="input-group">
@@ -1526,14 +1672,12 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="cover-crop-container"
-                        style="max-height: 500px; overflow: hidden; background: #f5f5f5;">
+                    <div class="cover-crop-container">
                         <img id="coverCropImage" src="" alt="Cover image to crop"
                             style="max-width: 100%; display: block;">
                     </div>
 
-                    <!-- Crop Controls -->
-                    <div class="crop-controls mt-3 d-flex justify-content-center gap-2">
+                    <div class="crop-controls mt-3 d-flex justify-content-center gap-2 flex-wrap">
                         <button type="button" class="btn btn-sm btn-outline-secondary"
                             onclick="coverCropper.zoom(0.1)">
                             <i class="fas fa-search-plus"></i>
@@ -1564,7 +1708,6 @@
                         </button>
                     </div>
 
-                    <!-- Aspect Ratio Options -->
                     <div class="aspect-ratio-controls mt-3">
                         <label class="form-label text-muted small">Aspect Ratio:</label>
                         <div class="d-flex gap-2 flex-wrap">
@@ -1615,13 +1758,11 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="profile-crop-container"
-                        style="max-height: 400px; overflow: hidden; background: #f5f5f5; border-radius: 12px;">
+                    <div class="profile-crop-container">
                         <img id="profileCropImage" src="" alt="Profile image to crop"
                             style="max-width: 100%; display: block;">
                     </div>
 
-                    <!-- Crop Controls -->
                     <div class="crop-controls mt-3 d-flex justify-content-center gap-2 flex-wrap">
                         <button type="button" class="btn btn-sm btn-outline-secondary"
                             onclick="profileCropper.zoom(0.1)">
@@ -1661,7 +1802,6 @@
                         </button>
                     </div>
 
-                    <!-- Size Presets -->
                     <div class="size-presets mt-3">
                         <label class="form-label text-muted small">Size Presets:</label>
                         <div class="d-flex gap-2 flex-wrap">
@@ -1680,19 +1820,14 @@
                         </div>
                     </div>
 
-                    <!-- Preview -->
                     <div class="preview-section mt-3 p-3 bg-light rounded">
                         <label class="form-label text-muted small mb-2">Preview:</label>
                         <div class="d-flex align-items-center gap-3">
-                            <div class="preview-circle"
-                                style="width: 60px; height: 60px; border-radius: 12px; overflow: hidden; border: 2px solid var(--primary-color);">
-                                <img id="profilePreview" src="" alt="Preview"
-                                    style="width: 100%; height: 100%; object-fit: cover; display: none;">
+                            <div class="preview-circle">
+                                <img id="profilePreview" src="" alt="Preview" style="display: none;">
                             </div>
-                            <div class="preview-square"
-                                style="width: 60px; height: 60px; overflow: hidden; border-radius: 8px; border: 2px solid var(--primary-color);">
-                                <img id="profilePreviewSquare" src="" alt="Preview square"
-                                    style="width: 100%; height: 100%; object-fit: cover; display: none;">
+                            <div class="preview-square">
+                                <img id="profilePreviewSquare" src="" alt="Preview square" style="display: none;">
                             </div>
                             <small class="text-muted">Rounded & Square preview</small>
                         </div>
@@ -1735,6 +1870,113 @@
         const csrf = '{{ csrf_token() }}';
 
         // ============================================
+        // USER DROPDOWN FUNCTIONALITY
+        // ============================================
+        function toggleUserDropdown(event) {
+            event.stopPropagation();
+            const dropdown = document.getElementById('userDropdownMenu');
+            const arrow = document.getElementById('dropdownArrow');
+           
+            dropdown.classList.toggle('show');
+            if (arrow) {
+                arrow.style.transform = dropdown.classList.contains('show') ? 'rotate(180deg)' : '';
+            }
+        }
+
+        document.addEventListener('click', function(event) {
+            const dropdown = document.getElementById('userDropdownMenu');
+            const button = document.getElementById('userMenuButton');
+           
+            if (button && dropdown && !button.contains(event.target) && !dropdown.contains(event.target)) {
+                dropdown.classList.remove('show');
+                const arrow = document.getElementById('dropdownArrow');
+                if (arrow) {
+                    arrow.style.transform = '';
+                }
+            }
+        });
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                const dropdown = document.getElementById('userDropdownMenu');
+                if (dropdown) {
+                    dropdown.classList.remove('show');
+                    const arrow = document.getElementById('dropdownArrow');
+                    if (arrow) {
+                        arrow.style.transform = '';
+                    }
+                }
+            }
+        });
+
+        document.getElementById('userDropdownMenu')?.addEventListener('click', function(event) {
+            event.stopPropagation();
+        });
+
+        // ============================================
+        // MOBILE MENU FUNCTIONALITY
+        // ============================================
+        function toggleMobileMenu() {
+            const sidebar = document.querySelector('.sidebar');
+            const toggleBtn = document.querySelector('.mobile-menu-toggle i');
+            const overlay = document.querySelector('.sidebar-overlay');
+
+            sidebar.classList.toggle('active');
+
+            if (sidebar.classList.contains('active')) {
+                toggleBtn.classList.remove('fa-bars');
+                toggleBtn.classList.add('fa-times');
+                document.body.style.overflow = 'hidden';
+                overlay.classList.add('active');
+            } else {
+                toggleBtn.classList.remove('fa-times');
+                toggleBtn.classList.add('fa-bars');
+                document.body.style.overflow = '';
+                overlay.classList.remove('active');
+            }
+        }
+
+        function closeMobileMenu() {
+            const sidebar = document.querySelector('.sidebar');
+            const toggleBtn = document.querySelector('.mobile-menu-toggle i');
+            const overlay = document.querySelector('.sidebar-overlay');
+
+            sidebar.classList.remove('active');
+            if (toggleBtn) {
+                toggleBtn.classList.remove('fa-times');
+                toggleBtn.classList.add('fa-bars');
+            }
+            document.body.style.overflow = '';
+            if (overlay) {
+                overlay.classList.remove('active');
+            }
+        }
+
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768) {
+                const sidebar = document.querySelector('.sidebar');
+                const toggleBtn = document.querySelector('.mobile-menu-toggle i');
+                const overlay = document.querySelector('.sidebar-overlay');
+
+                sidebar.classList.remove('active');
+                if (toggleBtn) {
+                    toggleBtn.classList.remove('fa-times');
+                    toggleBtn.classList.add('fa-bars');
+                }
+                document.body.style.overflow = '';
+                if (overlay) {
+                    overlay.classList.remove('active');
+                }
+            }
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && window.innerWidth <= 768) {
+                closeMobileMenu();
+            }
+        });
+
+        // ============================================
         // SHARE FUNCTIONALITY
         // ============================================
         const profileData = {
@@ -1756,7 +1998,6 @@
 
             document.getElementById('profileLinkInput').value = profileData.url;
 
-            // Initialize post items
             initializePostItems();
             initializeModalHandlers();
         });
@@ -1824,7 +2065,7 @@
         }
 
         // ============================================
-        // POST GALLERY FUNCTIONALITY
+        // POST MANAGEMENT
         // ============================================
         let currentPostId = null;
         let currentModal = null;
@@ -1833,8 +2074,8 @@
             const postItems = document.querySelectorAll('.post-item');
             postItems.forEach(item => {
                 item.addEventListener('click', function(e) {
-                    // Don't open if clicking on an image (to allow lightbox)
-                    if (e.target.classList.contains('post-thumbnail')) {
+                    if (e.target.classList.contains('post-thumbnail') ||
+                        e.target.closest('.post-menu-container')) {
                         return;
                     }
 
@@ -1846,8 +2087,170 @@
             });
         }
 
+        function togglePostMenu(postId, event) {
+            event.stopPropagation();
+           
+            document.querySelectorAll('[id^="post-menu-"]').forEach(menu => {
+                if (menu.id !== `post-menu-${postId}`) {
+                    menu.style.display = 'none';
+                }
+            });
+           
+            const menu = document.getElementById(`post-menu-${postId}`);
+            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+        }
+
+        document.addEventListener('click', function(event) {
+            if (!event.target.closest('.post-menu-container')) {
+                document.querySelectorAll('[id^="post-menu-"]').forEach(menu => {
+                    menu.style.display = 'none';
+                });
+            }
+        });
+
+        function confirmDeletePost(postId, event) {
+            event.stopPropagation();
+           
+            document.getElementById(`post-menu-${postId}`).style.display = 'none';
+           
+            showDeleteModal(postId);
+        }
+
+        function showDeleteModal(postId) {
+            const existingModal = document.querySelector('.delete-modal');
+            if (existingModal) {
+                existingModal.remove();
+            }
+           
+            const modal = document.createElement('div');
+            modal.className = 'delete-modal active';
+            modal.innerHTML = `
+                <div class="delete-modal-content">
+                    <div class="delete-modal-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <h3 class="delete-modal-title">Delete Post?</h3>
+                    <p class="delete-modal-message">This action cannot be undone. The post and all its images will be permanently deleted.</p>
+                    <div class="delete-modal-actions">
+                        <button class="delete-modal-btn cancel" onclick="closeDeleteModal()">Cancel</button>
+                        <button class="delete-modal-btn delete" onclick="deletePost(${postId})" id="deletePostBtn">Delete</button>
+                    </div>
+                </div>
+            `;
+           
+            document.body.appendChild(modal);
+        }
+
+        function closeDeleteModal() {
+            const modal = document.querySelector('.delete-modal');
+            if (modal) {
+                modal.remove();
+            }
+        }
+
+        function deletePost(postId) {
+            const deleteBtn = document.getElementById('deletePostBtn');
+            if (deleteBtn) {
+                deleteBtn.disabled = true;
+                deleteBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Deleting...';
+            }
+           
+            const formData = new FormData();
+            formData.append('_token', csrf);
+            formData.append('_method', 'DELETE');
+           
+            const postElement = document.querySelector(`.post-item[data-post-id="${postId}"]`);
+            if (postElement) {
+                postElement.style.opacity = '0.5';
+            }
+           
+            fetch(`/feeds/${postId}`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': csrf,
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json'
+                },
+                body: formData
+            })
+            .then(response => {
+                const contentType = response.headers.get('content-type');
+                if (contentType && contentType.includes('application/json')) {
+                    return response.json();
+                }
+               
+                if (response.ok || response.redirected) {
+                    return { status: true };
+                }
+               
+                throw new Error('Network response was not ok');
+            })
+            .then(data => {
+                if (data.status || data.success || data === true) {
+                    handleSuccessfulDelete(postId);
+                } else {
+                    throw new Error(data.message || 'Failed to delete post');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+               
+                if (postElement) {
+                    postElement.style.opacity = '1';
+                }
+               
+                toast('❌ ' + (error.message || 'Failed to delete post'));
+               
+                if (deleteBtn) {
+                    deleteBtn.disabled = false;
+                    deleteBtn.innerHTML = 'Delete';
+                }
+            });
+        }
+
+        function handleSuccessfulDelete(postId) {
+            const postElement = document.querySelector(`.post-item[data-post-id="${postId}"]`);
+            if (postElement) {
+                postElement.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+                postElement.style.opacity = '0';
+                postElement.style.transform = 'scale(0.9)';
+               
+                setTimeout(() => {
+                    postElement.remove();
+                    updatePostCount();
+                    checkEmptyPosts();
+                }, 300);
+            }
+           
+            closeDeleteModal();
+           
+            toast('✅ Post deleted successfully');
+        }
+
+        function updatePostCount() {
+            const postCountElement = document.querySelector('.stat-value');
+            if (postCountElement) {
+                const currentCount = parseInt(postCountElement.textContent) || 0;
+                postCountElement.textContent = Math.max(0, currentCount - 1);
+            }
+        }
+
+        function checkEmptyPosts() {
+            const postsList = document.querySelector('.posts-list');
+            if (postsList && postsList.children.length === 0) {
+                postsList.innerHTML = `
+                    <div class="empty-posts">
+                        <i class="fas fa-images"></i>
+                        <p>No posts yet. Create your first post!</p>
+                    </div>
+                `;
+            }
+        }
+
+        // ============================================
+        // POST GALLERY FUNCTIONALITY
+        // ============================================
         function initializeModalHandlers() {
-            // Handle modal hidden event to ensure cleanup
             const modalEl = document.getElementById('postImagesModal');
             if (modalEl) {
                 modalEl.addEventListener('hidden.bs.modal', function() {
@@ -1855,7 +2258,6 @@
                 });
             }
 
-            // Handle modal close button
             const closeBtn = document.querySelector('#postImagesModal .btn-close');
             if (closeBtn) {
                 closeBtn.addEventListener('click', function(e) {
@@ -1864,7 +2266,6 @@
                 });
             }
 
-            // Handle modal footer close button
             const footerCloseBtn = document.querySelector('#postImagesModal .modal-footer .btn-light');
             if (footerCloseBtn) {
                 footerCloseBtn.addEventListener('click', function(e) {
@@ -1873,7 +2274,6 @@
                 });
             }
 
-            // Handle escape key
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape' && currentModal) {
                     hideModal();
@@ -1882,16 +2282,13 @@
         }
 
         function cleanupModal() {
-            // Remove any lingering modal backdrops
             const backdrops = document.querySelectorAll('.modal-backdrop');
             backdrops.forEach(backdrop => backdrop.remove());
 
-            // Reset body classes and styles
             document.body.classList.remove('modal-open');
             document.body.style.overflow = '';
             document.body.style.paddingRight = '';
 
-            // Reset modal instance
             if (currentModal) {
                 currentModal = null;
             }
@@ -1901,7 +2298,6 @@
             if (currentModal) {
                 currentModal.hide();
             } else {
-                // Fallback cleanup if modal instance is lost
                 cleanupModal();
                 const modalEl = document.getElementById('postImagesModal');
                 if (modalEl) {
@@ -1914,12 +2310,10 @@
         function showModal() {
             const modalEl = document.getElementById('postImagesModal');
 
-            // Dispose existing modal instance if any
             if (currentModal) {
                 currentModal.dispose();
             }
 
-            // Create new modal instance
             currentModal = new bootstrap.Modal(modalEl, {
                 backdrop: 'static',
                 keyboard: true
@@ -1933,7 +2327,6 @@
 
             currentPostId = postId;
 
-            // Show loading state
             const container = document.getElementById('postImagesContainer');
             container.innerHTML =
                 '<div class="col-12 text-center py-5"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div><p class="mt-2">Loading images...</p></div>';
@@ -2003,14 +2396,12 @@
             Fancybox.bind("[data-fancybox='post-gallery']", {});
         }
 
-        // Handle adding new images
         document.getElementById('modalImageInput')?.addEventListener('change', function() {
             if (!this.files.length || !currentPostId) {
                 toast('❌ No post selected or no files chosen');
                 return;
             }
 
-            // Validate file types
             const validTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
             const files = Array.from(this.files);
             const invalidFiles = files.filter(file => !validTypes.includes(file.type));
@@ -2021,7 +2412,6 @@
                 return;
             }
 
-            // Show uploading state
             const uploadBtn = document.querySelector(
                 '[onclick="document.getElementById(\'modalImageInput\').click()"]');
             const originalText = uploadBtn.innerHTML;
@@ -2052,7 +2442,6 @@
                 .then(data => {
                     if (data.status) {
                         toast('✅ Images added successfully');
-                        // Refresh the gallery
                         openPostGallery(currentPostId);
                     } else {
                         throw new Error(data.message || 'Upload failed');
@@ -2063,14 +2452,12 @@
                     toast('❌ ' + err.message);
                 })
                 .finally(() => {
-                    // Reset upload button
                     uploadBtn.innerHTML = originalText;
                     uploadBtn.disabled = false;
                     this.value = '';
                 });
         });
 
-        // Delete post image
         window.deletePostImage = function(imageId, event) {
             if (event) {
                 event.stopPropagation();
@@ -2080,7 +2467,6 @@
                 return;
             }
 
-            // Find and disable the delete button to prevent double clicks
             const deleteBtn = event?.target?.closest('button');
             if (deleteBtn) {
                 deleteBtn.disabled = true;
@@ -2107,7 +2493,6 @@
                 .then(data => {
                     if (data.status) {
                         toast('✅ Image deleted successfully');
-                        // Refresh the gallery
                         openPostGallery(currentPostId);
                     } else {
                         throw new Error(data.message || 'Delete failed');
@@ -2116,7 +2501,6 @@
                 .catch(err => {
                     console.error('Error deleting image:', err);
                     toast('❌ ' + err.message);
-                    // Re-enable the delete button if there's an error
                     if (deleteBtn) {
                         deleteBtn.disabled = false;
                         deleteBtn.innerHTML = '<i class="fas fa-trash"></i>';
@@ -2125,41 +2509,80 @@
         }
 
         // ============================================
+        // VIEW ORIGINAL IMAGES
+        // ============================================
+        window.openOriginalCoverImage = function() {
+            const coverContainer = document.getElementById('coverImageContainer');
+            const originalSrc = coverContainer.dataset.original;
+           
+            if (originalSrc && originalSrc !== '') {
+                Fancybox.show([{
+                    src: originalSrc,
+                    type: 'image',
+                    caption: '{{ Auth::user()->name }} - Cover Image'
+                }]);
+            } else {
+                const bgImage = coverContainer.style.backgroundImage;
+                const url = bgImage.replace(/^url\(['"](.+)['"]\)/, '$1');
+                Fancybox.show([{
+                    src: url,
+                    type: 'image',
+                    caption: '{{ Auth::user()->name }} - Cover Image'
+                }]);
+            }
+        }
+
+        document.getElementById('profileAvatar').addEventListener('click', function(e) {
+            if (e.target.classList.contains('profile-edit-icon') || e.target.closest('.profile-edit-icon')) {
+                return;
+            }
+
+            const originalSrc = this.dataset.original;
+
+            if (originalSrc && originalSrc !== '') {
+                Fancybox.show([{
+                    src: originalSrc,
+                    type: 'image',
+                    caption: '{{ Auth::user()->name }} - Profile Picture'
+                }]);
+            } else {
+                Fancybox.show([{
+                    src: this.src,
+                    type: 'image',
+                    caption: '{{ Auth::user()->name }} - Profile Picture'
+                }]);
+            }
+        });
+
+        // ============================================
         // COVER IMAGE CROPPING
         // ============================================
         let coverCropper = null;
         let coverCropModal = null;
 
         document.addEventListener('DOMContentLoaded', function() {
-            // Initialize cover crop modal
             const modalElement = document.getElementById('coverCropModal');
             coverCropModal = new bootstrap.Modal(modalElement);
 
-            // Handle modal hidden event
             modalElement.addEventListener('hidden.bs.modal', function() {
                 if (coverCropper) {
                     coverCropper.destroy();
                     coverCropper = null;
                 }
-                // Clear the file input
                 document.getElementById('coverInput').value = '';
             });
         });
 
-        // Set cover aspect ratio
         window.setCoverAspectRatio = function(ratio) {
             if (coverCropper) {
                 coverCropper.setAspectRatio(ratio);
 
-                // Update active button state
                 document.querySelectorAll('.aspect-ratio-controls .btn').forEach(btn => {
                     btn.classList.remove('active');
                 });
 
-                // Find and activate the clicked button
                 const buttons = document.querySelectorAll('.aspect-ratio-controls .btn');
                 if (isNaN(ratio)) {
-                    // Free aspect ratio
                     buttons.forEach(btn => {
                         if (btn.textContent.trim() === 'Free') {
                             btn.classList.add('active');
@@ -2176,121 +2599,16 @@
             }
         };
 
-
-        // ============================================
-// VIEW ORIGINAL COVER IMAGE
-// ============================================
-window.openOriginalCoverImage = function() {
-    const coverContainer = document.getElementById('coverImageContainer');
-    const originalSrc = coverContainer.dataset.original;
-    
-    if (originalSrc && originalSrc !== '') {
-        Fancybox.show([{
-            src: originalSrc,
-            type: 'image',
-            caption: '{{ Auth::user()->name }} - Cover Image'
-        }]);
-    } else {
-        // If no custom image, get the background image URL
-        const bgImage = coverContainer.style.backgroundImage;
-        const url = bgImage.replace(/^url\(['"](.+)['"]\)/, '$1');
-        Fancybox.show([{
-            src: url,
-            type: 'image',
-            caption: '{{ Auth::user()->name }} - Cover Image'
-        }]);
-    }
-}
-
-        // Handle cover input change - Show crop modal
-       // Remove the old changeCoverBtn handler and add these:
-
-// Handle edit icon click (already handled inline, but we need to ensure file input exists)
-document.getElementById('coverInput')?.addEventListener('click', function(e) {
-    e.stopPropagation(); // Prevent triggering the cover image click
-});
-
-// Keep the existing change handler for when file is selected
-document.getElementById('coverInput').addEventListener('change', function(e) {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    // Validate file type
-    if (!file.type.match('image.*')) {
-        toast('❌ Please select an image file');
-        this.value = '';
-        return;
-    }
-
-    // Validate file size (max 5MB)
-    if (file.size > 5 * 1024 * 1024) {
-        toast('❌ Image size should be less than 5MB');
-        this.value = '';
-        return;
-    }
-
-    const reader = new FileReader();
-   
-    reader.onload = function(event) {
-        // Set the image source
-        const cropImage = document.getElementById('coverCropImage');
-        cropImage.src = event.target.result;
-       
-        // Show the modal
-        coverCropModal.show();
-       
-        // Initialize cropper after modal is shown
-        setTimeout(() => {
-            if (coverCropper) {
-                coverCropper.destroy();
-            }
-           
-            coverCropper = new Cropper(cropImage, {
-                aspectRatio: 16 / 5,
-                viewMode: 1,
-                dragMode: 'move',
-                cropBoxMovable: true,
-                cropBoxResizable: true,
-                guides: true,
-                center: true,
-                highlight: false,
-                background: false,
-                autoCropArea: 1,
-                zoomOnWheel: true,
-                minContainerWidth: 600,
-                minContainerHeight: 400,
-                ready: function() {
-                    const containerData = this.cropper.getContainerData();
-                    const cropBoxData = {
-                        left: 0,
-                        top: 0,
-                        width: containerData.width,
-                        height: containerData.width / (16/5)
-                    };
-                    if (cropBoxData.height < containerData.height) {
-                        cropBoxData.top = (containerData.height - cropBoxData.height) / 2;
-                    }
-                    this.cropper.setCropBoxData(cropBoxData);
-                }
-            });
-        }, 200);
-    };
-   
-    reader.readAsDataURL(file);
-});
-
         document.getElementById('coverInput').addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (!file) return;
 
-            // Validate file type
             if (!file.type.match('image.*')) {
                 toast('❌ Please select an image file');
                 this.value = '';
                 return;
             }
 
-            // Validate file size (max 5MB)
             if (file.size > 5 * 1024 * 1024) {
                 toast('❌ Image size should be less than 5MB');
                 this.value = '';
@@ -2300,21 +2618,18 @@ document.getElementById('coverInput').addEventListener('change', function(e) {
             const reader = new FileReader();
 
             reader.onload = function(event) {
-                // Set the image source
                 const cropImage = document.getElementById('coverCropImage');
                 cropImage.src = event.target.result;
 
-                // Show the modal
                 coverCropModal.show();
 
-                // Initialize cropper after modal is shown
                 setTimeout(() => {
                     if (coverCropper) {
                         coverCropper.destroy();
                     }
 
                     coverCropper = new Cropper(cropImage, {
-                        aspectRatio: 16 / 5, // Default aspect ratio
+                        aspectRatio: 16 / 5,
                         viewMode: 1,
                         dragMode: 'move',
                         cropBoxMovable: true,
@@ -2328,18 +2643,15 @@ document.getElementById('coverInput').addEventListener('change', function(e) {
                         minContainerWidth: 600,
                         minContainerHeight: 400,
                         ready: function() {
-                            // Set crop box to cover entire image initially
                             const containerData = this.cropper.getContainerData();
                             const cropBoxData = {
                                 left: 0,
                                 top: 0,
                                 width: containerData.width,
-                                height: containerData.width / (16 / 5)
+                                height: containerData.width / (16/5)
                             };
-                            // Center vertically if height is less than container
                             if (cropBoxData.height < containerData.height) {
-                                cropBoxData.top = (containerData.height - cropBoxData
-                                    .height) / 2;
+                                cropBoxData.top = (containerData.height - cropBoxData.height) / 2;
                             }
                             this.cropper.setCropBoxData(cropBoxData);
                         }
@@ -2350,35 +2662,31 @@ document.getElementById('coverInput').addEventListener('change', function(e) {
             reader.readAsDataURL(file);
         });
 
-        // Save cropped cover image
         document.getElementById('saveCoverBtn').addEventListener('click', function() {
             if (!coverCropper) return;
 
-            // Show loading state
             const saveBtn = this;
             const originalText = saveBtn.innerHTML;
             saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Saving...';
             saveBtn.disabled = true;
 
-            // Get cropped canvas
             const canvas = coverCropper.getCroppedCanvas({
-                width: 1920, // Max width
-                height: 600, // Max height (maintaining aspect ratio)
+                width: 1920,
+                height: 600,
                 imageSmoothingEnabled: true,
                 imageSmoothingQuality: 'high',
             });
 
-            // Convert canvas to blob
             canvas.toBlob(function(blob) {
                 const formData = new FormData();
                 formData.append('cover_image', blob, 'cover-image.jpg');
                 formData.append('_token', csrf);
 
-                // Upload the cropped image
                 fetch("{{ route('profile.image.update') }}", {
                         method: "POST",
                         body: formData,
                         headers: {
+                            'X-CSRF-TOKEN': csrf,
                             'X-Requested-With': 'XMLHttpRequest'
                         }
                     })
@@ -2390,17 +2698,13 @@ document.getElementById('coverInput').addEventListener('change', function(e) {
                     })
                     .then(data => {
                         if (data.status) {
-                            // Update cover image
                             document.querySelector('.cover-image').style.backgroundImage =
                                 `url('${data.url}?t=${Date.now()}')`;
 
-                            // Show success message
                             toast('✅ Cover image updated successfully');
 
-                            // Close modal
                             coverCropModal.hide();
 
-                            // Clear file input
                             document.getElementById('coverInput').value = '';
                         } else {
                             throw new Error(data.message || 'Upload failed');
@@ -2411,11 +2715,10 @@ document.getElementById('coverInput').addEventListener('change', function(e) {
                         toast('❌ ' + err.message);
                     })
                     .finally(() => {
-                        // Reset button
                         saveBtn.innerHTML = originalText;
                         saveBtn.disabled = false;
                     });
-            }, 'image/jpeg', 0.95); // High quality JPEG
+            }, 'image/jpeg', 0.95);
         });
 
         // ============================================
@@ -2423,32 +2726,27 @@ document.getElementById('coverInput').addEventListener('change', function(e) {
         // ============================================
         let profileCropper = null;
         let profileCropModal = null;
-        let selectedProfileSize = 512; // Default size
+        let selectedProfileSize = 512;
+        
 
         document.addEventListener('DOMContentLoaded', function() {
-            // Initialize profile crop modal
             const modalElement = document.getElementById('profileCropModal');
             profileCropModal = new bootstrap.Modal(modalElement);
 
-            // Handle modal hidden event
             modalElement.addEventListener('hidden.bs.modal', function() {
                 if (profileCropper) {
                     profileCropper.destroy();
                     profileCropper = null;
                 }
-                // Clear preview images
                 document.getElementById('profilePreview').style.display = 'none';
                 document.getElementById('profilePreviewSquare').style.display = 'none';
-                // Clear the file input
                 document.getElementById('profileInput').value = '';
             });
         });
 
-        // Set profile image size
         window.setProfileSize = function(width, height, button) {
             selectedProfileSize = width;
             if (profileCropper) {
-                // Update active button state
                 document.querySelectorAll('.size-presets .btn').forEach(btn => {
                     btn.classList.remove('active');
                 });
@@ -2458,56 +2756,16 @@ document.getElementById('coverInput').addEventListener('change', function(e) {
             }
         };
 
-        // Handle profile input change - Show crop modal
-        // ============================================
-        // PROFILE IMAGE CLICK HANDLER - Show original
-        // ============================================
-        document.getElementById('profileAvatar').addEventListener('click', function(e) {
-            // Don't trigger if clicking on the edit icon
-            if (e.target.classList.contains('profile-edit-icon') || e.target.closest('.profile-edit-icon')) {
-                return;
-            }
-
-            // Get the original image URL from data attribute
-            const originalSrc = this.dataset.original;
-
-            // If there's an original image, show it
-            if (originalSrc && originalSrc !== '') {
-                Fancybox.show([{
-                    src: originalSrc,
-                    type: 'image',
-                    caption: '{{ Auth::user()->name }} - Profile Picture'
-                }]);
-            } else {
-                // If no custom image, show the current thumbnail/avatar
-                Fancybox.show([{
-                    src: this.src,
-                    type: 'image',
-                    caption: '{{ Auth::user()->name }} - Profile Picture'
-                }]);
-            }
-        });
-
-        // ============================================
-        // EDIT ICON CLICK HANDLER - Change profile picture
-        // ============================================
-        document.querySelector('.profile-edit-icon').addEventListener('click', function(e) {
-            e.stopPropagation(); // Prevent event from bubbling to parent
-            document.getElementById('profileInput').click();
-        });
-
         document.getElementById('profileInput').addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (!file) return;
 
-            // Validate file type
             if (!file.type.match('image.*')) {
                 toast('❌ Please select an image file');
                 this.value = '';
                 return;
             }
 
-            // Validate file size (max 5MB)
             if (file.size > 5 * 1024 * 1024) {
                 toast('❌ Image size should be less than 5MB');
                 this.value = '';
@@ -2517,21 +2775,18 @@ document.getElementById('coverInput').addEventListener('change', function(e) {
             const reader = new FileReader();
 
             reader.onload = function(event) {
-                // Set the image source
                 const cropImage = document.getElementById('profileCropImage');
                 cropImage.src = event.target.result;
 
-                // Show the modal
                 profileCropModal.show();
 
-                // Initialize cropper after modal is shown
                 setTimeout(() => {
                     if (profileCropper) {
                         profileCropper.destroy();
                     }
 
                     profileCropper = new Cropper(cropImage, {
-                        aspectRatio: 1 / 1, // 1:1 aspect ratio for profile pictures
+                        aspectRatio: 1 / 1,
                         viewMode: 1,
                         dragMode: 'move',
                         cropBoxMovable: true,
@@ -2545,14 +2800,11 @@ document.getElementById('coverInput').addEventListener('change', function(e) {
                         minContainerWidth: 300,
                         minContainerHeight: 300,
                         crop: function(event) {
-                            // Update preview in real-time
                             updateProfilePreview(event.detail);
                         },
                         ready: function() {
-                            // Set crop box to square in the center
                             const containerData = this.cropper.getContainerData();
-                            const size = Math.min(containerData.width, containerData
-                                .height);
+                            const size = Math.min(containerData.width, containerData.height);
                             this.cropper.setCropBoxData({
                                 left: (containerData.width - size) / 2,
                                 top: (containerData.height - size) / 2,
@@ -2567,11 +2819,9 @@ document.getElementById('coverInput').addEventListener('change', function(e) {
             reader.readAsDataURL(file);
         });
 
-        // Update preview images
         function updateProfilePreview(data) {
             if (!profileCropper) return;
 
-            // Get cropped canvas for preview
             const canvas = profileCropper.getCroppedCanvas({
                 width: 100,
                 height: 100,
@@ -2579,7 +2829,6 @@ document.getElementById('coverInput').addEventListener('change', function(e) {
                 imageSmoothingQuality: 'high'
             });
 
-            // Update preview images
             const previewImg = document.getElementById('profilePreview');
             const previewSquareImg = document.getElementById('profilePreviewSquare');
 
@@ -2590,17 +2839,14 @@ document.getElementById('coverInput').addEventListener('change', function(e) {
             previewSquareImg.style.display = 'block';
         }
 
-        // Save cropped profile image
         document.getElementById('saveProfileBtn').addEventListener('click', function() {
             if (!profileCropper) return;
 
-            // Show loading state
             const saveBtn = this;
             const originalText = saveBtn.innerHTML;
             saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Saving...';
             saveBtn.disabled = true;
 
-            // Get cropped canvas with selected size
             const canvas = profileCropper.getCroppedCanvas({
                 width: selectedProfileSize,
                 height: selectedProfileSize,
@@ -2608,13 +2854,11 @@ document.getElementById('coverInput').addEventListener('change', function(e) {
                 imageSmoothingQuality: 'high',
             });
 
-            // Convert canvas to blob
             canvas.toBlob(function(blob) {
                 const formData = new FormData();
                 formData.append('profile_image', blob, 'profile-image.jpg');
                 formData.append('_token', csrf);
 
-                // Upload the cropped image
                 fetch("{{ route('profile.image.update') }}", {
                         method: "POST",
                         body: formData,
@@ -2630,19 +2874,15 @@ document.getElementById('coverInput').addEventListener('change', function(e) {
                     })
                     .then(data => {
                         if (data.status) {
-                            // Update profile images
                             const newImageUrl = `${data.url}?t=${Date.now()}`;
                             document.getElementById('profileAvatar').src = newImageUrl;
                             document.querySelector('.user-avatar').src = newImageUrl;
                             document.getElementById('modalProfileAvatar').src = newImageUrl;
 
-                            // Show success message
                             toast('✅ Profile picture updated successfully');
 
-                            // Close modal
                             profileCropModal.hide();
 
-                            // Clear file input
                             document.getElementById('profileInput').value = '';
                         } else {
                             throw new Error(data.message || 'Upload failed');
@@ -2650,17 +2890,15 @@ document.getElementById('coverInput').addEventListener('change', function(e) {
                     })
                     .catch(err => {
                         console.error('Error uploading profile image:', err);
-                        toast('❌ ' + err.message);
+                        toast('❌ ' + err.message); 
                     })
                     .finally(() => {
-                        // Reset button
                         saveBtn.innerHTML = originalText;
                         saveBtn.disabled = false;
                     });
-            }, 'image/jpeg', 0.95); // High quality JPEG
+            }, 'image/jpeg', 0.95);
         });
 
-        // Add keyboard shortcuts for cropping
         document.addEventListener('keydown', function(e) {
             if (!profileCropper || !profileCropModal || !document.getElementById('profileCropModal').classList
                 .contains('show')) {
@@ -2708,7 +2946,6 @@ document.getElementById('coverInput').addEventListener('change', function(e) {
         // TOAST FUNCTION
         // ============================================
         function toast(message, duration = 3000) {
-            // Create toast container if it doesn't exist
             let toastContainer = document.querySelector('.toast-container');
             if (!toastContainer) {
                 toastContainer = document.createElement('div');
@@ -2716,7 +2953,6 @@ document.getElementById('coverInput').addEventListener('change', function(e) {
                 document.body.appendChild(toastContainer);
             }
 
-            // Determine toast style based on message
             const isSuccess = message.includes('✅');
             const isError = message.includes('❌');
             const isInfo = message.includes('ℹ️');
@@ -2758,45 +2994,7 @@ document.getElementById('coverInput').addEventListener('change', function(e) {
             });
         }
 
-        // Make toast globally available
         window.toast = toast;
-
-        // Smooth transitions
-        document.addEventListener('DOMContentLoaded', function() {
-            const cards = document.querySelectorAll('.card');
-            cards.forEach(card => {
-                card.addEventListener('mouseenter', () => {
-                    card.style.transform = 'translateY(-4px)';
-                });
-                card.addEventListener('mouseleave', () => {
-                    card.style.transform = 'translateY(0)';
-                });
-            });
-
-            const buttons = document.querySelectorAll('.btn');
-            buttons.forEach(btn => {
-                btn.addEventListener('mousedown', () => {
-                    btn.style.transform = 'scale(0.98)';
-                });
-                btn.addEventListener('mouseup', () => {
-                    btn.style.transform = '';
-                });
-                btn.addEventListener('mouseleave', () => {
-                    btn.style.transform = '';
-                });
-            });
-        });
-
-        // Initialize Lightbox
-        lightbox.option({
-            'resizeDuration': 200,
-            'wrapAround': true,
-            'albumLabel': 'Image %1 of %2'
-        });
-        // ============================================
-        // VIEW ORIGINAL PROFILE IMAGE
-        // ============================================
-
 
         // Smooth transitions
         document.addEventListener('DOMContentLoaded', function() {

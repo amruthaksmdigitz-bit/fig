@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\PostDeletedMail;
+use App\Mail\ReportDismissedMail;
 
 class AdminReportController extends Controller
 {
@@ -266,22 +267,64 @@ class AdminReportController extends Controller
      */
     public function dismissReport($id)
     {
-        $report = Report::with('feed')->findOrFail($id);
+        $report = Report::with(['feed', 'reporter', 'reportedUser'])->findOrFail($id);
+        
+        // Store data before updating for email
+        $reporter = $report->reporter;
+        $owner = $report->reportedUser;
+        $feed = $report->feed;
+        $adminNotes = request()->input('admin_notes', 'Report dismissed by admin');
 
-        DB::transaction(function () use ($report) {
+        DB::transaction(function () use ($report, $adminNotes) {
             $report->update([
                 'status' => 'dismissed',
-                'admin_notes' => 'Report dismissed by admin',
+                'admin_notes' => $adminNotes,
                 'reviewed_by' => auth()->id(),
                 'reviewed_at' => now()
             ]);
-
-            // If there are other pending reports for the same feed, leave them pending
-            // They need individual review
         });
 
+        // Send email notifications
+        $emailErrors = [];
+        
+        try {
+            // Send email to reporter
+            if ($reporter && $reporter->email) {
+                Mail::to($reporter->email)
+                    ->send(new ReportDismissedMail(
+                        $reporter,
+                        $report,
+                        'reporter',
+                        $adminNotes
+                    ));
+                \Log::info('Dismissal email sent to reporter: ' . $reporter->email);
+            }
+
+            // Send email to post owner
+            if ($owner && $owner->email && (!$reporter || $reporter->id !== $owner->id)) {
+                Mail::to($owner->email)
+                    ->send(new ReportDismissedMail(
+                        $owner,
+                        $report,
+                        'owner',
+                        $adminNotes
+                    ));
+                \Log::info('Dismissal email sent to owner: ' . $owner->email);
+            }
+        } catch (\Exception $e) {
+            \Log::error('Failed to send dismissal email: ' . $e->getMessage());
+            $emailErrors[] = $e->getMessage();
+        }
+
+        $message = 'Report dismissed successfully.';
+        if (!empty($emailErrors)) {
+            $message .= ' However, there were issues sending email notifications.';
+        } else {
+            $message .= ' Notifications sent to reporter and post owner.';
+        }
+
         // Redirect back to previous page (show page or index)
-        return back()->with('success', 'Report dismissed successfully');
+        return back()->with('success', $message);
     }
 
     /**

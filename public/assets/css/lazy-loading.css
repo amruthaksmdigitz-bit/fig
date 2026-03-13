@@ -1,0 +1,39 @@
+/* public/css/lazy-loading.css */
+
+/* Fade-in effect for lazy loaded images */
+img[data-src] {
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+img[data-src].loaded {
+    opacity: 1;
+}
+
+/* Background image fade-in */
+[data-bg] {
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    background-position: center;
+    background-size: cover;
+}
+
+[data-bg].bg-loaded {
+    opacity: 1;
+}
+
+/* Loading placeholder (optional) */
+.lazy-placeholder {
+    background: linear-gradient(110deg, #ececec 8%, #f5f5f5 18%, #ececec 33%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite linear;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}

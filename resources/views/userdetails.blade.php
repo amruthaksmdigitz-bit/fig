@@ -37,10 +37,7 @@
                             <!-- Profile Header -->
                             <div class="profile-header text-center mb-5">
                                 <div class="profile-image-container position-relative d-inline-block">
-                                    <img class="img-fluid rounded-circle border border-4 border-white shadow" 
-                                         src="{{ !empty($user->profile_image) ? asset($user->profile_image) : asset('assets/img/profile-placeholder.png') }}" 
-                                         alt="{{ $user->name }}" 
-                                         style="width: 180px; height: 180px; object-fit: cover;">
+                                    <img class="img-fluid rounded-circle border border-4 border-white shadow" src="{{ !empty($user->profile_image) ? asset($user->profile_image) : asset('assets/img/profile-placeholder.png') }}" alt="{{ $user->name }}" style="width: 180px; height: 180px; object-fit: cover;">
                                 </div>
                                 <h1 class="mt-4 mb-2 fw-bold" style="color: #333;">{{ $user->name }}</h1>
 
@@ -84,39 +81,55 @@
                                     @if($feeds && $feeds->count() > 0)
                                     <div class="posts-list">
                                         @foreach($feeds as $feed)
-                                        <div class="post-item mb-4 p-4 bg-light rounded shadow-sm">
-                                            <h4 class="post-title fw-bold mb-3" style="color: #333;">{{ $feed->title }}</h4>
-                                            
+                                        <div class="post-item mb-5 p-4 bg-light rounded shadow-sm">
+                                            <h4 class="post-title fw-bold mb-3" style="color: #333; font-size: 1.5rem;">{{ $feed->title }}</h4>
+
                                             @if($feed->description)
-                                            <p class="post-description mb-3 text-muted">{{ Str::limit($feed->description, 200) }}</p>
+                                            <p class="post-description mb-4 text-muted" style="font-size: 1.1rem; line-height: 1.8;">{{ $feed->description }}</p>
                                             @endif
-                                            
+
                                             @if($feed->images && $feed->images->count())
-                                            <div class="post-images d-flex gap-2 mb-3 flex-wrap">
-                                                @foreach($feed->images->take(4) as $image)
-                                                <div class="post-image-wrapper" style="width: 80px; height: 80px; overflow: hidden; border-radius: 8px;">
-                                                    <img src="{{ asset('storage/'.$image->image) }}" 
-                                                         class="img-fluid w-100 h-100"
-                                                         style="object-fit: cover;"
-                                                         alt="Post image">
-                                                </div>
+                                            <!-- Image Grid - Using the same styling as feeds page -->
+                                            <div class="post-image-grid mb-4" data-images="{{ $feed->images->count() }}" style="max-width: 100%;">
+                                                @foreach ($feed->images as $index => $image)
+                                                <a href="{{ asset('storage/' . $image->image) }}" data-lightbox="user-feed-{{ $feed->id }}" data-title="{{ $feed->title }}" class="grid-item {{ $index == 3 && $feed->images->count() > 4 ? 'has-overlay' : '' }}">
+
+                                                    <img src="{{ asset('storage/' . $image->image) }}" alt="Post Image">
+
+                                                    @if ($index == 3 && $feed->images->count() > 4)
+                                                    <div class="more-images-overlay">
+                                                        <span>+{{ $feed->images->count() - 4 }}</span>
+                                                    </div>
+                                                    @endif
+                                                </a>
                                                 @endforeach
-                                                @if($feed->images->count() > 4)
-                                                <div class="post-image-wrapper d-flex align-items-center justify-content-center bg-#D0A04F bg-opacity-10 text-#D0A04F fw-bold" 
-                                                     style="width: 80px; height: 80px; border-radius: 8px;">
-                                                    +{{ $feed->images->count() - 4 }}
-                                                </div>
-                                                @endif
                                             </div>
                                             @endif
-                                            
-                                            <div class="post-date d-flex align-items-center gap-2 text-muted small">
-                                                <i class="fas fa-clock"></i>
-                                                {{ $feed->created_at->diffForHumans() }}
+
+                                            <div class="post-footer d-flex justify-content-between align-items-center mt-3 pt-3 border-top">
+                                                <div class="post-date d-flex align-items-center gap-2 text-muted">
+                                                    <i class="fas fa-clock"></i>
+                                                    {{ $feed->created_at->diffForHumans() }}
+                                                </div>
+
+                                                @if($feed->images && $feed->images->count())
+                                                <div class="image-count text-#D0A04F">
+                                                    <i class="fas fa-images me-1"></i>
+                                                    {{ $feed->images->count() }} {{ Str::plural('image', $feed->images->count()) }}
+                                                </div>
+                                                @endif
                                             </div>
                                         </div>
                                         @endforeach
                                     </div>
+
+                                    <!-- Pagination (if needed) -->
+                                    @if(method_exists($feeds, 'links'))
+                                    <div class="pagination-wrapper mt-4">
+                                        {{ $feeds->links() }}
+                                    </div>
+                                    @endif
+
                                     @else
                                     <div class="empty-posts text-center py-5 border rounded bg-light">
                                         <div class="empty-icon mb-3" style="color: #D0A04F;">
@@ -196,7 +209,7 @@
                         </div>
                         <div class="card-body p-4">
                             @if($user->multipleImages && count($user->multipleImages) > 0)
-                            <!-- Gallery Grid -->
+                            <!-- Gallery Grid - Show first 6, with link to view all -->
                             <div class="row g-2">
                                 @foreach($user->multipleImages->take(6) as $key => $image)
                                 <div class="col-4">
@@ -208,7 +221,7 @@
                                 </div>
                                 @endforeach
                             </div>
-                            
+
                             @if(count($user->multipleImages) > 6)
                             <div class="text-center mt-3">
                                 <a href="#" class="text-#D0A04F text-decoration-none" data-bs-toggle="modal" data-bs-target="#galleryModal">
@@ -288,7 +301,7 @@
 <!-- Gallery Modal (for viewing all images) -->
 @if($user->multipleImages && count($user->multipleImages) > 6)
 <div class="modal fade" id="galleryModal" tabindex="-1" aria-labelledby="galleryModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header bg-#D0A04F text-white">
                 <h5 class="modal-title" id="galleryModalLabel">
@@ -297,12 +310,12 @@
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="row g-3">
+                <div class="row g-4">
                     @foreach($user->multipleImages as $key => $image)
                     <div class="col-md-4 col-sm-6">
                         <div class="gallery-card position-relative overflow-hidden rounded shadow-sm">
                             <a href="{{ asset($image->image) }}" data-lightbox="user-gallery-full" data-title="{{ $user->name }} - Image {{ $key + 1 }}">
-                                <img src="{{ asset($image->image) }}" alt="Gallery Image {{ $key + 1 }}" class="img-fluid" style="width: 100%; height: 200px; object-fit: cover;">
+                                <img src="{{ asset($image->image) }}" alt="Gallery Image {{ $key + 1 }}" class="img-fluid" style="width: 100%; height: 250px; object-fit: cover;">
                             </a>
                         </div>
                     </div>
@@ -327,7 +340,6 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <style>
-    /* Your existing styles remain the same */
     :root {
         --gold-color: #D0A04F;
         --gold-light: rgba(208, 160, 79, 0.1);
@@ -448,15 +460,21 @@
 
     .post-item:hover {
         transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(0,0,0,0.1) !important;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1) !important;
     }
 
     .post-image-wrapper {
         transition: transform 0.3s ease;
+        border-radius: 10px;
+        overflow: hidden;
     }
 
-    .post-image-wrapper:hover {
+    .post-image-wrapper:hover img {
         transform: scale(1.05);
+    }
+
+    .post-image-wrapper img {
+        transition: transform 0.3s ease;
     }
 
     @media (max-width: 768px) {
@@ -469,6 +487,10 @@
             width: 100%;
             justify-content: center;
         }
+
+        .post-image-wrapper {
+            height: 200px !important;
+        }
     }
 
     @media (max-width: 576px) {
@@ -480,6 +502,10 @@
         .card-body {
             padding: 1.5rem !important;
         }
+
+        .post-image-wrapper {
+            height: 180px !important;
+        }
     }
 
     @keyframes fadeInUp {
@@ -487,6 +513,7 @@
             opacity: 0;
             transform: translateY(20px);
         }
+
         to {
             opacity: 1;
             transform: translateY(0);
@@ -495,6 +522,127 @@
 
     .user-details-section .card {
         animation: fadeInUp 0.6s ease-out;
+    }
+
+    /* Post Image Grid Styles - Copied from feeds page */
+    .post-image-grid {
+        display: grid;
+        gap: 2px;
+        margin: 0.75rem 0;
+        border-radius: 12px;
+        overflow: hidden;
+        width: 100%;
+        max-height: 500px;
+    }
+
+    /* Grid layouts based on image count */
+    .post-image-grid[data-images="1"] {
+        grid-template-columns: 1fr;
+        aspect-ratio: 16/9;
+    }
+
+    .post-image-grid[data-images="2"] {
+        grid-template-columns: 1fr 1fr;
+        aspect-ratio: 16/9;
+    }
+
+    .post-image-grid[data-images="3"] {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(2, 1fr);
+        aspect-ratio: 4/3;
+    }
+
+    .post-image-grid[data-images="3"] .grid-item:first-child {
+        grid-row: span 2;
+    }
+
+    .post-image-grid[data-images="4"] {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(2, 1fr);
+        aspect-ratio: 1/1;
+    }
+
+    .post-image-grid[data-images="5"],
+    .post-image-grid[data-images="6"],
+    .post-image-grid[data-images="7"],
+    .post-image-grid[data-images="8"],
+    .post-image-grid[data-images="9"],
+    .post-image-grid[data-images="10"] {
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(3, 1fr);
+        aspect-ratio: 1/1;
+    }
+
+    .post-image-grid[data-images="5"] .grid-item:first-child,
+    .post-image-grid[data-images="6"] .grid-item:first-child,
+    .post-image-grid[data-images="7"] .grid-item:first-child,
+    .post-image-grid[data-images="8"] .grid-item:first-child,
+    .post-image-grid[data-images="9"] .grid-item:first-child,
+    .post-image-grid[data-images="10"] .grid-item:first-child {
+        grid-column: span 2;
+        grid-row: span 2;
+    }
+
+    .post-image-grid .grid-item {
+        position: relative;
+        cursor: pointer;
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
+    }
+
+    .post-image-grid .grid-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s;
+    }
+
+    .post-image-grid .grid-item:hover img {
+        transform: scale(1.05);
+    }
+
+    /* More images overlay - only on 4th image */
+    .post-image-grid .grid-item.has-overlay {
+        position: relative;
+    }
+
+    .post-image-grid .more-images-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.6);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 2rem;
+        font-weight: bold;
+        pointer-events: none;
+        z-index: 2;
+    }
+
+    /* Override Lightbox styles to match your theme */
+    .lb-loader .lb-cancel {
+        border-color: var(--gold-color) transparent;
+    }
+
+    .lb-nav a.lb-prev:hover,
+    .lb-nav a.lb-next:hover {
+        opacity: 1;
+        background-color: rgba(208, 160, 79, 0.3);
+    }
+
+    .lb-data .lb-close:hover {
+        opacity: 1;
+        background-color: var(--gold-color);
+    }
+
+    .lb-data .lb-number {
+        color: var(--gold-color) !important;
+        font-weight: bold;
     }
 </style>
 
@@ -505,7 +653,11 @@
         'wrapAround': true,
         'showImageNumberLabel': true,
         'albumLabel': 'Image %1 of %2',
-        'fadeDuration': 300
+        'fadeDuration': 300,
+        'alwaysShowNavOnTouchDevices': true,
+        'fitImagesInViewport': true,
+        'maxWidth': 1200,
+        'maxHeight': 800
     });
 </script>
 @endsection
