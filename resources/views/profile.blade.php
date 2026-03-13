@@ -1490,7 +1490,7 @@
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="postImagesModalLabel">
+                    <h5 class="modal-title" id="postImagesModalLabel"> 
                         <i class="fas fa-images me-2"></i>Post Images
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -1500,7 +1500,7 @@
                         <input type="file" id="modalImageInput" multiple accept="image/*" hidden>
                         <button class="btn btn-primary" onclick="document.getElementById('modalImageInput').click()">
                             <i class="fas fa-plus-circle"></i> Add Images
-                        </button>
+                        </button> 
                     </div>
 
                     <div id="postImagesContainer" class="row g-3">
@@ -1513,7 +1513,7 @@
             </div>
         </div>
     </div>
-
+     
     <!-- Cover Image Crop Modal -->
     <div class="modal fade" id="coverCropModal" tabindex="-1" aria-labelledby="coverCropModalLabel"
         aria-hidden="true">

@@ -7,8 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class FeedImage extends Model
 {
     protected $fillable = [
-        'feed_id',
-        'image'
+        'feed_id', 
+        'image', 
+        'thumbnail'  
     ];
 
     public function feed()

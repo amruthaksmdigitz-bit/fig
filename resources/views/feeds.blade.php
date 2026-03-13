@@ -87,7 +87,7 @@
                         {{ $feed->title }}
                     </div>
 
-                    @if ($feed->images->count())
+  @if ($feed->images->count())
 <div class="post-image-grid" data-images="{{ $feed->images->count() }}">
 
     @foreach ($feed->images as $index => $image)
@@ -96,7 +96,8 @@
            href="{{ asset('storage/' . $image->image) }}"
            class="grid-item {{ $index == 3 && $feed->images->count() > 4 ? 'has-overlay' : '' }}">
 
-            <img src="{{ asset('storage/' . $image->image) }}" alt="Post Image">
+            {{-- SHOW THUMBNAIL (5-10KB) INSTEAD OF ORIGINAL --}}
+            <img src="{{ asset('storage/' . $image->thumbnail) }}" alt="Post Image">
 
             @if ($index == 3 && $feed->images->count() > 4)
                 <div class="more-images-overlay">
