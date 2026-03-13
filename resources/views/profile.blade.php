@@ -2686,6 +2686,7 @@
                         method: "POST",
                         body: formData,
                         headers: {
+                            'X-CSRF-TOKEN': csrf,
                             'X-Requested-With': 'XMLHttpRequest'
                         }
                     })
@@ -2726,6 +2727,7 @@
         let profileCropper = null;
         let profileCropModal = null;
         let selectedProfileSize = 512;
+        
 
         document.addEventListener('DOMContentLoaded', function() {
             const modalElement = document.getElementById('profileCropModal');
@@ -2888,7 +2890,7 @@
                     })
                     .catch(err => {
                         console.error('Error uploading profile image:', err);
-                        toast('❌ ' + err.message);
+                        toast('❌ ' + err.message); 
                     })
                     .finally(() => {
                         saveBtn.innerHTML = originalText;
