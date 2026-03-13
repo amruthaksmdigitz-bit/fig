@@ -638,6 +638,7 @@
                 opacity: 0;
                 transform: translateY(-10px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -860,8 +861,13 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
         }
 
         @keyframes scaleIn {
@@ -869,6 +875,7 @@
                 transform: scale(0.9);
                 opacity: 0;
             }
+
             to {
                 transform: scale(1);
                 opacity: 1;
@@ -1254,10 +1261,10 @@
     <div class="main-content">
 
         @if (session('success'))
-            <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
-                {{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
+        <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
         @endif
 
         <!-- Header -->
@@ -1272,8 +1279,8 @@
                     <div class="user-menu">
                         <div class="user-dropdown">
                             <button class="user-btn" onclick="toggleUserDropdown(event)" id="userMenuButton">
-                                <img src="{{ Auth::user()->profile_image ? asset(Auth::user()->profile_image) : 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->name) . '&background=D0A04F&color=fff' }}"
-                                    class="user-avatar" alt="{{ Auth::user()->name }}">
+                                <img src="{{ Auth::user()->profile_image ? asset('uploads/profiles/' . Auth::user()->profile_image) : 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->name) . '&background=D0A04F&color=fff' }}"
+                                    alt="{{ Auth::user()->name }}" class="rounded-circle" width="50" height="50" id="modalProfileAvatar">
 
                                 <div class="user-info">
                                     <div class="user-name">{{ Auth::user()->name }}</div>
@@ -1337,10 +1344,10 @@
 
                     <div class="profile-image-wrapper">
                         <img id="profileAvatar"
-                            src="{{ Auth::user()->profile_thumbnail ? asset(Auth::user()->profile_thumbnail) : (Auth::user()->profile_image ? asset(Auth::user()->profile_image) : 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->name) . '&background=D0A04F&color=fff') }}"
+                            src="{{ Auth::user()->profile_thumbnail ? asset('uploads/profile_thumbnails/' . Auth::user()->profile_thumbnail) : (Auth::user()->profile_image ? asset('uploads/profiles/' . Auth::user()->profile_image) : 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->name) . '&background=D0A04F&color=fff') }}"
                             class="profile-avatar" alt="{{ Auth::user()->name }}"
                             onclick="openOriginalProfileImage()" style="cursor: pointer;"
-                            data-original="{{ Auth::user()->profile_image ? asset(Auth::user()->profile_image) : '' }}">
+                            data-original="{{ Auth::user()->profile_image ? asset('uploads/profiles/' . Auth::user()->profile_image) : '' }}">
 
                         <div class="profile-edit-icon" onclick="document.getElementById('profileInput').click()" title="Change Profile Picture">
                             <i class="fas fa-pencil-alt"></i>
@@ -1356,10 +1363,10 @@
                                 <span>{{ Auth::user()->profession ?? 'Professional' }}</span>
                             </div>
                             @if (Auth::user()->locationRelation)
-                                <div class="profile-meta-item">
-                                    <i class="fas fa-map-marker-alt"></i>
-                                    <span>{{ Auth::user()->locationRelation->name }}</span>
-                                </div>
+                            <div class="profile-meta-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>{{ Auth::user()->locationRelation->name }}</span>
+                            </div>
                             @endif
                             <div class="profile-meta-item">
                                 <i class="fas fa-envelope"></i>
@@ -1374,7 +1381,8 @@
                             </div>
                             <div class="stat">
                                 <div class="stat-value">
-                                    {{ Auth::user()->multipleImages ? count(Auth::user()->multipleImages) : 0 }}</div>
+                                    {{ Auth::user()->multipleImages ? count(Auth::user()->multipleImages) : 0 }}
+                                </div>
                                 <div class="stat-label">Photos</div>
                             </div>
                         </div>
@@ -1420,58 +1428,58 @@
 
                         <div class="posts-list">
                             @forelse($feeds as $feed)
-                                <div class="post-item" data-post-id="{{ $feed->id }}">
-                                    <div class="post-header">
-                                        <h3 class="post-title">{{ $feed->title }}</h3>
+                            <div class="post-item" data-post-id="{{ $feed->id }}">
+                                <div class="post-header">
+                                    <h3 class="post-title">{{ $feed->title }}</h3>
 
-                                        <div class="post-menu-container">
-                                            <button class="post-menu-btn" onclick="togglePostMenu({{ $feed->id }}, event)">
-                                                <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
-                                                    <circle cx="10" cy="4" r="2" />
-                                                    <circle cx="10" cy="10" r="2" />
-                                                    <circle cx="10" cy="16" r="2" />
+                                    <div class="post-menu-container">
+                                        <button class="post-menu-btn" onclick="togglePostMenu({{ $feed->id }}, event)">
+                                            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                                                <circle cx="10" cy="4" r="2" />
+                                                <circle cx="10" cy="10" r="2" />
+                                                <circle cx="10" cy="16" r="2" />
+                                            </svg>
+                                        </button>
+
+                                        <div class="post-dropdown-menu" id="post-menu-{{ $feed->id }}" style="display: none;">
+                                            <div class="menu-item delete-item" onclick="confirmDeletePost({{ $feed->id }}, event)">
+                                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2" />
+                                                    <line x1="10" y1="11" x2="10" y2="17" />
+                                                    <line x1="14" y1="11" x2="14" y2="17" />
                                                 </svg>
-                                            </button>
-
-                                            <div class="post-dropdown-menu" id="post-menu-{{ $feed->id }}" style="display: none;">
-                                                <div class="menu-item delete-item" onclick="confirmDeletePost({{ $feed->id }}, event)">
-                                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                        <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2" />
-                                                        <line x1="10" y1="11" x2="10" y2="17" />
-                                                        <line x1="14" y1="11" x2="14" y2="17" />
-                                                    </svg>
-                                                    <span>Delete Post</span>
-                                                </div>
+                                                <span>Delete Post</span>
                                             </div>
                                         </div>
                                     </div>
+                                </div>
 
-                                    @if ($feed->images && $feed->images->count())
-                                        <div class="post-images">
-                                            @foreach ($feed->images->take(3) as $image)
-                                                <img src="{{ asset('storage/' . $image->image) }}"
-                                                    class="post-thumbnail" alt="Post image"
-                                                    onclick="event.stopPropagation(); openPostGallery({{ $feed->id }})">
-                                            @endforeach
-                                            @if ($feed->images->count() > 3)
-                                                <div class="post-thumbnail d-flex align-items-center justify-content-center bg-light"
-                                                    onclick="event.stopPropagation(); openPostGallery({{ $feed->id }})">
-                                                    +{{ $feed->images->count() - 3 }}
-                                                </div>
-                                            @endif
-                                        </div>
-                                    @endif
-
-                                    <div class="post-date">
-                                        <i class="fas fa-clock"></i>
-                                        {{ $feed->created_at->diffForHumans() }}
+                                @if ($feed->images && $feed->images->count())
+                                <div class="post-images">
+                                    @foreach ($feed->images->take(3) as $image)
+                                    <img src="{{ asset('storage/' . $image->image) }}"
+                                        class="post-thumbnail" alt="Post image"
+                                        onclick="event.stopPropagation(); openPostGallery({{ $feed->id }})">
+                                    @endforeach
+                                    @if ($feed->images->count() > 3)
+                                    <div class="post-thumbnail d-flex align-items-center justify-content-center bg-light"
+                                        onclick="event.stopPropagation(); openPostGallery({{ $feed->id }})">
+                                        +{{ $feed->images->count() - 3 }}
                                     </div>
+                                    @endif
                                 </div>
+                                @endif
+
+                                <div class="post-date">
+                                    <i class="fas fa-clock"></i>
+                                    {{ $feed->created_at->diffForHumans() }}
+                                </div>
+                            </div>
                             @empty
-                                <div class="empty-posts">
-                                    <i class="fas fa-images"></i>
-                                    <p>No posts yet. Create your first post!</p>
-                                </div>
+                            <div class="empty-posts">
+                                <i class="fas fa-images"></i>
+                                <p>No posts yet. Create your first post!</p>
+                            </div>
                             @endforelse
                         </div>
                     </div>
@@ -1498,51 +1506,51 @@
                             </div>
 
                             @if (Auth::user()->phone)
-                                <div class="contact-item">
-                                    <div class="contact-icon">
-                                        <i class="fas fa-phone"></i>
-                                    </div>
-                                    <div class="contact-details">
-                                        <h4>Phone</h4>
-                                        <p>{{ Auth::user()->phone }}</p>
-                                    </div>
+                            <div class="contact-item">
+                                <div class="contact-icon">
+                                    <i class="fas fa-phone"></i>
                                 </div>
+                                <div class="contact-details">
+                                    <h4>Phone</h4>
+                                    <p>{{ Auth::user()->phone }}</p>
+                                </div>
+                            </div>
                             @endif
 
                             @if (Auth::user()->locationRelation)
-                                <div class="contact-item">
-                                    <div class="contact-icon">
-                                        <i class="fas fa-map-marker-alt"></i>
-                                    </div>
-                                    <div class="contact-details">
-                                        <h4>Location</h4>
-                                        <p>{{ Auth::user()->locationRelation->name }}</p>
-                                    </div>
+                            <div class="contact-item">
+                                <div class="contact-icon">
+                                    <i class="fas fa-map-marker-alt"></i>
                                 </div>
+                                <div class="contact-details">
+                                    <h4>Location</h4>
+                                    <p>{{ Auth::user()->locationRelation->name }}</p>
+                                </div>
+                            </div>
                             @endif
 
                             @if (Auth::user()->website)
-                                <div class="contact-item">
-                                    <div class="contact-icon">
-                                        <i class="fas fa-globe"></i>
-                                    </div>
-                                    <div class="contact-details">
-                                        <h4>Website</h4>
-                                        <p>{{ Auth::user()->website }}</p>
-                                    </div>
+                            <div class="contact-item">
+                                <div class="contact-icon">
+                                    <i class="fas fa-globe"></i>
                                 </div>
+                                <div class="contact-details">
+                                    <h4>Website</h4>
+                                    <p>{{ Auth::user()->website }}</p>
+                                </div>
+                            </div>
                             @endif
 
                             @if (Auth::user()->profession)
-                                <div class="contact-item">
-                                    <div class="contact-icon">
-                                        <i class="fas fa-briefcase"></i>
-                                    </div>
-                                    <div class="contact-details">
-                                        <h4>Profession</h4>
-                                        <p>{{ Auth::user()->profession }}</p>
-                                    </div>
+                            <div class="contact-item">
+                                <div class="contact-icon">
+                                    <i class="fas fa-briefcase"></i>
                                 </div>
+                                <div class="contact-details">
+                                    <h4>Profession</h4>
+                                    <p>{{ Auth::user()->profession }}</p>
+                                </div>
+                            </div>
                             @endif
                         </div>
                     </div>
@@ -1566,9 +1574,8 @@
                         <div class="card-body">
                             <div class="d-flex align-items-center">
                                 <div class="flex-shrink-0">
-                                    <img src="{{ Auth::user()->profile_image ? asset(Auth::user()->profile_image) : 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->name) . '&background=D0A04F&color=fff' }}"
-                                        alt="{{ Auth::user()->name }}" class="rounded-circle" width="50"
-                                        height="50" id="modalProfileAvatar">
+                                    <img src="{{ Auth::user()->profile_image ? asset('uploads/profiles/' . Auth::user()->profile_image) : 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->name) . '&background=D0A04F&color=fff' }}"
+                                        class="user-avatar" alt="{{ Auth::user()->name }}">
                                 </div>
                                 <div class="flex-grow-1 ms-3">
                                     <h6 class="mb-1" id="modalProfileName">{{ Auth::user()->name }}</h6>
@@ -1636,7 +1643,7 @@
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="postImagesModalLabel"> 
+                    <h5 class="modal-title" id="postImagesModalLabel">
                         <i class="fas fa-images me-2"></i>Post Images
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -1646,7 +1653,7 @@
                         <input type="file" id="modalImageInput" multiple accept="image/*" hidden>
                         <button class="btn btn-primary" onclick="document.getElementById('modalImageInput').click()">
                             <i class="fas fa-plus-circle"></i> Add Images
-                        </button> 
+                        </button>
                     </div>
 
                     <div id="postImagesContainer" class="row g-3">
@@ -1659,7 +1666,7 @@
             </div>
         </div>
     </div>
-     
+
     <!-- Cover Image Crop Modal -->
     <div class="modal fade" id="coverCropModal" tabindex="-1" aria-labelledby="coverCropModalLabel"
         aria-hidden="true">
@@ -1876,7 +1883,7 @@
             event.stopPropagation();
             const dropdown = document.getElementById('userDropdownMenu');
             const arrow = document.getElementById('dropdownArrow');
-           
+
             dropdown.classList.toggle('show');
             if (arrow) {
                 arrow.style.transform = dropdown.classList.contains('show') ? 'rotate(180deg)' : '';
@@ -1886,7 +1893,7 @@
         document.addEventListener('click', function(event) {
             const dropdown = document.getElementById('userDropdownMenu');
             const button = document.getElementById('userMenuButton');
-           
+
             if (button && dropdown && !button.contains(event.target) && !dropdown.contains(event.target)) {
                 dropdown.classList.remove('show');
                 const arrow = document.getElementById('dropdownArrow');
@@ -1979,11 +1986,14 @@
         // ============================================
         // SHARE FUNCTIONALITY
         // ============================================
+        // ============================================
+        // SHARE FUNCTIONALITY
+        // ============================================
         const profileData = {
             id: '{{ Auth::user()->id }}',
             name: '{{ Auth::user()->name }}',
             email: '{{ Auth::user()->email }}',
-            url: '{{ route('userdetails.show', Auth::user()->slug) }}',
+            url: '{{ route("userdetails.show", Auth::user()->slug) }}',
             title: '{{ Auth::user()->name }} - Profile',
             description: 'Check out {{ Auth::user()->name }}\'s profile on our platform!'
         };
@@ -2089,13 +2099,13 @@
 
         function togglePostMenu(postId, event) {
             event.stopPropagation();
-           
+
             document.querySelectorAll('[id^="post-menu-"]').forEach(menu => {
                 if (menu.id !== `post-menu-${postId}`) {
                     menu.style.display = 'none';
                 }
             });
-           
+
             const menu = document.getElementById(`post-menu-${postId}`);
             menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
         }
@@ -2110,9 +2120,9 @@
 
         function confirmDeletePost(postId, event) {
             event.stopPropagation();
-           
+
             document.getElementById(`post-menu-${postId}`).style.display = 'none';
-           
+
             showDeleteModal(postId);
         }
 
@@ -2121,7 +2131,7 @@
             if (existingModal) {
                 existingModal.remove();
             }
-           
+
             const modal = document.createElement('div');
             modal.className = 'delete-modal active';
             modal.innerHTML = `
@@ -2137,7 +2147,7 @@
                     </div>
                 </div>
             `;
-           
+
             document.body.appendChild(modal);
         }
 
@@ -2154,58 +2164,60 @@
                 deleteBtn.disabled = true;
                 deleteBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Deleting...';
             }
-           
+
             const formData = new FormData();
             formData.append('_token', csrf);
             formData.append('_method', 'DELETE');
-           
+
             const postElement = document.querySelector(`.post-item[data-post-id="${postId}"]`);
             if (postElement) {
                 postElement.style.opacity = '0.5';
             }
-           
+
             fetch(`/feeds/${postId}`, {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': csrf,
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'Accept': 'application/json'
-                },
-                body: formData
-            })
-            .then(response => {
-                const contentType = response.headers.get('content-type');
-                if (contentType && contentType.includes('application/json')) {
-                    return response.json();
-                }
-               
-                if (response.ok || response.redirected) {
-                    return { status: true };
-                }
-               
-                throw new Error('Network response was not ok');
-            })
-            .then(data => {
-                if (data.status || data.success || data === true) {
-                    handleSuccessfulDelete(postId);
-                } else {
-                    throw new Error(data.message || 'Failed to delete post');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-               
-                if (postElement) {
-                    postElement.style.opacity = '1';
-                }
-               
-                toast('❌ ' + (error.message || 'Failed to delete post'));
-               
-                if (deleteBtn) {
-                    deleteBtn.disabled = false;
-                    deleteBtn.innerHTML = 'Delete';
-                }
-            });
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': csrf,
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Accept': 'application/json'
+                    },
+                    body: formData
+                })
+                .then(response => {
+                    const contentType = response.headers.get('content-type');
+                    if (contentType && contentType.includes('application/json')) {
+                        return response.json();
+                    }
+
+                    if (response.ok || response.redirected) {
+                        return {
+                            status: true
+                        };
+                    }
+
+                    throw new Error('Network response was not ok');
+                })
+                .then(data => {
+                    if (data.status || data.success || data === true) {
+                        handleSuccessfulDelete(postId);
+                    } else {
+                        throw new Error(data.message || 'Failed to delete post');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+
+                    if (postElement) {
+                        postElement.style.opacity = '1';
+                    }
+
+                    toast('❌ ' + (error.message || 'Failed to delete post'));
+
+                    if (deleteBtn) {
+                        deleteBtn.disabled = false;
+                        deleteBtn.innerHTML = 'Delete';
+                    }
+                });
         }
 
         function handleSuccessfulDelete(postId) {
@@ -2214,16 +2226,16 @@
                 postElement.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
                 postElement.style.opacity = '0';
                 postElement.style.transform = 'scale(0.9)';
-               
+
                 setTimeout(() => {
                     postElement.remove();
                     updatePostCount();
                     checkEmptyPosts();
                 }, 300);
             }
-           
+
             closeDeleteModal();
-           
+
             toast('✅ Post deleted successfully');
         }
 
@@ -2514,7 +2526,7 @@
         window.openOriginalCoverImage = function() {
             const coverContainer = document.getElementById('coverImageContainer');
             const originalSrc = coverContainer.dataset.original;
-           
+
             if (originalSrc && originalSrc !== '') {
                 Fancybox.show([{
                     src: originalSrc,
@@ -2648,7 +2660,7 @@
                                 left: 0,
                                 top: 0,
                                 width: containerData.width,
-                                height: containerData.width / (16/5)
+                                height: containerData.width / (16 / 5)
                             };
                             if (cropBoxData.height < containerData.height) {
                                 cropBoxData.top = (containerData.height - cropBoxData.height) / 2;
@@ -2727,7 +2739,7 @@
         let profileCropper = null;
         let profileCropModal = null;
         let selectedProfileSize = 512;
-        
+
 
         document.addEventListener('DOMContentLoaded', function() {
             const modalElement = document.getElementById('profileCropModal');
@@ -2890,7 +2902,7 @@
                     })
                     .catch(err => {
                         console.error('Error uploading profile image:', err);
-                        toast('❌ ' + err.message); 
+                        toast('❌ ' + err.message);
                     })
                     .finally(() => {
                         saveBtn.innerHTML = originalText;

@@ -180,7 +180,6 @@ public function ajaxGalleryUpload(Request $request)
         'message' => 'Images uploaded and compressed successfully'
     ]);
 }
-
 public function ajaxImageUpdate(Request $request)
 {
     $user = auth()->user();
@@ -199,14 +198,14 @@ public function ajaxImageUpdate(Request $request)
         $baseFilename = time() . '_profile_' . uniqid();
         
         // Delete old files
-        if ($user->profile_image && file_exists(public_path($user->profile_image))) {
-            unlink(public_path($user->profile_image));
+        if ($user->profile_image && file_exists(public_path('uploads/profiles/' . $user->profile_image))) {
+            unlink(public_path('uploads/profiles/' . $user->profile_image));
         }
-        if ($user->profile_thumbnail && file_exists(public_path($user->profile_thumbnail))) {
-            unlink(public_path($user->profile_thumbnail));
+        if ($user->profile_thumbnail && file_exists(public_path('uploads/profile_thumbnails/' . $user->profile_thumbnail))) {
+            unlink(public_path('uploads/profile_thumbnails/' . $user->profile_thumbnail));
         }
 
-        // Create directories if they don't exist
+        // Create directories
         $profileDir = 'uploads/profiles';
         $thumbDir = 'uploads/profile_thumbnails';
         
@@ -217,79 +216,35 @@ public function ajaxImageUpdate(Request $request)
             mkdir(public_path($thumbDir), 0755, true);
         }
 
-        // Read the image
+        // Process main image
         $image = $manager->read($file);
-        
-        // Resize if too large (max 800px for profile)
         if ($image->width() > 800 || $image->height() > 800) {
             $image->scale(width: 800);
         }
         
-        // Save as WEBP for original (<100KB)
-        $originalQuality = 80;
         $originalFilename = $baseFilename . '.webp';
         $originalPath = $profileDir . '/' . $originalFilename;
-        
-        $image->toWebp($originalQuality);
+        $image->toWebp(80);
         $image->save(public_path($originalPath));
         
-        // Check size and adjust if >100KB
-        $originalSize = filesize(public_path($originalPath)) / 1024;
-        
-        while ($originalSize > 100 && $originalQuality > 30) {
-            $originalQuality -= 10;
-            $image = $manager->read($file);
-            if ($image->width() > 800 || $image->height() > 800) {
-                $image->scale(width: 800);
-            }
-            $image->toWebp($originalQuality);
-            $image->save(public_path($originalPath));
-            $originalSize = filesize(public_path($originalPath)) / 1024;
-        }
-        
-        // Create THUMBNAIL (150x150, 5-10KB WEBP)
+        // Process thumbnail
         $thumbnail = $manager->read($file);
         $thumbnail->cover(150, 150);
         
-        $thumbQuality = 50;
         $thumbFilename = $baseFilename . '_thumb.webp';
         $thumbPath = $thumbDir . '/' . $thumbFilename;
-        
-        $thumbnail->toWebp($thumbQuality);
+        $thumbnail->toWebp(50);
         $thumbnail->save(public_path($thumbPath));
-        
-        // Adjust thumbnail size to 5-10KB
-        $thumbSize = filesize(public_path($thumbPath)) / 1024;
-        
-        // If too large (>10KB), reduce quality
-        while ($thumbSize > 10 && $thumbQuality > 20) {
-            $thumbQuality -= 5;
-            $thumbnail = $manager->read($file);
-            $thumbnail->cover(150, 150);
-            $thumbnail->toWebp($thumbQuality);
-            $thumbnail->save(public_path($thumbPath));
-            $thumbSize = filesize(public_path($thumbPath)) / 1024;
-        }
-        
-        // If too small (<5KB), increase quality slightly
-        while ($thumbSize < 5 && $thumbQuality < 80) {
-            $thumbQuality += 5;
-            $thumbnail = $manager->read($file);
-            $thumbnail->cover(150, 150);
-            $thumbnail->toWebp($thumbQuality);
-            $thumbnail->save(public_path($thumbPath));
-            $thumbSize = filesize(public_path($thumbPath)) / 1024;
-        }
 
-        // Save paths to database
-        $user->profile_image = $originalPath;
-        $user->profile_thumbnail = $thumbPath;
+        // SAVE ONLY THE FILENAME (fits in VARCHAR(50))
+        $user->profile_image = $originalFilename;  // Just "1773398340_profile_69b3e9444abfd.webp"
+        $user->profile_thumbnail = $thumbFilename; // Just "1773398340_profile_69b3e9444abfd_thumb.webp"
         $user->save();
 
         return response()->json([
             'status' => true,
-            'url' => asset($thumbPath), // Return thumbnail for display
-            'original_url' => asset($originalPath), // Original for viewing
+            'url' => asset($thumbDir . '/' . $thumbFilename),
+            'original_url' => asset($profileDir . '/' . $originalFilename),
             'message' => 'Profile image uploaded successfully'
         ]);
     }
@@ -302,14 +257,14 @@ public function ajaxImageUpdate(Request $request)
         $baseFilename = time() . '_cover_' . uniqid();
         
         // Delete old files
-        if ($user->cover_image && file_exists(public_path($user->cover_image))) {
-            unlink(public_path($user->cover_image));
+        if ($user->cover_image && file_exists(public_path('uploads/covers/' . $user->cover_image))) {
+            unlink(public_path('uploads/covers/' . $user->cover_image));
         }
-        if ($user->cover_thumbnail && file_exists(public_path($user->cover_thumbnail))) {
-            unlink(public_path($user->cover_thumbnail));
+        if ($user->cover_thumbnail && file_exists(public_path('uploads/cover_thumbnails/' . $user->cover_thumbnail))) {
+            unlink(public_path('uploads/cover_thumbnails/' . $user->cover_thumbnail));
         }
 
-        // Create directories if they don't exist
+        // Create directories
         $coverDir = 'uploads/covers';
         $thumbDir = 'uploads/cover_thumbnails';
         
@@ -320,68 +275,35 @@ public function ajaxImageUpdate(Request $request)
             mkdir(public_path($thumbDir), 0755, true);
         }
 
-        // Read the image
+        // Process main image
         $image = $manager->read($file);
-        
-        // Resize if too wide (max 1920px width)
         if ($image->width() > 1920) {
             $image->scale(width: 1920);
         }
         
-        // Save as WEBP for original (<200KB)
-        $originalQuality = 80;
         $originalFilename = $baseFilename . '.webp';
         $originalPath = $coverDir . '/' . $originalFilename;
-        
-        $image->toWebp($originalQuality);
+        $image->toWebp(80);
         $image->save(public_path($originalPath));
         
-        // Check size and adjust if >200KB
-        $originalSize = filesize(public_path($originalPath)) / 1024;
-        
-        while ($originalSize > 200 && $originalQuality > 30) {
-            $originalQuality -= 10;
-            $image = $manager->read($file);
-            if ($image->width() > 1920) {
-                $image->scale(width: 1920);
-            }
-            $image->toWebp($originalQuality);
-            $image->save(public_path($originalPath));
-            $originalSize = filesize(public_path($originalPath)) / 1024;
-        }
-        
-        // Create THUMBNAIL (600x200, <20KB WEBP)
+        // Process thumbnail
         $thumbnail = $manager->read($file);
         $thumbnail->cover(600, 200);
         
-        $thumbQuality = 70;
         $thumbFilename = $baseFilename . '_thumb.webp';
         $thumbPath = $thumbDir . '/' . $thumbFilename;
-        
-        $thumbnail->toWebp($thumbQuality);
+        $thumbnail->toWebp(70);
         $thumbnail->save(public_path($thumbPath));
-        
-        // Adjust thumbnail size to <20KB
-        $thumbSize = filesize(public_path($thumbPath)) / 1024;
-        
-        while ($thumbSize > 20 && $thumbQuality > 30) {
-            $thumbQuality -= 10;
-            $thumbnail = $manager->read($file);
-            $thumbnail->cover(600, 200);
-            $thumbnail->toWebp($thumbQuality);
-            $thumbnail->save(public_path($thumbPath));
-            $thumbSize = filesize(public_path($thumbPath)) / 1024;
-        }
 
-        // Save paths to database
-        $user->cover_image = $originalPath;
-        $user->cover_thumbnail = $thumbPath;
+        // SAVE ONLY THE FILENAME
+        $user->cover_image = $originalFilename;
+        $user->cover_thumbnail = $thumbFilename;
         $user->save();
 
         return response()->json([
             'status' => true,
-            'url' => asset($thumbPath), // Return thumbnail for display
-            'original_url' => asset($originalPath), // Original for viewing
+            'url' => asset($thumbDir . '/' . $thumbFilename),
+            'original_url' => asset($coverDir . '/' . $originalFilename),
             'message' => 'Cover image uploaded successfully'
         ]);
     }

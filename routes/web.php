@@ -170,6 +170,8 @@ Route::get('/profile/gallery', [ProfileController::class, 'gallery'])->name('pro
 Route::post('/profile/image-update', [ProfileController::class, 'ajaxImageUpdate'])->middleware('auth')
     ->name('profile.image.update');
 
+    
+
 // ✅ SETTINGS FIRST
 Route::get('/profile/settings', [ProfileController::class, 'settings'])
     ->name('profile.settings');
