@@ -21,6 +21,6 @@ class ReportSubmittedAdmin extends Mailable
     public function build()
     {
         return $this->subject('🔔 New Report Submitted - Action Required')
-                    ->view('mails.report-admin'); // Changed from emails. to mails.
+                    ->view('mails.report-admin'); 
     }
 }

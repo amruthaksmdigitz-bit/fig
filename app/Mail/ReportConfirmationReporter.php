@@ -21,6 +21,6 @@ class ReportConfirmationReporter extends Mailable
     public function build()
     {
         return $this->subject('✅ Report Confirmation')
-                    ->view('mails.report-confirmation'); // Changed from emails. to mails.
+                    ->view('mails.report-confirmation'); 
     }
 }
